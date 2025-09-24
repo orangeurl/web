@@ -5,5 +5,11 @@
   "regions": ["iad1"],
   "env": {
     "BACKEND_URL": "https://api.orangeurl.live/api/v1"
-  }
+  },
+  "rewrites": [
+    {
+      "source": "/([a-zA-Z0-9]{6})",
+      "destination": "https://api.orangeurl.live/$1"
+    }
+  ]
 } 
