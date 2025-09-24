@@ -229,12 +229,51 @@
 /* Button enhancements */
 .btn-primary {
   background: linear-gradient(135deg, hsl(var(--primary)) 0%, #f97316 100%);
-  transition: all 0.3s ease;
+  transition: all 0.15s ease;
+  touch-action: manipulation;
+  -webkit-tap-highlight-color: transparent;
+  user-select: none;
 }
 
 .btn-primary:hover {
   transform: translateY(-2px);
   box-shadow: 0 10px 25px rgba(249, 115, 22, 0.4);
+}
+
+.btn-primary:active {
+  transform: translateY(0px) scale(0.98);
+  transition-duration: 0.05s;
+}
+
+/* Enhanced button responsiveness for all buttons */
+button {
+  touch-action: manipulation;
+  -webkit-tap-highlight-color: transparent;
+  cursor: pointer;
+}
+
+button:active {
+  transform: scale(0.98);
+  transition: transform 0.05s ease;
+}
+
+button:disabled {
+  cursor: not-allowed !important;
+  transform: none !important;
+}
+
+/* Improve touch responsiveness on mobile */
+@media (hover: none) and (pointer: coarse) {
+  button {
+    min-height: 44px; /* Minimum touch target size */
+    min-width: 44px;
+  }
+  
+  .btn-primary:active,
+  button:active {
+    transform: scale(0.96);
+    opacity: 0.8;
+  }
 }
 
 /* Status indicators */

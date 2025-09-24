@@ -35,14 +35,12 @@ const pricingPlans = [
     period: "forever",
     description: "Perfect for personal use and getting started",
     features: [
-      { name: "100 links per month", included: true },
+      { name: "20 links per month", included: true },
       { name: "Basic analytics", included: true },
-      { name: "orangeurl.live domain", included: true },
-      { name: "24-hour link expiry", included: true },
       { name: "Custom domains", included: false },
-      { name: "Advanced analytics", included: false },
-      { name: "API access", included: false },
-      { name: "Priority support", included: false }
+      { name: "Priority support", included: false },
+      { name: "Custom link expiry", included: false },
+      { name: "AI shortener feature", included: false }
     ],
     buttonText: "Get Started",
     buttonVariant: "outline" as const,
@@ -50,41 +48,20 @@ const pricingPlans = [
   },
   {
     name: "Pro",
-    price: "$9",
+    price: "$5",
     period: "per month",
     description: "Ideal for professionals and small businesses",
     features: [
-      { name: "5,000 links per month", included: true },
+      { name: "200 links per month", included: true },
       { name: "Advanced analytics", included: true },
-      { name: "Custom domains", included: true },
-      { name: "Custom link expiry", included: true },
-      { name: "API access", included: true },
+      { name: "5 Custom links per month", included: true },
       { name: "Priority support", included: true },
-      { name: "Custom QR codes", included: true },
-      { name: "Team collaboration", included: false }
+      { name: "Custom link expiry", included: true },
+      { name: "AI shortener feature", included: true }
     ],
     buttonText: "Start Free Trial",
     buttonVariant: "default" as const,
     popular: true
-  },
-  {
-    name: "Enterprise",
-    price: "$49",
-    period: "per month",
-    description: "For teams and organizations at scale",
-    features: [
-      { name: "Unlimited links", included: true },
-      { name: "Advanced analytics", included: true },
-      { name: "Custom domains", included: true },
-      { name: "White-label solution", included: true },
-      { name: "API access", included: true },
-      { name: "24/7 priority support", included: true },
-      { name: "Team collaboration", included: true },
-      { name: "SSO integration", included: true }
-    ],
-    buttonText: "Contact Sales",
-    buttonVariant: "outline" as const,
-    popular: false
   }
 ];
 
@@ -114,7 +91,7 @@ export default function PricingPage() {
 
       {/* Pricing Cards */}
       <motion.section 
-        className="grid grid-cols-1 md:grid-cols-3 gap-8 max-w-7xl mx-auto"
+        className="grid grid-cols-1 md:grid-cols-2 gap-8 max-w-4xl mx-auto"
         initial="initial"
         whileInView="animate"
         viewport={{ once: true }}
@@ -265,7 +242,7 @@ export default function PricingPage() {
             },
             {
               question: "Do you offer refunds?",
-              answer: "We offer a 30-day money-back guarantee for all paid plans. No questions asked."
+              answer: "No, we don't offer refunds."
             },
             {
               question: "Can I use my own domain?",
@@ -284,26 +261,7 @@ export default function PricingPage() {
         </motion.div>
       </motion.section>
 
-      {/* CTA */}
-      <motion.section 
-        className="text-center py-16 relative overflow-hidden"
-        initial="initial"
-        whileInView="animate"
-        viewport={{ once: true }}
-        variants={fadeInUp}
-      >
-        <div className="absolute inset-0 bg-gradient-to-r from-primary/10 via-orange-500/10 to-primary/10 rounded-3xl" />
-        
-        <div className="relative z-10 space-y-6">
-          <h2 className="text-3xl md:text-4xl font-bold">Ready to Get Started?</h2>
-          <p className="text-xl text-muted-foreground max-w-2xl mx-auto">
-            Join thousands of professionals who trust OrangeURL for their link management needs.
-          </p>
-          <Button size="lg" className="btn-primary text-lg px-10 py-6">
-            Start Your Free Trial
-          </Button>
-        </div>
-      </motion.section>
+
     </div>
   );
 } 

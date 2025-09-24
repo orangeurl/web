@@ -16,6 +16,7 @@ import {
   TrendingUp
 } from 'lucide-react';
 import Link from 'next/link';
+import Image from 'next/image';
 
 const fadeInUp = {
   initial: { opacity: 0, y: 60 },
@@ -138,114 +139,6 @@ export default function AboutPage() {
         </motion.div>
       </motion.section>
 
-      {/* Values */}
-      <motion.section 
-        className="space-y-16"
-        initial="initial"
-        whileInView="animate"
-        viewport={{ once: true }}
-        variants={staggerContainer}
-      >
-        <motion.div variants={fadeInUp} className="text-center space-y-4">
-          <h2 className="text-3xl md:text-4xl font-bold">Our Values</h2>
-          <p className="text-xl text-muted-foreground max-w-3xl mx-auto">
-            These principles guide everything we do and every decision we make
-          </p>
-        </motion.div>
-
-        <motion.div 
-          className="grid grid-cols-1 md:grid-cols-3 gap-8"
-          variants={staggerContainer}
-        >
-          {[
-            {
-              icon: <Target className="w-8 h-8" />,
-              title: "Simplicity First",
-              description: "We believe the best solutions are often the simplest ones. Every feature is designed with clarity and ease of use in mind.",
-              gradient: "from-orange-500 to-red-500"
-            },
-            {
-              icon: <Shield className="w-8 h-8" />,
-              title: "Privacy & Security",
-              description: "Your data is yours. We use industry-leading security practices to protect your information and respect your privacy.",
-              gradient: "from-blue-500 to-cyan-500"
-            },
-            {
-              icon: <Users className="w-8 h-8" />,
-              title: "Community Driven",
-              description: "Our users are at the heart of everything we do. Your feedback shapes our roadmap and drives our innovation.",
-              gradient: "from-green-500 to-emerald-500"
-            }
-          ].map((value, index) => (
-            <motion.div 
-              key={index} 
-              variants={scaleIn}
-              whileHover={{ y: -8, scale: 1.02 }}
-              transition={{ type: "spring", stiffness: 300 }}
-            >
-              <Card className="h-full card-hover border-2 hover:border-primary/20 relative overflow-hidden">
-                <div className={`absolute inset-0 bg-gradient-to-br ${value.gradient} opacity-5 hover:opacity-10 transition-opacity`} />
-                <CardContent className="p-8 space-y-6 relative z-10">
-                  <div className={`w-16 h-16 rounded-xl bg-gradient-to-r ${value.gradient} flex items-center justify-center text-white shadow-lg`}>
-                    {value.icon}
-                  </div>
-                  <div className="space-y-4">
-                    <h3 className="font-bold text-xl">{value.title}</h3>
-                    <p className="text-muted-foreground leading-relaxed">{value.description}</p>
-                  </div>
-                </CardContent>
-              </Card>
-            </motion.div>
-          ))}
-        </motion.div>
-      </motion.section>
-
-      {/* Stats */}
-      <motion.section 
-        className="py-16 relative overflow-hidden"
-        initial="initial"
-        whileInView="animate"
-        viewport={{ once: true }}
-        variants={staggerContainer}
-      >
-        <div className="absolute inset-0 bg-gradient-to-r from-primary/5 via-orange-500/5 to-primary/5 rounded-3xl" />
-        
-        <div className="relative z-10 space-y-12">
-          <motion.div variants={fadeInUp} className="text-center space-y-4">
-            <h2 className="text-3xl md:text-4xl font-bold">By the Numbers</h2>
-            <p className="text-xl text-muted-foreground">
-              The impact we're making together
-            </p>
-          </motion.div>
-
-          <motion.div 
-            className="grid grid-cols-1 md:grid-cols-4 gap-8"
-            variants={staggerContainer}
-          >
-            {[
-              { number: "1M+", label: "Links Created", icon: <TrendingUp className="w-6 h-6" /> },
-              { number: "50K+", label: "Active Users", icon: <Users className="w-6 h-6" /> },
-              { number: "99.9%", label: "Uptime", icon: <Zap className="w-6 h-6" /> },
-              { number: "150+", label: "Countries", icon: <Globe className="w-6 h-6" /> }
-            ].map((stat, index) => (
-              <motion.div
-                key={index}
-                variants={fadeInUp}
-                className="text-center space-y-3"
-                whileHover={{ scale: 1.05 }}
-                transition={{ type: "spring", stiffness: 300 }}
-              >
-                <div className="flex items-center justify-center text-primary mb-2">
-                  {stat.icon}
-                </div>
-                <div className="text-4xl font-bold gradient-text-primary">{stat.number}</div>
-                <div className="text-muted-foreground font-medium">{stat.label}</div>
-              </motion.div>
-            ))}
-          </motion.div>
-        </div>
-      </motion.section>
-
       {/* Team */}
       <motion.section 
         className="space-y-16"
@@ -262,27 +155,15 @@ export default function AboutPage() {
         </motion.div>
 
         <motion.div 
-          className="grid grid-cols-1 md:grid-cols-3 gap-8 max-w-4xl mx-auto"
+          className="grid grid-cols-1 max-w-md mx-auto"
           variants={staggerContainer}
         >
           {[
             {
-              name: "Alex Chen",
-              role: "Founder & CEO",
-              bio: "Former tech lead at major URL shortening services. Passionate about building tools that make the web better.",
-              avatar: "AC"
-            },
-            {
-              name: "Sarah Rodriguez",
-              role: "Head of Engineering",
-              bio: "Full-stack engineer with 10+ years building scalable web applications. Coffee enthusiast and open source contributor.",
-              avatar: "SR"
-            },
-            {
-              name: "Mike Johnson",
-              role: "Head of Design",
-              bio: "UX/UI designer focused on creating intuitive interfaces. Believes great design is invisible until you need it.",
-              avatar: "MJ"
+              name: "Snowiee",
+              role: "Founder & Developer",
+              bio: "GSoC'24 @AnkiDroid, Electronics Major. Building the next generation of URL shortening tools.",
+              avatar: "S"
             }
           ].map((member, index) => (
             <motion.div
@@ -293,8 +174,14 @@ export default function AboutPage() {
             >
               <Card className="card-hover text-center">
                 <CardContent className="p-8 space-y-4">
-                  <div className="w-20 h-20 bg-gradient-to-r from-primary to-orange-600 rounded-full flex items-center justify-center text-white text-xl font-bold mx-auto">
-                    {member.avatar}
+                  <div className="w-20 h-20 rounded-full overflow-hidden border-2 border-blue-300 shadow-lg mx-auto">
+                    <Image
+                      src="/images/snowiee-avatar.jpg"
+                      alt="Snowiee Profile Picture"
+                      width={80}
+                      height={80}
+                      className="w-full h-full object-cover"
+                    />
                   </div>
                   <div className="space-y-2">
                     <h3 className="text-xl font-bold">{member.name}</h3>
@@ -328,7 +215,7 @@ export default function AboutPage() {
               <Link href="/">Start Shortening</Link>
             </Button>
             <Button variant="outline" size="lg" className="text-lg px-10 py-6" asChild>
-              <Link href="/pricing">View Pricing</Link>
+              <Link href="https://discord.gg/FvJtFw64WV" target="_blank" rel="noopener noreferrer">Join Community</Link>
             </Button>
           </div>
         </div>

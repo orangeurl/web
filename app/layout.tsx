@@ -4,6 +4,8 @@ import { Inter, JetBrains_Mono } from 'next/font/google';
 import { ThemeProvider } from '@/components/theme-provider';
 import { ParticleBackground } from '@/components/ParticleBackground';
 import { Navbar } from '@/components/Navbar';
+import { Footer } from '@/components/Footer';
+import { Toaster } from '@/components/ui/toaster';
 
 const inter = Inter({ 
   subsets: ['latin'],
@@ -67,17 +69,18 @@ export default function RootLayout({
       <body className={`${inter.className} antialiased`}>
         <ThemeProvider
           attribute="class"
-          defaultTheme="system"
+          defaultTheme="light"
           enableSystem
           disableTransitionOnChange
         >
-          <div className="min-h-screen relative">
+          <div className="min-h-screen relative flex flex-col">
             <ParticleBackground />
-            <div className="relative z-10">
+            <div className="relative z-10 flex flex-col flex-1">
               <Navbar />
-              <main className="container mx-auto px-4 py-8">
+              <main className="container mx-auto px-4 py-8 flex-1">
                 {children}
               </main>
+              <Footer />
             </div>
           </div>
         </ThemeProvider>

@@ -1,5 +1,4 @@
 'use client';
-
 import { useState, useEffect } from 'react';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
@@ -7,10 +6,11 @@ import { motion } from 'framer-motion';
 import { DarkModeToggle } from './DarkModeToggle';
 import { Button } from './ui/button';
 import { cn } from '@/lib/utils';
-import { Menu, Link as LinkIcon } from 'lucide-react';
+import { Menu, Link as LinkIcon, User } from 'lucide-react';
 
 const navItems = [
   { href: '/', label: 'Home' },
+  { href: '/dashboard', label: 'Dashboard' },
   { href: '/pricing', label: 'Pricing' },
   { href: '/about', label: 'About' },
 ];
@@ -116,8 +116,8 @@ export function Navbar() {
               animate={{ opacity: 1, scale: 1 }}
               transition={{ duration: 0.6, delay: 0.4 }}
             >
-              <Button asChild className="btn-primary">
-                <Link href="/create">Create Link</Link>
+              <Button variant="outline" className="flex items-center space-x-2">
+                <User className="w-4 h-4" /><span>Login</span>
               </Button>
             </motion.div>
           </div>
@@ -125,4 +125,4 @@ export function Navbar() {
       </div>
     </motion.nav>
   );
-} 
+}
