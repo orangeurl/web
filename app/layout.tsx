@@ -6,6 +6,7 @@ import { ParticleBackground } from '@/components/ParticleBackground';
 import { Navbar } from '@/components/Navbar';
 import { Footer } from '@/components/Footer';
 import { Toaster } from '@/components/ui/toaster';
+import { Analytics } from '@vercel/analytics/next';
 
 const inter = Inter({ 
   subsets: ['latin'],
@@ -87,6 +88,8 @@ export default function RootLayout({
               <Footer />
             </div>
           </div>
+          <Toaster />
+          <Analytics />
         </ThemeProvider>
       </body>
     </html>
