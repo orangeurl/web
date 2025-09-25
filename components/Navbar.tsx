@@ -2,11 +2,11 @@
 import { useState, useEffect } from 'react';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
-import { motion } from 'framer-motion';
+import { motion, AnimatePresence } from 'framer-motion';
 import { DarkModeToggle } from './DarkModeToggle';
 import { Button } from './ui/button';
 import { cn } from '@/lib/utils';
-import { Menu, Link as LinkIcon, User } from 'lucide-react';
+import { Menu, X, Link as LinkIcon, User } from 'lucide-react';
 
 const navItems = [
   { href: '/', label: 'Home' },
@@ -17,6 +17,7 @@ const navItems = [
 
 export function Navbar() {
   const [isScrolled, setIsScrolled] = useState(false);
+  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const pathname = usePathname();
 
   useEffect(() => {
@@ -100,8 +101,8 @@ export function Navbar() {
             ))}
           </div>
 
-          {/* Actions */}
-          <div className="flex items-center space-x-4">
+          {/* Desktop Actions */}
+          <div className="hidden md:flex items-center space-x-4">
             <motion.div
               initial={{ opacity: 0, scale: 0.8 }}
               animate={{ opacity: 1, scale: 1 }}
@@ -111,7 +112,6 @@ export function Navbar() {
             </motion.div>
             
             <motion.div
-              className="hidden sm:block"
               initial={{ opacity: 0, scale: 0.8 }}
               animate={{ opacity: 1, scale: 1 }}
               transition={{ duration: 0.6, delay: 0.4 }}
@@ -121,8 +121,82 @@ export function Navbar() {
               </Button>
             </motion.div>
           </div>
+
+          {/* Mobile Actions */}
+          <div className="flex md:hidden items-center space-x-2">
+            <DarkModeToggle />
+            <Button
+              variant="ghost"
+              size="sm"
+              onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
+              className="p-2"
+            >
+              {isMobileMenuOpen ? (
+                <X className="w-5 h-5" />
+              ) : (
+                <Menu className="w-5 h-5" />
+              )}
+            </Button>
+          </div>
         </div>
       </div>
+
+      {/* Mobile Menu */}
+      <AnimatePresence>
+        {isMobileMenuOpen && (
+          <motion.div
+            initial={{ opacity: 0, height: 0 }}
+            animate={{ opacity: 1, height: 'auto' }}
+            exit={{ opacity: 0, height: 0 }}
+            transition={{ duration: 0.3, ease: 'easeInOut' }}
+            className="md:hidden border-t border-border bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60"
+          >
+            <div className="container mx-auto px-4 py-4 space-y-4">
+              {/* Mobile Navigation Links */}
+              <div className="space-y-3">
+                {navItems.map((item, index) => (
+                  <motion.div
+                    key={item.href}
+                    initial={{ opacity: 0, x: -20 }}
+                    animate={{ opacity: 1, x: 0 }}
+                    transition={{ duration: 0.3, delay: index * 0.1 }}
+                  >
+                    <Link
+                      href={item.href}
+                      onClick={() => setIsMobileMenuOpen(false)}
+                      className={cn(
+                        "block py-2 px-3 rounded-lg text-sm font-medium transition-colors",
+                        pathname === item.href
+                          ? "bg-primary/10 text-primary"
+                          : "text-muted-foreground hover:text-primary hover:bg-primary/5"
+                      )}
+                    >
+                      {item.label}
+                    </Link>
+                  </motion.div>
+                ))}
+              </div>
+
+              {/* Mobile Login Button */}
+              <motion.div
+                initial={{ opacity: 0, y: 10 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.3, delay: 0.4 }}
+                className="pt-3 border-t border-border"
+              >
+                <Button 
+                  variant="outline" 
+                  className="w-full flex items-center justify-center space-x-2"
+                  onClick={() => setIsMobileMenuOpen(false)}
+                >
+                  <User className="w-4 h-4" />
+                  <span>Login</span>
+                </Button>
+              </motion.div>
+            </div>
+          </motion.div>
+        )}
+      </AnimatePresence>
     </motion.nav>
   );
 }
