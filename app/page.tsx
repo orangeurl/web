@@ -16,12 +16,17 @@ import {
   TrendingUp,
   Users,
   Clock,
-  X
+  X,
+  QrCode,
+  Download,
+  Brain
 } from 'lucide-react';
 import { useState, useCallback, useEffect, useRef } from 'react';
 import { useToast } from '@/hooks/use-toast';
 import { isValidUrl, copyToClipboard } from '@/lib/utils';
 import Image from 'next/image';
+import QRCode from 'qrcode';
+import QRCodeStyling from 'qr-code-styling';
 
 const fadeInUp = {
   initial: { opacity: 0, y: 60 },
@@ -55,6 +60,10 @@ export default function Home() {
     available: boolean;
     message: string;
   } | null>(null);
+  const [includeQRCode, setIncludeQRCode] = useState(false);
+  const [qrCodeDataUrl, setQrCodeDataUrl] = useState<string>('');
+  const [qrCodeStyle, setQrCodeStyle] = useState<string>('classic');
+  const [aiGenerateShort, setAiGenerateShort] = useState(false);
   const { toast } = useToast();
   const debounceTimer = useRef<NodeJS.Timeout | null>(null);
 
@@ -88,6 +97,221 @@ export default function Home() {
       });
     } finally {
       setIsCheckingAvailability(false);
+    }
+  };
+
+  // QR Code Style Configurations
+  const getQRCodeConfig = (style: string, url: string) => {
+    const baseConfig = {
+      width: 320,
+      height: 320,
+      type: "canvas" as const,
+      data: url,
+      qrOptions: {
+        errorCorrectionLevel: "M" as const
+      }
+    };
+
+    switch (style) {
+      case 'classic':
+        return {
+          ...baseConfig,
+          dotsOptions: {
+            color: "#ea580c",
+            type: "square" as const
+          },
+          backgroundOptions: {
+            color: "#ffffff"
+          },
+          cornersSquareOptions: {
+            color: "#ea580c",
+            type: "square" as const
+          },
+          cornersDotOptions: {
+            color: "#ea580c",
+            type: "square" as const
+          }
+        };
+
+      case 'rounded':
+        return {
+          ...baseConfig,
+          dotsOptions: {
+            color: "#ea580c",
+            type: "rounded" as const
+          },
+          backgroundOptions: {
+            color: "#ffffff"
+          },
+          cornersSquareOptions: {
+            color: "#ea580c",
+            type: "extra-rounded" as const
+          },
+          cornersDotOptions: {
+            color: "#ffffff",
+            type: "dot" as const
+          }
+        };
+
+      case 'gradient':
+        return {
+          ...baseConfig,
+          dotsOptions: {
+            type: "rounded" as const,
+            gradient: {
+              type: "linear" as const,
+              rotation: 45,
+              colorStops: [
+                { offset: 0, color: "#f97316" },
+                { offset: 1, color: "#ea580c" }
+              ]
+            }
+          },
+          backgroundOptions: {
+            color: "#ffffff"
+          },
+          cornersSquareOptions: {
+            type: "extra-rounded" as const,
+            gradient: {
+              type: "linear" as const,
+              rotation: 0,
+              colorStops: [
+                { offset: 0, color: "#f97316" },
+                { offset: 1, color: "#dc2626" }
+              ]
+            }
+          },
+          cornersDotOptions: {
+            color: "#ffffff",
+            type: "dot" as const
+          }
+        };
+
+      case 'minimal':
+        return {
+          ...baseConfig,
+          dotsOptions: {
+            color: "#000000",
+            type: "square" as const
+          },
+          backgroundOptions: {
+            color: "#ffffff"
+          },
+          cornersSquareOptions: {
+            color: "#000000",
+            type: "square" as const
+          },
+          cornersDotOptions: {
+            color: "#000000",
+            type: "square" as const
+          }
+        };
+
+      case 'dots':
+        return {
+          ...baseConfig,
+          dotsOptions: {
+            color: "#ea580c",
+            type: "dots" as const
+          },
+          backgroundOptions: {
+            color: "#ffffff"
+          },
+          cornersSquareOptions: {
+            color: "#ea580c",
+            type: "extra-rounded" as const
+          },
+          cornersDotOptions: {
+            color: "#ea580c",
+            type: "dot" as const
+          }
+        };
+
+      default:
+        return {
+          ...baseConfig,
+          dotsOptions: {
+            color: "#ea580c",
+            type: "square" as const
+          },
+          backgroundOptions: {
+            color: "#ffffff"
+          },
+          cornersSquareOptions: {
+            color: "#ea580c",
+            type: "square" as const
+          },
+          cornersDotOptions: {
+            color: "#ea580c",
+            type: "square" as const
+          }
+        };
+    }
+  };
+
+  // Generate Modern QR Code function
+  const generateQRCode = async (url: string) => {
+    try {
+      const qrCode = new QRCodeStyling(getQRCodeConfig(qrCodeStyle, url));
+
+      // Create container for QR + label
+      const finalCanvas = document.createElement('canvas');
+      const ctx = finalCanvas.getContext('2d');
+      if (!ctx) return '';
+
+      finalCanvas.width = 320;
+      finalCanvas.height = 400;
+
+      // Draw gradient background
+      const bgGradient = ctx.createLinearGradient(0, 0, 320, 400);
+      bgGradient.addColorStop(0, '#ffffff');
+      bgGradient.addColorStop(1, '#fef3f2');
+      ctx.fillStyle = bgGradient;
+      ctx.fillRect(0, 0, 320, 400);
+
+      // Generate QR code and wait for it
+      return new Promise((resolve) => {
+        qrCode.getRawData("png").then((buffer) => {
+          if (buffer) {
+            const blob = new Blob([buffer], { type: 'image/png' });
+                         const qrImage = document.createElement('img');
+            qrImage.onload = () => {
+              // Draw QR code
+              ctx.drawImage(qrImage, 0, 0, 320, 320);
+
+              // Add "ORANGEURL" label
+              ctx.fillStyle = '#ea580c';
+              ctx.font = 'bold 24px Inter, -apple-system, BlinkMacSystemFont, sans-serif';
+              ctx.textAlign = 'center';
+              
+              // Add text shadow
+              ctx.shadowColor = 'rgba(234, 88, 12, 0.2)';
+              ctx.shadowBlur = 4;
+              ctx.shadowOffsetY = 2;
+              
+              ctx.fillText('ORANGEURL', 160, 370);
+
+              // Reset shadow
+              ctx.shadowColor = 'transparent';
+              ctx.shadowBlur = 0;
+              ctx.shadowOffsetY = 0;
+
+              const dataUrl = finalCanvas.toDataURL('image/png', 0.95);
+              setQrCodeDataUrl(dataUrl);
+              resolve(dataUrl);
+            };
+            qrImage.src = URL.createObjectURL(blob);
+          } else {
+            resolve('');
+          }
+        }).catch(() => {
+          resolve('');
+        });
+      });
+
+    } catch (error) {
+      console.error('Modern QR Code generation failed:', error);
+      return '';
     }
   };
 
@@ -150,6 +374,7 @@ export default function Home() {
 
     setIsLoading(true);
     setError('');
+    setQrCodeDataUrl(''); // Clear previous QR code
 
     try {
       const requestBody = { 
@@ -189,12 +414,19 @@ export default function Home() {
         const shortUrl = data.shortUrl || data.CustomShort || data.short;
         setShortUrl(shortUrl);
         setError('');
+        
+        // Generate QR code if toggle is enabled
+        if (includeQRCode) {
+          await generateQRCode(shortUrl);
+        }
+        
         // Clear custom short after successful creation
         setCustomShort('');
         setAvailability(null);
         toast({
           title: "Success!",
           description: customShort ? `Custom short created: ${customShort}` : "URL shortened successfully",
+          className: "bg-orange-50 border-orange-200 text-orange-600 dark:bg-orange-900/20 dark:border-orange-800 dark:text-orange-300",
         });
       }
     } catch (err) {
@@ -334,7 +566,7 @@ export default function Home() {
                     </Button>
                   </div>
 
-                  {/* Custom Short Input */}
+                  {/* Custom Short Input with AI Toggle */}
                   <div className="space-y-2">
                     <div className="flex items-center gap-2">
                       <Input
@@ -342,8 +574,24 @@ export default function Home() {
                         placeholder="Custom short (optional) - e.g., 'my-link'"
                         value={customShort}
                         onChange={(e) => setCustomShort(e.target.value)}
-                        className="h-10"
+                        className="h-10 flex-1"
                       />
+                      
+                      {/* AI Toggle Inline */}
+                      <div className="flex items-center gap-2 px-3 py-2 bg-muted/30 rounded-lg border border-border whitespace-nowrap">
+                        <Brain className="w-4 h-4 text-primary" />
+                        <span className="text-sm font-medium">AI</span>
+                        <label className="relative inline-flex items-center cursor-pointer">
+                          <input
+                            type="checkbox"
+                            checked={aiGenerateShort}
+                            onChange={(e) => setAiGenerateShort(e.target.checked)}
+                            className="sr-only peer"
+                          />
+                          <div className="w-8 h-4 bg-gray-200 peer-focus:outline-none peer-focus:ring-2 peer-focus:ring-primary/20 dark:peer-focus:ring-primary/40 rounded-full peer dark:bg-gray-700 peer-checked:after:translate-x-4 peer-checked:after:border-white after:content-[''] after:absolute after:top-0.5 after:left-0.5 after:bg-white after:border-gray-300 after:border after:rounded-full after:h-3 after:w-3 after:transition-all dark:border-gray-600 peer-checked:bg-primary"></div>
+                        </label>
+                      </div>
+                      
                       {isCheckingAvailability && (
                         <div className="flex items-center text-sm text-muted-foreground">
                           <div className="animate-spin w-4 h-4 border-2 border-primary border-t-transparent rounded-full mr-2"></div>
@@ -351,6 +599,14 @@ export default function Home() {
                         </div>
                       )}
                     </div>
+                    
+                    {/* AI Description */}
+                    {aiGenerateShort && (
+                      <div className="text-xs text-muted-foreground px-3 py-2 bg-blue-50 dark:bg-blue-900/20 rounded-lg border border-blue-200 dark:border-blue-800">
+                        <Brain className="w-3 h-3 inline mr-1" />
+                        AI will create meaningful custom short URLs based on your content
+                      </div>
+                    )}
                     
                     {/* Availability Status */}
                     {availability && !isCheckingAvailability && (
@@ -373,6 +629,60 @@ export default function Home() {
                       </div>
                     )}
                   </div>
+
+                  {/* QR Code Toggle */}
+                  <div className="flex items-center gap-3 p-3 bg-muted/30 rounded-lg border border-border">
+                    <QrCode className="w-5 h-5 text-primary" />
+                    <div className="flex-1">
+                      <div className="font-medium text-sm">Generate QR Code</div>
+                      <div className="text-xs text-muted-foreground">Include a QR code with OrangeURL branding</div>
+                    </div>
+                    <label className="relative inline-flex items-center cursor-pointer">
+                      <input
+                        type="checkbox"
+                        checked={includeQRCode}
+                        onChange={(e) => setIncludeQRCode(e.target.checked)}
+                        className="sr-only peer"
+                      />
+                      <div className="w-11 h-6 bg-gray-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-primary/20 dark:peer-focus:ring-primary/40 rounded-full peer dark:bg-gray-700 peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all dark:border-gray-600 peer-checked:bg-primary"></div>
+                    </label>
+                  </div>
+
+                  {/* QR Code Style Selector */}
+                  {includeQRCode && (
+                    <div className="space-y-3 p-3 bg-muted/20 rounded-lg border border-border">
+                      <div className="font-medium text-sm text-foreground">Choose QR Code Style</div>
+                      <div className="grid grid-cols-2 sm:grid-cols-3 gap-3">
+                                                 {[
+                           { id: 'classic', name: 'Classic', desc: 'Clean squares' },
+                           { id: 'minimal', name: 'Minimal', desc: 'Black & white' },
+                           { id: 'dots', name: 'Dotted', desc: 'Circular dots' }
+                         ].map((style) => (
+                          <label
+                            key={style.id}
+                            className={`cursor-pointer p-3 rounded-lg border-2 transition-all hover:bg-muted/50 ${
+                              qrCodeStyle === style.id
+                                ? 'border-primary bg-primary/10'
+                                : 'border-border bg-background'
+                            }`}
+                          >
+                            <input
+                              type="radio"
+                              name="qrStyle"
+                              value={style.id}
+                              checked={qrCodeStyle === style.id}
+                              onChange={(e) => setQrCodeStyle(e.target.value)}
+                              className="sr-only"
+                            />
+                            <div className="text-center">
+                              <div className="font-medium text-sm">{style.name}</div>
+                              <div className="text-xs text-muted-foreground mt-1">{style.desc}</div>
+                            </div>
+                          </label>
+                        ))}
+                      </div>
+                    </div>
+                  )}
                 </div>
 
                 {error && (
@@ -388,7 +698,7 @@ export default function Home() {
                     <Input
                       value={shortUrl}
                       readOnly
-                      className="bg-white dark:bg-gray-800 border-orange-200 dark:border-orange-600"
+                      className="bg-orange-50 dark:bg-orange-900/20 border-orange-200 dark:border-orange-600"
                     />
                     <Button 
                       onClick={handleCopy} 
@@ -397,6 +707,44 @@ export default function Home() {
                       disabled={copied}
                     >
                       {copied ? "Copied!" : "Copy"}
+                    </Button>
+                  </motion.div>
+                )}
+
+                {/* QR Code Display */}
+                {qrCodeDataUrl && shortUrl && (
+                  <motion.div 
+                    initial={{ opacity: 0, y: 20 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    className="flex flex-col items-center gap-4 p-6 bg-muted/30 rounded-lg border border-border"
+                  >
+                    <div className="text-center space-y-2">
+                      <h3 className="font-semibold text-lg">QR Code Generated</h3>
+                      <p className="text-sm text-muted-foreground">
+                        Scan to visit your shortened link
+                      </p>
+                    </div>
+                    
+                    <div className="bg-white p-4 rounded-lg shadow-sm">
+                      <img
+                        src={qrCodeDataUrl}
+                        alt="QR Code for shortened URL"
+                        className="w-64 h-auto"
+                      />
+                    </div>
+
+                    <Button 
+                      onClick={() => {
+                        const link = document.createElement('a');
+                        link.download = `orangeurl-qr-${Date.now()}.png`;
+                        link.href = qrCodeDataUrl;
+                        link.click();
+                      }}
+                      variant="outline"
+                      className="flex items-center gap-2"
+                    >
+                      <Download className="w-4 h-4" />
+                      Download QR Code
                     </Button>
                   </motion.div>
                 )}
