@@ -27,16 +27,25 @@ export const metadata: Metadata = {
   authors: [{ name: 'OrangeURL Team' }],
   creator: 'OrangeURL',
   publisher: 'OrangeURL',
+  icons: {
+    icon: [
+      { url: '/favicon.ico', sizes: '32x32', type: 'image/x-icon' },
+      { url: '/favicon.svg', type: 'image/svg+xml' }
+    ],
+    apple: [
+      { url: '/apple-touch-icon.png', sizes: '180x180', type: 'image/png' }
+    ]
+  },
   formatDetection: {
     email: false,
     address: false,
     telephone: false,
   },
-  metadataBase: new URL('https://orangeurl.app'),
+  metadataBase: new URL('https://app.orangeurl.live'),
   openGraph: {
     title: 'OrangeURL - Fast & Secure URL Shortener',
     description: 'Create short, memorable links with advanced analytics',
-    url: 'https://orangeurl.app',
+    url: 'https://app.orangeurl.live',
     siteName: 'OrangeURL',
     locale: 'en_US',
     type: 'website',
