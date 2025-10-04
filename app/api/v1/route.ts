@@ -13,7 +13,6 @@ export async function POST(request: NextRequest) {
         'Content-Type': 'application/json',
         'X-Forwarded-For': request.headers.get('x-forwarded-for') || 
                           request.headers.get('x-real-ip') || 
-                          request.ip || 
                           '127.0.0.1',
       },
       body: JSON.stringify(body),
