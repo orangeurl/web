@@ -3,6 +3,7 @@ import { useState, useEffect } from 'react';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { motion, AnimatePresence } from 'framer-motion';
+import { SignInButton, SignedIn, SignedOut, UserButton } from '@clerk/nextjs';
 import { DarkModeToggle } from './DarkModeToggle';
 import { Button } from './ui/button';
 import { cn } from '@/lib/utils';
@@ -116,14 +117,61 @@ export function Navbar() {
               animate={{ opacity: 1, scale: 1 }}
               transition={{ duration: 0.6, delay: 0.4 }}
             >
-              <Button variant="outline" className="flex items-center space-x-2">
-                <User className="w-4 h-4" /><span>Login</span>
-              </Button>
+              <SignedOut>
+                <SignInButton mode="modal">
+                  <Button variant="outline" className="flex items-center space-x-2">
+                    <User className="w-4 h-4" />
+                    <span>Login</span>
+                  </Button>
+                </SignInButton>
+              </SignedOut>
+              <SignedIn>
+                <UserButton 
+                  appearance={{
+                    elements: {
+                      avatarBox: "w-8 h-8",
+                      userButtonPopoverCard: "shadow-2xl border border-gray-200 bg-white min-w-0 w-56",
+                      userButtonPopoverMain: "p-2",
+                      userButtonPopoverFooter: "hidden",
+                      userPreviewMainIdentifier: "text-sm font-medium text-gray-900",
+                      userPreviewSecondaryIdentifier: "text-xs text-gray-600",
+                      userButtonPopoverActionButton: "text-sm py-1.5 px-2 rounded-md transition-all text-gray-700 hover:bg-orange-50 hover:text-orange-600",
+                      userButtonPopoverActionButtonIcon: "w-4 h-4 text-gray-600",
+                      userButtonPopoverActions: "space-y-0.5",
+                    },
+                    variables: {
+                      borderRadius: "8px",
+                      spacingUnit: "0.5rem"
+                    }
+                  }}
+                />
+              </SignedIn>
             </motion.div>
           </div>
 
           {/* Mobile Actions */}
           <div className="flex md:hidden items-center space-x-2">
+            <SignedIn>
+              <UserButton 
+                appearance={{
+                  elements: {
+                    avatarBox: "w-8 h-8",
+                    userButtonPopoverCard: "shadow-2xl border border-gray-200 bg-white min-w-0 w-56",
+                    userButtonPopoverMain: "p-2",
+                    userButtonPopoverFooter: "hidden",
+                    userPreviewMainIdentifier: "text-sm font-medium text-gray-900",
+                    userPreviewSecondaryIdentifier: "text-xs text-gray-600",
+                    userButtonPopoverActionButton: "text-sm py-1.5 px-2 rounded-md transition-all text-gray-700 hover:bg-orange-50 hover:text-orange-600",
+                    userButtonPopoverActionButtonIcon: "w-4 h-4 text-gray-600",
+                    userButtonPopoverActions: "space-y-0.5",
+                  },
+                  variables: {
+                    borderRadius: "8px",
+                    spacingUnit: "0.5rem"
+                  }
+                }}
+              />
+            </SignedIn>
             <DarkModeToggle />
             <Button
               variant="ghost"
@@ -184,14 +232,18 @@ export function Navbar() {
                 transition={{ duration: 0.3, delay: 0.4 }}
                 className="pt-3 border-t border-border"
               >
-                <Button 
-                  variant="outline" 
-                  className="w-full flex items-center justify-center space-x-2"
-                  onClick={() => setIsMobileMenuOpen(false)}
-                >
-                  <User className="w-4 h-4" />
-                  <span>Login</span>
-                </Button>
+                <SignedOut>
+                  <SignInButton mode="modal">
+                    <Button 
+                      variant="outline" 
+                      className="w-full flex items-center justify-center space-x-2"
+                      onClick={() => setIsMobileMenuOpen(false)}
+                    >
+                      <User className="w-4 h-4" />
+                      <span>Login</span>
+                    </Button>
+                  </SignInButton>
+                </SignedOut>
               </motion.div>
             </div>
           </motion.div>

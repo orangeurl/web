@@ -1,6 +1,7 @@
 import './globals.css';
 import type { Metadata } from 'next';
 import { Inter, JetBrains_Mono } from 'next/font/google';
+import { ClerkProvider } from '@clerk/nextjs';
 import { ThemeProvider } from '@/components/theme-provider';
 import { ParticleBackground } from '@/components/ParticleBackground';
 import { Navbar } from '@/components/Navbar';
@@ -75,32 +76,34 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <html lang="en" suppressHydrationWarning className={`${inter.variable} ${jetbrainsMono.variable}`}>
-      <head>
-        <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
-        <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
-      </head>
-      <body className={`${inter.className} antialiased`}>
-        <ThemeProvider
-          attribute="class"
-          defaultTheme="light"
-          enableSystem
-          disableTransitionOnChange
-        >
-          <div className="min-h-screen relative flex flex-col">
-            <ParticleBackground />
-            <div className="relative z-10 flex flex-col flex-1">
-              <Navbar />
-              <main className="container mx-auto px-4 py-8 flex-1">
-                {children}
-              </main>
-              <Footer />
+    <ClerkProvider>
+      <html lang="en" suppressHydrationWarning className={`${inter.variable} ${jetbrainsMono.variable}`}>
+        <head>
+          <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+          <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
+        </head>
+        <body className={`${inter.className} antialiased`}>
+          <ThemeProvider
+            attribute="class"
+            defaultTheme="light"
+            enableSystem
+            disableTransitionOnChange
+          >
+            <div className="min-h-screen relative flex flex-col">
+              <ParticleBackground />
+              <div className="relative z-10 flex flex-col flex-1">
+                <Navbar />
+                <main className="container mx-auto px-4 py-8 flex-1">
+                  {children}
+                </main>
+                <Footer />
+              </div>
             </div>
-          </div>
-          <Toaster />
-          <Analytics />
-        </ThemeProvider>
-      </body>
-    </html>
+            <Toaster />
+            <Analytics />
+          </ThemeProvider>
+        </body>
+      </html>
+    </ClerkProvider>
   );
 } 

@@ -1,6 +1,7 @@
 'use client';
 
 import { motion } from 'framer-motion';
+import { SignInButton, SignedIn, SignedOut } from '@clerk/nextjs';
 import { Card, CardContent, CardHeader } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { 
@@ -33,13 +34,9 @@ const staggerContainer = {
 };
 
 export default function DashboardPage() {
-  // For now, we'll show the login prompt
-  // In the future, this will check if user is authenticated
-  const isLoggedIn = false;
-
-  if (!isLoggedIn) {
-    return (
-      <div className="space-y-8 py-8">
+  return (
+    <div className="space-y-8 py-8">
+      <SignedOut>
         {/* Header */}
         <motion.section 
           className="text-center space-y-4"
@@ -77,11 +74,18 @@ export default function DashboardPage() {
               </p>
               
               <div className="space-y-4">
-                <Button className="btn-primary px-8 py-3">
-                  Login to Dashboard
-                </Button>
+                <SignInButton mode="modal">
+                  <Button className="btn-primary px-8 py-3">
+                    Login to Dashboard
+                  </Button>
+                </SignInButton>
                 <p className="text-sm text-muted-foreground">
-                  Don't have an account? <span className="text-primary font-medium cursor-pointer hover:underline">Sign up here</span>
+                  Don't have an account? 
+                  <SignInButton mode="modal">
+                    <span className="text-primary font-medium cursor-pointer hover:underline ml-1">
+                      Sign up here
+                    </span>
+                  </SignInButton>
                 </p>
               </div>
             </CardContent>
@@ -129,33 +133,31 @@ export default function DashboardPage() {
             </motion.div>
           ))}
         </motion.section>
-      </div>
-    );
-  }
+      </SignedOut>
 
-  // This section will be shown when user is logged in
-  return (
-    <div className="space-y-8 py-8">
-      <motion.section 
-        className="text-center space-y-4"
-        initial="initial"
-        animate="animate"
-        variants={staggerContainer}
-      >
-        <motion.div variants={fadeInUp}>
-          <h1 className="text-4xl md:text-5xl font-bold">
-            Your <span className="gradient-text-primary">Dashboard</span>
-          </h1>
-          <p className="text-xl text-muted-foreground max-w-2xl mx-auto">
-            Manage your short links, track analytics, and grow your online presence
-          </p>
-        </motion.div>
-      </motion.section>
-      
-      {/* This will show the actual dashboard when logged in */}
-      <div className="text-center py-12">
-        <p className="text-muted-foreground">Dashboard content will appear here when logged in</p>
-      </div>
+      <SignedIn>
+        {/* Logged in dashboard content */}
+        <motion.section 
+          className="text-center space-y-4"
+          initial="initial"
+          animate="animate"
+          variants={staggerContainer}
+        >
+          <motion.div variants={fadeInUp}>
+            <h1 className="text-4xl md:text-5xl font-bold">
+              Your <span className="gradient-text-primary">Dashboard</span>
+            </h1>
+            <p className="text-xl text-muted-foreground max-w-2xl mx-auto">
+              Manage your short links, track analytics, and grow your online presence
+            </p>
+          </motion.div>
+        </motion.section>
+        
+        {/* Dashboard content */}
+        <div className="text-center py-12">
+          <p className="text-muted-foreground">Dashboard content will appear here when logged in</p>
+        </div>
+      </SignedIn>
     </div>
   );
 }
