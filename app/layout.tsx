@@ -76,7 +76,12 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <ClerkProvider>
+    <ClerkProvider
+  signInUrl="https://app.orangeurl.live/sign-in"
+  signUpUrl="https://app.orangeurl.live/sign-up"
+  afterSignInUrl="https://app.orangeurl.live/dashboard"
+  afterSignUpUrl="https://app.orangeurl.live/dashboard"
+>
       <html lang="en" suppressHydrationWarning className={`${inter.variable} ${jetbrainsMono.variable}`}>
         <head>
           <link rel="icon" href="/favicon.svg" type="image/svg+xml" />

@@ -4,6 +4,7 @@ import { motion } from 'framer-motion';
 import { SignInButton, SignedIn, SignedOut } from '@clerk/nextjs';
 import { Card, CardContent, CardHeader } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
+import { RegistrationGuard } from '@/components/RegistrationGuard';
 import { 
   Link as LinkIcon, 
   BarChart3, 
@@ -136,27 +137,29 @@ export default function DashboardPage() {
       </SignedOut>
 
       <SignedIn>
-        {/* Logged in dashboard content */}
-        <motion.section 
-          className="text-center space-y-4"
-          initial="initial"
-          animate="animate"
-          variants={staggerContainer}
-        >
-          <motion.div variants={fadeInUp}>
-            <h1 className="text-4xl md:text-5xl font-bold">
-              Your <span className="gradient-text-primary">Dashboard</span>
-            </h1>
-            <p className="text-xl text-muted-foreground max-w-2xl mx-auto">
-              Manage your short links, track analytics, and grow your online presence
-            </p>
-          </motion.div>
-        </motion.section>
-        
-        {/* Dashboard content */}
-        <div className="text-center py-12">
-          <p className="text-muted-foreground">Dashboard content will appear here when logged in</p>
-        </div>
+        <RegistrationGuard>
+          {/* Logged in dashboard content */}
+          <motion.section 
+            className="text-center space-y-4"
+            initial="initial"
+            animate="animate"
+            variants={staggerContainer}
+          >
+            <motion.div variants={fadeInUp}>
+              <h1 className="text-4xl md:text-5xl font-bold">
+                Your <span className="gradient-text-primary">Dashboard</span>
+              </h1>
+              <p className="text-xl text-muted-foreground max-w-2xl mx-auto">
+                Manage your short links, track analytics, and grow your online presence
+              </p>
+            </motion.div>
+          </motion.section>
+          
+          {/* Dashboard content */}
+          <div className="text-center py-12">
+            <p className="text-muted-foreground">Dashboard content will appear here when logged in and registered</p>
+          </div>
+        </RegistrationGuard>
       </SignedIn>
     </div>
   );
