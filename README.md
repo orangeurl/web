@@ -35,9 +35,6 @@ A modern, fast, and secure URL shortener built with Next.js and Go, featuring an
 3. Make your changes
 4. Submit a pull request
 
-## License
-
-MIT License - feel free to use this project for any purpose.
 
 ## Support
 
