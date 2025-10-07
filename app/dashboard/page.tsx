@@ -1,7 +1,7 @@
 'use client';
 
 import { motion } from 'framer-motion';
-import { SignInButton, SignedIn, SignedOut } from '@clerk/nextjs';
+import { SignInButton, SignUpButton, SignedIn, SignedOut } from '@clerk/nextjs';
 import { Card, CardContent, CardHeader } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { 
@@ -81,11 +81,11 @@ export default function DashboardPage() {
                 </SignInButton>
                 <p className="text-sm text-muted-foreground">
                   Don't have an account? 
-                  <SignInButton mode="modal">
+                  <SignUpButton mode="modal">
                     <span className="text-primary font-medium cursor-pointer hover:underline ml-1">
                       Sign up here
                     </span>
-                  </SignInButton>
+                  </SignUpButton>
                 </p>
               </div>
             </CardContent>

@@ -80,8 +80,8 @@ export default function RootLayout({
     <ClerkProvider
   signInUrl="/sign-in"
   signUpUrl="/sign-up"
-  afterSignInUrl="/dashboard"
-  afterSignUpUrl="/dashboard"
+  afterSignInUrl="/"
+  afterSignUpUrl="/"
 >
       <html lang="en" suppressHydrationWarning className={`${inter.variable} ${jetbrainsMono.variable}`}>
         <head>

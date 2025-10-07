@@ -35,12 +35,13 @@ const pricingPlans = [
     period: "forever",
     description: "Perfect for personal use and getting started",
     features: [
-      { name: "20 links per month", included: true },
+      { name: "5 links per month", included: true },
       { name: "Basic analytics", included: true },
       { name: "Custom domains", included: false },
+      { name: "Custom QR Codes", included: false },
       { name: "Priority support", included: false },
-      { name: "Custom link expiry", included: false },
-      { name: "AI shortener feature", included: false }
+      { name: "AI shortener feature", included: false },
+      { name: "Custom link expiry", included: false }
     ],
     buttonText: "Get Started",
     buttonVariant: "outline" as const,
@@ -48,20 +49,39 @@ const pricingPlans = [
   },
   {
     name: "Pro",
-    price: "$5",
+    price: "$9",
     period: "per month",
-    description: "Ideal for professionals and small businesses",
+    description: "Ideal for professionals and profiles",
     features: [
-      { name: "200 links per month", included: true },
+      { name: "100 links per month", included: true },
       { name: "Advanced analytics", included: true },
       { name: "5 Custom links per month", included: true },
+      { name: "5 Custom QR Codes per month", included: true },
       { name: "Priority support", included: true },
-      { name: "Custom link expiry", included: true },
-      { name: "AI shortener feature", included: true }
+      { name: "AI shortener feature", included: true },
+      { name: "Custom link expiry", included: false }
     ],
-    buttonText: "Start Free Trial",
+    buttonText: "Get Pro",
     buttonVariant: "default" as const,
     popular: true
+  },
+  {
+    name: "Premium",
+    price: "$25",
+    period: "per month",
+    description: "For power users and businesses",
+    features: [
+      { name: "500 links per month", included: true },
+      { name: "Advanced analytics", included: true },
+      { name: "15 Custom links per month", included: true },
+      { name: "15 Custom QR Codes per month", included: true },
+      { name: "Priority support", included: true },
+      { name: "AI shortener feature", included: true },
+      { name: "Custom link expiry", included: true }
+    ],
+    buttonText: "Get Premium",
+    buttonVariant: "outline" as const,
+    popular: false
   }
 ];
 
@@ -91,7 +111,7 @@ export default function PricingPage() {
 
       {/* Pricing Cards */}
       <motion.section 
-        className="grid grid-cols-1 md:grid-cols-2 gap-8 max-w-4xl mx-auto"
+        className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 max-w-6xl mx-auto"
         initial="initial"
         whileInView="animate"
         viewport={{ once: true }}
@@ -196,8 +216,8 @@ export default function PricingPage() {
             },
             {
               icon: <Globe className="w-8 h-8" />,
-              title: "Custom Domains",
-              description: "Use your own domain for branded, professional short links"
+              title: "Custom QR Codes",
+              description: "Generate branded QR codes with custom colors and your logo"
             }
           ].map((feature, index) => (
             <motion.div
@@ -242,11 +262,11 @@ export default function PricingPage() {
             },
             {
               question: "Do you offer refunds?",
-              answer: "No, we don't offer refunds."
+              answer: "Yes, we offer refunds until you haven't used any of the extra features that are supported with your plan after purchasing."
             },
             {
-              question: "Can I use my own domain?",
-              answer: "Yes! Pro and Enterprise plans include custom domain support. You can use your own domain for branded short links."
+              question: "How do QR codes work with my links?",
+              answer: "Every shortened link automatically gets a QR code. Pro and Premium plans allow custom QR code generation with your branding and colors."
             }
           ].map((faq, index) => (
             <motion.div

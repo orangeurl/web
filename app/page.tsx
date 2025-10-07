@@ -19,11 +19,13 @@ import {
   X,
   QrCode,
   Download,
-  Brain
+  Brain,
+  Lock
 } from 'lucide-react';
 import { useState, useCallback, useEffect, useRef } from 'react';
 import { useToast } from '@/hooks/use-toast';
 import { isValidUrl, copyToClipboard } from '@/lib/utils';
+import { useUser } from '@clerk/nextjs';
 import Image from 'next/image';
 import QRCode from 'qrcode';
 import QRCodeStyling from 'qr-code-styling';
@@ -65,7 +67,12 @@ export default function Home() {
   const [qrCodeStyle, setQrCodeStyle] = useState<string>('classic');
   const [aiGenerateShort, setAiGenerateShort] = useState(false);
   const { toast } = useToast();
+  const { user } = useUser();
   const debounceTimer = useRef<NodeJS.Timeout | null>(null);
+
+  // For now, assume all users are on free tier (you can implement proper subscription checking later)
+  const isFreeTier = !user; // Free tier if not logged in
+  const isPaidTier = user; // Paid tier if logged in (simplified for now)
 
   // Check availability function
   const checkAvailability = async (customShortValue: string) => {
@@ -569,16 +576,33 @@ export default function Home() {
                   {/* Custom Short Input with AI Toggle */}
                   <div className="space-y-2">
                     <div className="flex items-center gap-2">
-                      <Input
-                        type="text"
-                        placeholder="Custom short (optional) - e.g., 'my-link'"
-                        value={customShort}
-                        onChange={(e) => setCustomShort(e.target.value)}
-                        className="h-10 flex-1"
-                      />
+                      <div className="relative flex-1">
+                        <Input
+                          type="text"
+                          placeholder="Custom short (optional) - e.g., 'my-link'"
+                          value={customShort}
+                          onChange={(e) => setCustomShort(e.target.value)}
+                          className="h-10 flex-1"
+                          disabled={isFreeTier}
+                        />
+                        {isFreeTier && (
+                          <div className="absolute inset-0 bg-gradient-to-r from-transparent via-gray-200/60 to-gray-300/80 dark:from-transparent dark:via-gray-700/60 dark:to-gray-800/80 rounded-md pointer-events-none flex items-center justify-end pr-3">
+                            <Lock className="w-4 h-4 text-gray-600 dark:text-gray-400" />
+                          </div>
+                        )}
+                      </div>
                       
                       {/* AI Toggle Inline */}
-                      <div className="flex items-center gap-2 px-3 py-2 bg-muted/30 rounded-lg border border-border whitespace-nowrap">
+                      <div 
+                        className={`relative flex items-center gap-2 px-3 py-2 bg-muted/30 rounded-lg border border-border whitespace-nowrap ${isFreeTier ? 'cursor-pointer' : ''}`}
+                        onClick={isFreeTier ? () => {
+                          toast({
+                            title: "Unlock AI Features",
+                            description: "Upgrade to Pro to use AI-powered short URL generation",
+                            className: "bg-gradient-to-r from-orange-50 to-amber-50 border-orange-200 text-orange-900 shadow-lg backdrop-blur-sm",
+                          });
+                        } : undefined}
+                      >
                         <Brain className="w-4 h-4 text-primary" />
                         <span className="text-sm font-medium">AI</span>
                         <label className="relative inline-flex items-center cursor-pointer">
@@ -587,6 +611,7 @@ export default function Home() {
                             checked={aiGenerateShort}
                             onChange={(e) => setAiGenerateShort(e.target.checked)}
                             className="sr-only peer"
+                            disabled={isFreeTier}
                           />
                           <div className="w-8 h-4 bg-gray-200 peer-focus:outline-none peer-focus:ring-2 peer-focus:ring-primary/20 dark:peer-focus:ring-primary/40 rounded-full peer dark:bg-gray-700 peer-checked:after:translate-x-4 peer-checked:after:border-white after:content-[''] after:absolute after:top-0.5 after:left-0.5 after:bg-white after:border-gray-300 after:border after:rounded-full after:h-3 after:w-3 after:transition-all dark:border-gray-600 peer-checked:bg-primary"></div>
                         </label>
@@ -631,7 +656,16 @@ export default function Home() {
                   </div>
 
                   {/* QR Code Toggle */}
-                  <div className="flex items-center gap-3 p-3 bg-muted/30 rounded-lg border border-border">
+                  <div 
+                    className={`relative flex items-center gap-3 p-3 bg-muted/30 rounded-lg border border-border ${isFreeTier ? 'cursor-pointer' : ''}`}
+                    onClick={isFreeTier ? () => {
+                      toast({
+                        title: "Unlock QR Code Features",
+                        description: "Upgrade to Pro to generate custom QR codes with branding",
+                        className: "bg-gradient-to-r from-orange-50 to-amber-50 border-orange-200 text-orange-900 shadow-lg backdrop-blur-sm",
+                      });
+                    } : undefined}
+                  >
                     <QrCode className="w-5 h-5 text-primary" />
                     <div className="flex-1">
                       <div className="font-medium text-sm">Generate QR Code</div>
@@ -643,6 +677,7 @@ export default function Home() {
                         checked={includeQRCode}
                         onChange={(e) => setIncludeQRCode(e.target.checked)}
                         className="sr-only peer"
+                        disabled={isFreeTier}
                       />
                       <div className="w-11 h-6 bg-gray-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-primary/20 dark:peer-focus:ring-primary/40 rounded-full peer dark:bg-gray-700 peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all dark:border-gray-600 peer-checked:bg-primary"></div>
                     </label>

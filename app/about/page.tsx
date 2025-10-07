@@ -139,61 +139,6 @@ export default function AboutPage() {
         </motion.div>
       </motion.section>
 
-      {/* Team */}
-      <motion.section 
-        className="space-y-16"
-        initial="initial"
-        whileInView="animate"
-        viewport={{ once: true }}
-        variants={staggerContainer}
-      >
-        <motion.div variants={fadeInUp} className="text-center space-y-4">
-          <h2 className="text-3xl md:text-4xl font-bold">Meet the Team</h2>
-          <p className="text-xl text-muted-foreground max-w-3xl mx-auto">
-            The passionate people behind OrangeURL
-          </p>
-        </motion.div>
-
-        <motion.div 
-          className="grid grid-cols-1 max-w-md mx-auto"
-          variants={staggerContainer}
-        >
-          {[
-            {
-              name: "Snowiee",
-              role: "Founder & Developer",
-              bio: "GSoC'24 @AnkiDroid, Electronics Major. Building the next generation of URL shortening tools.",
-              avatar: "S"
-            }
-          ].map((member, index) => (
-            <motion.div
-              key={index}
-              variants={scaleIn}
-              whileHover={{ y: -8 }}
-              transition={{ type: "spring", stiffness: 300 }}
-            >
-              <Card className="card-hover text-center">
-                <CardContent className="p-8 space-y-4">
-                  <div className="w-20 h-20 rounded-full overflow-hidden border-2 border-blue-300 shadow-lg mx-auto">
-                    <Image
-                      src="/images/snowiee-avatar.jpg"
-                      alt="Snowiee Profile Picture"
-                      width={80}
-                      height={80}
-                      className="w-full h-full object-cover"
-                    />
-                  </div>
-                  <div className="space-y-2">
-                    <h3 className="text-xl font-bold">{member.name}</h3>
-                    <p className="text-primary font-medium">{member.role}</p>
-                    <p className="text-muted-foreground text-sm leading-relaxed">{member.bio}</p>
-                  </div>
-                </CardContent>
-              </Card>
-            </motion.div>
-          ))}
-        </motion.div>
-      </motion.section>
 
       {/* CTA */}
       <motion.section 
