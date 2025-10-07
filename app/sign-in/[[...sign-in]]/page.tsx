@@ -34,7 +34,7 @@ export default function SignInPage() {
               footerActionLink: 'text-orange-600 hover:text-orange-700'
             }
           }}
-          redirectUrl="/api/auth/callback?mode=signin"
+          forceRedirectUrl="/dashboard"
         />
       </div>
     </div>
