@@ -77,10 +77,10 @@ export default function RootLayout({
 }) {
   return (
     <ClerkProvider
-  signInUrl="https://app.orangeurl.live/sign-in"
-  signUpUrl="https://app.orangeurl.live/sign-up"
-  afterSignInUrl="https://app.orangeurl.live/dashboard"
-  afterSignUpUrl="https://app.orangeurl.live/dashboard"
+  signInUrl="/sign-in"
+  signUpUrl="/sign-up"
+  afterSignInUrl="/api/auth/callback?mode=signin"
+  afterSignUpUrl="/api/auth/callback?mode=signup"
 >
       <html lang="en" suppressHydrationWarning className={`${inter.variable} ${jetbrainsMono.variable}`}>
         <head>

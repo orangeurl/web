@@ -87,3 +87,4 @@ export function RegistrationGuard({ children, fallback }: RegistrationGuardProps
     </div>
   );
 }
+

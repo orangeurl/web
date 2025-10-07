@@ -74,3 +74,4 @@ export function useUserRegistration(): RegistrationStatus {
     checkRegistration,
   };
 }
+
