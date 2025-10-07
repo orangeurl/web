@@ -340,6 +340,7 @@ export default function DashboardPage() {
           </Card>
         </motion.div>
       </motion.section>
+      </SignedIn>
     </div>
   );
 }
