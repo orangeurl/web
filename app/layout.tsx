@@ -7,6 +7,7 @@ import { ParticleBackground } from '@/components/ParticleBackground';
 import { Navbar } from '@/components/Navbar';
 import { Footer } from '@/components/Footer';
 import { Toaster } from '@/components/ui/toaster';
+import { AuthStatusHandler } from '@/components/AuthStatusHandler';
 import { Analytics } from '@vercel/analytics/next';
 
 const inter = Inter({ 
@@ -104,6 +105,7 @@ export default function RootLayout({
                 <Footer />
               </div>
             </div>
+            <AuthStatusHandler />
             <Toaster />
             <Analytics />
           </ThemeProvider>

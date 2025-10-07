@@ -1,10 +1,12 @@
 'use client';
 
 import { motion } from 'framer-motion';
-import { SignInButton, SignedIn, SignedOut } from '@clerk/nextjs';
+import { SignInButton, SignedIn, SignedOut, useUser } from '@clerk/nextjs';
 import { Card, CardContent, CardHeader } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
-import { RegistrationGuard } from '@/components/RegistrationGuard';
+import { useToast } from '@/hooks/use-toast';
+import { useEffect } from 'react';
+import { useRouter } from 'next/navigation';
 import { 
   Link as LinkIcon, 
   BarChart3, 
@@ -35,6 +37,34 @@ const staggerContainer = {
 };
 
 export default function DashboardPage() {
+  const { toast } = useToast();
+  const router = useRouter();
+  const { user, isLoaded } = useUser();
+
+  useEffect(() => {
+    if (isLoaded && user) {
+      // User is signed in, show success toast
+      toast({
+        title: "✅ Successfully logged in!",
+        description: `Welcome back, ${user.firstName || user.emailAddresses[0]?.emailAddress}!`,
+        duration: 5000,
+      });
+    }
+  }, [isLoaded, user, toast]);
+
+  // If user is not signed in, redirect to home with message
+  useEffect(() => {
+    if (isLoaded && !user) {
+      toast({
+        title: "🔒 Login Required",
+        description: "Please sign in to access your dashboard.",
+        variant: "destructive",
+        duration: 5000,
+      });
+      router.push('/');
+    }
+  }, [isLoaded, user, toast, router]);
+
   return (
     <div className="space-y-8 py-8">
       <SignedOut>
@@ -137,29 +167,105 @@ export default function DashboardPage() {
       </SignedOut>
 
       <SignedIn>
-        <RegistrationGuard>
-          {/* Logged in dashboard content */}
-          <motion.section 
-            className="text-center space-y-4"
-            initial="initial"
-            animate="animate"
-            variants={staggerContainer}
-          >
-            <motion.div variants={fadeInUp}>
-              <h1 className="text-4xl md:text-5xl font-bold">
-                Your <span className="gradient-text-primary">Dashboard</span>
-              </h1>
-              <p className="text-xl text-muted-foreground max-w-2xl mx-auto">
-                Manage your short links, track analytics, and grow your online presence
-              </p>
+        {/* Logged in dashboard content */}
+        <motion.section 
+          className="text-center space-y-4"
+          initial="initial"
+          animate="animate"
+          variants={staggerContainer}
+        >
+          <motion.div variants={fadeInUp}>
+            <h1 className="text-4xl md:text-5xl font-bold">
+              Your <span className="gradient-text-primary">Dashboard</span>
+            </h1>
+            <p className="text-xl text-muted-foreground max-w-2xl mx-auto">
+              Manage your short links, track analytics, and grow your online presence
+            </p>
+          </motion.div>
+        </motion.section>
+        
+        {/* Dashboard Stats Grid */}
+        <motion.section 
+          className="grid grid-cols-1 md:grid-cols-4 gap-6"
+          initial="initial"
+          whileInView="animate"
+          viewport={{ once: true }}
+          variants={staggerContainer}
+        >
+          {[
+            { 
+              title: "Total Links", 
+              value: "12", 
+              change: "+2 this week",
+              icon: <LinkIcon className="w-6 h-6" />,
+              color: "from-orange-500 to-red-500"
+            },
+            { 
+              title: "Total Clicks", 
+              value: "1,234", 
+              change: "+15% this month",
+              icon: <Eye className="w-6 h-6" />,
+              color: "from-green-500 to-emerald-500"
+            },
+            { 
+              title: "This Month", 
+              value: "456", 
+              change: "+8% vs last month",
+              icon: <Calendar className="w-6 h-6" />,
+              color: "from-blue-500 to-cyan-500"
+            },
+            { 
+              title: "Top Performer", 
+              value: "87%", 
+              change: "Click-through rate",
+              icon: <TrendingUp className="w-6 h-6" />,
+              color: "from-purple-500 to-pink-500"
+            }
+          ].map((stat, index) => (
+            <motion.div key={index} variants={fadeInUp}>
+              <Card className="card-hover">
+                <CardContent className="p-6">
+                  <div className="flex items-center justify-between mb-4">
+                    <div className={`w-10 h-10 bg-gradient-to-r ${stat.color} rounded-lg flex items-center justify-center text-white`}>
+                      {stat.icon}
+                    </div>
+                  </div>
+                  <div className="space-y-1">
+                    <p className="text-sm text-muted-foreground">{stat.title}</p>
+                    <p className="text-2xl font-bold">{stat.value}</p>
+                    <p className="text-xs text-green-600">{stat.change}</p>
+                  </div>
+                </CardContent>
+              </Card>
             </motion.div>
-          </motion.section>
-          
-          {/* Dashboard content */}
-          <div className="text-center py-12">
-            <p className="text-muted-foreground">Dashboard content will appear here when logged in and registered</p>
-          </div>
-        </RegistrationGuard>
+          ))}
+        </motion.section>
+
+        {/* Recent Links */}
+        <motion.section 
+          variants={fadeInUp}
+          initial="initial"
+          whileInView="animate"
+          viewport={{ once: true }}
+        >
+          <Card>
+            <CardHeader>
+              <div className="flex items-center justify-between">
+                <h2 className="text-xl font-bold">Recent Links</h2>
+                <Button className="btn-primary">
+                  <Plus className="w-4 h-4 mr-2" />
+                  Create New Link
+                </Button>
+              </div>
+            </CardHeader>
+            <CardContent>
+              <div className="text-center py-12 text-muted-foreground">
+                <LinkIcon className="w-12 h-12 mx-auto mb-4 opacity-50" />
+                <p>No links created yet. Create your first short link to get started!</p>
+              </div>
+            </CardContent>
+          </Card>
+        </motion.section>
       </SignedIn>
     </div>
   );
