@@ -4,7 +4,7 @@
   "framework": "nextjs",
   "regions": ["iad1"],
   "env": {
-    "BACKEND_URL": "https://api.orangeurl.live/api/v1"
+    "BACKEND_URL": "https://api.orangeurl.live"
   },
   "rewrites": [
     {
