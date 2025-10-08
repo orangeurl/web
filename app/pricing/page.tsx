@@ -51,7 +51,7 @@ const pricingPlans = [
   },
   {
     name: "Pro",
-    price: "$9",
+    price: "$5",
     period: "per month",
     description: "Ideal for professionals and profiles",
     features: [
@@ -69,7 +69,7 @@ const pricingPlans = [
   },
   {
     name: "Premium",
-    price: "$25",
+    price: "$15",
     period: "per month",
     description: "For power users and businesses",
     features: [
