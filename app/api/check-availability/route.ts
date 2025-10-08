@@ -17,6 +17,9 @@ export async function POST(request: NextRequest) {
     // If it exists, we'll get a response, if not, it's available
     const checkUrl = `${BACKEND_URL.replace('/api/v1', '')}/${customShort}`;
     
+    console.log('BACKEND_URL:', BACKEND_URL);
+    console.log('Constructed checkUrl:', checkUrl);
+    
     try {
       console.log('Checking availability for URL:', checkUrl);
       const response = await fetch(checkUrl, {
@@ -25,6 +28,7 @@ export async function POST(request: NextRequest) {
       });
       
       console.log('Response status:', response.status);
+      console.log('Response headers:', Object.fromEntries(response.headers.entries()));
       
       if (response.status === 302 || response.status === 301) {
         // URL exists and redirects
@@ -33,9 +37,23 @@ export async function POST(request: NextRequest) {
           available: false, 
           message: 'This short URL is already taken' 
         });
+      } else if (response.status === 404) {
+        // URL doesn't exist - this is what we want for available URLs
+        console.log('URL is available - 404 not found');
+        return NextResponse.json({ 
+          available: true, 
+          message: 'This short URL is available' 
+        });
+      } else if (response.status === 500) {
+        // Server error - assume available for now
+        console.log('Server error - assuming available');
+        return NextResponse.json({ 
+          available: true, 
+          message: 'This short URL is available' 
+        });
       } else {
-        // URL doesn't exist or error occurred
-        console.log('URL is available - no redirect');
+        // Other status codes
+        console.log('URL status unclear - status:', response.status);
         return NextResponse.json({ 
           available: true, 
           message: 'This short URL is available' 

@@ -51,12 +51,21 @@ export const metadata: Metadata = {
     siteName: 'OrangeURL',
     locale: 'en_US',
     type: 'website',
+    images: [
+      {
+        url: '/images/og-image.png',
+        width: 1200,
+        height: 630,
+        alt: 'OrangeURL - Fast & Secure URL Shortener',
+      },
+    ],
   },
   twitter: {
     card: 'summary_large_image',
     title: 'OrangeURL - Fast & Secure URL Shortener',
     description: 'Create short, memorable links with advanced analytics',
     creator: '@orangeurl_app',
+    images: ['/images/og-image.png'],
   },
   robots: {
     index: true,
@@ -87,6 +96,13 @@ export default function RootLayout({
         <head>
           <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
           <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
+          <meta property="og:image" content="https://app.orangeurl.live/images/og-image.png" />
+          <meta property="og:image:width" content="1200" />
+          <meta property="og:image:height" content="630" />
+          <meta property="og:image:alt" content="OrangeURL - Fast & Secure URL Shortener" />
+          <meta property="og:image:type" content="image/png" />
+          <meta name="twitter:image" content="https://app.orangeurl.live/images/og-image.png" />
+          <meta name="twitter:image:alt" content="OrangeURL - Fast & Secure URL Shortener" />
         </head>
         <body className={`${inter.className} antialiased`}>
           <ThemeProvider
