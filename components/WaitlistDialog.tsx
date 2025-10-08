@@ -1,6 +1,7 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
+import { createPortal } from 'react-dom';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Card, CardContent, CardHeader } from '@/components/ui/card';
@@ -16,9 +17,15 @@ interface WaitlistDialogProps {
 export function WaitlistDialog({ isOpen, onClose, planName }: WaitlistDialogProps) {
   const [email, setEmail] = useState('');
   const [isLoading, setIsLoading] = useState(false);
+  const [mounted, setMounted] = useState(false);
   const { toast } = useToast();
 
-  if (!isOpen) return null;
+  useEffect(() => {
+    setMounted(true);
+    return () => setMounted(false);
+  }, []);
+
+  if (!isOpen || !mounted) return null;
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -70,8 +77,8 @@ export function WaitlistDialog({ isOpen, onClose, planName }: WaitlistDialogProp
     }
   };
 
-  return (
-    <div className="fixed inset-0 bg-black/50 backdrop-blur-sm z-50 flex items-center justify-center p-4">
+  const dialogContent = (
+    <div className="fixed inset-0 bg-black/50 backdrop-blur-sm z-[9999] flex items-center justify-center p-4">
       <Card className="w-full max-w-md shadow-2xl border-2 border-primary/20">
         <CardHeader className="relative text-center pb-6">
           <button
@@ -129,4 +136,6 @@ export function WaitlistDialog({ isOpen, onClose, planName }: WaitlistDialogProp
       </Card>
     </div>
   );
+
+  return createPortal(dialogContent, document.body);
 }

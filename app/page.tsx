@@ -29,6 +29,7 @@ import { useUser } from '@clerk/nextjs';
 import Image from 'next/image';
 import QRCode from 'qrcode';
 import QRCodeStyling from 'qr-code-styling';
+import { WaitlistDialog } from '@/components/WaitlistDialog';
 
 const fadeInUp = {
   initial: { opacity: 0, y: 60 },
@@ -69,6 +70,8 @@ export default function Home() {
   const { toast } = useToast();
   const { user } = useUser();
   const debounceTimer = useRef<NodeJS.Timeout | null>(null);
+  const [waitlistOpen, setWaitlistOpen] = useState(false);
+  const [selectedPlan, setSelectedPlan] = useState('Free');
 
   // For now, assume all users are on free tier (you can implement proper subscription checking later)
   const isFreeTier = !user; // Free tier if not logged in
@@ -280,7 +283,7 @@ export default function Home() {
       return new Promise((resolve) => {
         qrCode.getRawData("png").then((buffer) => {
           if (buffer) {
-            const blob = new Blob([buffer], { type: 'image/png' });
+            const blob = new Blob([], { type: 'image/png' });
                          const qrImage = document.createElement('img');
             qrImage.onload = () => {
               // Draw QR code
@@ -342,6 +345,17 @@ export default function Home() {
       }
     };
   }, [customShort]);
+
+  // Handle waitlist events
+  useEffect(() => {
+    const handleOpenWaitlist = (event: CustomEvent) => {
+      setSelectedPlan(event.detail.plan);
+      setWaitlistOpen(true);
+    };
+
+    window.addEventListener('openWaitlist', handleOpenWaitlist as EventListener);
+    return () => window.removeEventListener('openWaitlist', handleOpenWaitlist as EventListener);
+  }, []);
 
   const handleShorten = async () => {
     if (!url) {
@@ -791,7 +805,16 @@ export default function Home() {
           <div className="text-center mt-4 space-y-2">
             <div className="inline-flex items-center px-3 py-1 bg-gradient-to-r from-orange-100 to-red-100 dark:from-orange-900/30 dark:to-red-900/30 rounded-full text-xs font-medium border border-orange-200 dark:border-orange-800">
               <Sparkles className="w-3 h-3 mr-1" />
-              Trial phase, Links expire in 24 hours
+              <span>Trial phase, Links expire in 24 hours - </span>
+              <button 
+                onClick={() => {
+                  const event = new CustomEvent('openWaitlist', { detail: { plan: 'Free' } });
+                  window.dispatchEvent(event);
+                }}
+                className="underline hover:text-orange-600 dark:hover:text-orange-400 transition-colors"
+              >
+                Join Waitlist
+              </button>
             </div>
             <p className="text-sm text-muted-foreground">
               <span className="text-primary font-medium">Login</span> to save your links and view detailed analytics
@@ -928,7 +951,10 @@ export default function Home() {
                 <p className="text-sm text-muted-foreground mb-3">
                   Track your social media performance like Snowiee
                 </p>
-                <Button className="btn-primary">
+                <Button 
+                  className="btn-primary"
+                  onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
+                >
                   Create Your Bio Links
                   <ArrowRight className="w-4 h-4 ml-2" />
                 </Button>
@@ -1049,6 +1075,13 @@ export default function Home() {
           </div>
         </div>
       </motion.section>
+
+      {/* Waitlist Dialog */}
+      <WaitlistDialog 
+        isOpen={waitlistOpen}
+        onClose={() => setWaitlistOpen(false)}
+        planName={selectedPlan}
+      />
     </div>
   );
 }
