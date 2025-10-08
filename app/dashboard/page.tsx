@@ -135,23 +135,37 @@ export default function DashboardPage() {
         </motion.section>
       </SignedOut>
 
-      <SignedIn>
-        {/* Header */}
-        <motion.section 
-          className="text-center space-y-4"
-          initial="initial"
-          animate="animate"
-          variants={staggerContainer}
-        >
-          <motion.div variants={fadeInUp}>
-            <h1 className="text-4xl md:text-5xl font-bold">
-              Your <span className="gradient-text-primary">Dashboard</span>
-            </h1>
-            <p className="text-xl text-muted-foreground max-w-2xl mx-auto">
-              Manage your short links, track analytics, and grow your online presence
-            </p>
-          </motion.div>
-        </motion.section>
+            <SignedIn>
+              <div className="relative">
+                {/* Overlay */}
+                <div className="absolute inset-0 bg-background/80 backdrop-blur-sm z-50 flex items-center justify-center rounded-lg">
+                  <div className="text-center space-y-4 p-8">
+                    <div className="w-16 h-16 bg-gradient-to-r from-primary to-orange-600 rounded-full flex items-center justify-center text-white mx-auto">
+                      <Clock className="w-8 h-8" />
+                    </div>
+                    <h2 className="text-2xl font-bold">Dashboard Coming Soon</h2>
+                    <p className="text-muted-foreground max-w-md">
+                      We're working hard to bring you an amazing dashboard experience. Stay tuned!
+                    </p>
+                  </div>
+                </div>
+
+                {/* Header */}
+                <motion.section 
+                  className="text-center space-y-4"
+                  initial="initial"
+                  animate="animate"
+                  variants={staggerContainer}
+                >
+                  <motion.div variants={fadeInUp}>
+                    <h1 className="text-4xl md:text-5xl font-bold">
+                      Your <span className="gradient-text-primary">Dashboard</span>
+                    </h1>
+                    <p className="text-xl text-muted-foreground max-w-2xl mx-auto">
+                      Manage your short links, track analytics, and grow your online presence
+                    </p>
+                  </motion.div>
+                </motion.section>
 
       {/* Stats Grid */}
       <motion.section 
@@ -338,9 +352,10 @@ export default function DashboardPage() {
               </div>
             </CardContent>
           </Card>
-        </motion.div>
-      </motion.section>
-      </SignedIn>
+               </motion.div>
+             </motion.section>
+             </div>
+             </SignedIn>
     </div>
   );
 }

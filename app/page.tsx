@@ -346,21 +346,21 @@ export default function Home() {
   const handleShorten = async () => {
     if (!url) {
       setError('Please enter a URL');
-      toast({
-        title: "Error",
-        description: "Please enter a URL",
-        variant: "destructive",
-      });
+        toast({
+          title: "Error",
+          description: "Please enter a URL",
+          className: "bg-gradient-to-r from-orange-100 to-red-100 dark:from-orange-900/30 dark:to-red-900/30 border-orange-200 text-orange-900 dark:text-orange-100",
+        });
       return;
     }
 
     if (!isValidUrl(url)) {
       setError('Please enter a valid URL');
-      toast({
-        title: "Error",
-        description: "Please enter a valid URL",
-        variant: "destructive",
-      });
+        toast({
+          title: "Error",
+          description: "Please enter a valid URL",
+          className: "bg-gradient-to-r from-orange-100 to-red-100 dark:from-orange-900/30 dark:to-red-900/30 border-orange-200 text-orange-900 dark:text-orange-100",
+        });
       return;
     }
 
@@ -371,11 +371,11 @@ export default function Home() {
     // Check if custom short is taken before proceeding
     if (customShort.trim() && availability && !availability.available) {
       setError('Custom short is already taken. Please choose a different one.');
-      toast({
-        title: "Error",
-        description: "Custom short is already taken",
-        variant: "destructive",
-      });
+        toast({
+          title: "Error",
+          description: "Custom short is already taken",
+          className: "bg-gradient-to-r from-orange-100 to-red-100 dark:from-orange-900/30 dark:to-red-900/30 border-orange-200 text-orange-900 dark:text-orange-100",
+        });
       return;
     }
 
@@ -405,7 +405,7 @@ export default function Home() {
         toast({
           title: "Error",
           description: errorMessage,
-          variant: "destructive",
+          className: "bg-gradient-to-r from-orange-100 to-red-100 dark:from-orange-900/30 dark:to-red-900/30 border-orange-200 text-orange-900 dark:text-orange-100",
         });
         return;
       }
@@ -415,7 +415,7 @@ export default function Home() {
         toast({
           title: "Error", 
           description: data.error,
-          variant: "destructive",
+          className: "bg-gradient-to-r from-orange-100 to-red-100 dark:from-orange-900/30 dark:to-red-900/30 border-orange-200 text-orange-900 dark:text-orange-100",
         });
       } else {
         const shortUrl = data.shortUrl || data.CustomShort || data.short;
@@ -439,11 +439,11 @@ export default function Home() {
     } catch (err) {
       const errorMessage = 'Network error. Please check your connection and try again.';
       setError(errorMessage);
-      toast({
-        title: "Network Error",
-        description: errorMessage,
-        variant: "destructive",
-      });
+        toast({
+          title: "Network Error",
+          description: errorMessage,
+          className: "bg-gradient-to-r from-orange-100 to-red-100 dark:from-orange-900/30 dark:to-red-900/30 border-orange-200 text-orange-900 dark:text-orange-100",
+        });
     } finally {
       setIsLoading(false);
     }
@@ -457,13 +457,14 @@ export default function Home() {
         toast({
           title: "Link copied!",
           description: "Short URL copied to clipboard",
+          className: "bg-gradient-to-r from-orange-100 to-red-100 dark:from-orange-900/30 dark:to-red-900/30 border-orange-200 text-orange-900 dark:text-orange-100",
         });
         setTimeout(() => setCopied(false), 2000);
       } catch (err) {
         toast({
           title: "Copy failed",
           description: "Failed to copy to clipboard",
-          variant: "destructive",
+          className: "bg-gradient-to-r from-orange-100 to-red-100 dark:from-orange-900/30 dark:to-red-900/30 border-orange-200 text-orange-900 dark:text-orange-100",
         });
       }
     }
@@ -787,7 +788,11 @@ export default function Home() {
             </CardContent>
           </Card>
           
-          <div className="text-center mt-4">
+          <div className="text-center mt-4 space-y-2">
+            <div className="inline-flex items-center px-3 py-1 bg-gradient-to-r from-orange-100 to-red-100 dark:from-orange-900/30 dark:to-red-900/30 rounded-full text-xs font-medium border border-orange-200 dark:border-orange-800">
+              <Sparkles className="w-3 h-3 mr-1" />
+              Testing phase, Links expire in 24 hours
+            </div>
             <p className="text-sm text-muted-foreground">
               <span className="text-primary font-medium">Login</span> to save your links and view detailed analytics
             </p>
@@ -975,11 +980,11 @@ export default function Home() {
               features: ["SSL encryption", "Fraud detection", "GDPR compliant"]
             },
             {
-              title: "Custom Domains",
-              description: "Use your own domain for branded short links that build trust",
-              icon: <Globe className="w-8 h-8" />,
+              title: "Custom QR Codes",
+              description: "Generate branded QR codes with custom colors and your logo",
+              icon: <QrCode className="w-8 h-8" />,
               gradient: "from-orange-600 to-amber-600",
-              features: ["Custom domains", "Branded links", "White-label solution"]
+              features: ["Custom styling", "Brand colors", "Logo integration"]
             }
           ].map((feature, index) => (
             <motion.div 

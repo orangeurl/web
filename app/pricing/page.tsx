@@ -1,8 +1,10 @@
 'use client';
 
+import { useState } from 'react';
 import { motion } from 'framer-motion';
 import { Card, CardContent, CardHeader } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
+import { WaitlistDialog } from '@/components/WaitlistDialog';
 import { 
   Check, 
   X, 
@@ -86,6 +88,14 @@ const pricingPlans = [
 ];
 
 export default function PricingPage() {
+  const [waitlistOpen, setWaitlistOpen] = useState(false);
+  const [selectedPlan, setSelectedPlan] = useState<string>('');
+
+  const handlePlanClick = (planName: string) => {
+    setSelectedPlan(planName);
+    setWaitlistOpen(true);
+  };
+
   return (
     <div className="space-y-20 py-12">
       {/* Header */}
@@ -170,6 +180,7 @@ export default function PricingPage() {
                   variant={plan.buttonVariant}
                   size="lg" 
                   className={`w-full ${plan.popular ? 'btn-primary' : ''}`}
+                  onClick={() => handlePlanClick(plan.name)}
                 >
                   {plan.buttonText}
                 </Button>
@@ -281,7 +292,11 @@ export default function PricingPage() {
         </motion.div>
       </motion.section>
 
-
+      <WaitlistDialog 
+        isOpen={waitlistOpen}
+        onClose={() => setWaitlistOpen(false)}
+        planName={selectedPlan}
+      />
     </div>
   );
 } 
