@@ -38,7 +38,7 @@ const pricingPlans = [
     description: "Perfect for personal use and getting started",
     features: [
       { name: "5 links per month", included: true },
-      { name: "Basic analytics", included: true },
+      { name: "Advanced analytics", included: true },
       { name: "Custom domains", included: false },
       { name: "Custom QR Codes", included: false },
       { name: "Priority support", included: false },

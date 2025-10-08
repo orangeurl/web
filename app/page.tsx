@@ -791,7 +791,7 @@ export default function Home() {
           <div className="text-center mt-4 space-y-2">
             <div className="inline-flex items-center px-3 py-1 bg-gradient-to-r from-orange-100 to-red-100 dark:from-orange-900/30 dark:to-red-900/30 rounded-full text-xs font-medium border border-orange-200 dark:border-orange-800">
               <Sparkles className="w-3 h-3 mr-1" />
-              Testing phase, Links expire in 24 hours
+              Trial phase, Links expire in 24 hours
             </div>
             <p className="text-sm text-muted-foreground">
               <span className="text-primary font-medium">Login</span> to save your links and view detailed analytics
