@@ -262,12 +262,16 @@ export default function Home() {
   // Generate Modern QR Code function
   const generateQRCode = async (url: string) => {
     try {
+      console.log('🔍 Starting QR code generation for:', url);
       const qrCode = new QRCodeStyling(getQRCodeConfig(qrCodeStyle, url));
 
       // Create container for QR + label
       const finalCanvas = document.createElement('canvas');
       const ctx = finalCanvas.getContext('2d');
-      if (!ctx) return '';
+      if (!ctx) {
+        console.error('❌ Could not get canvas context');
+        return '';
+      }
 
       finalCanvas.width = 320;
       finalCanvas.height = 400;
@@ -282,6 +286,7 @@ export default function Home() {
       // Generate QR code and wait for it
       return new Promise((resolve) => {
         qrCode.getRawData("png").then((buffer) => {
+          console.log('📦 QR code buffer received:', buffer);
           if (buffer) {
             // Convert buffer to ArrayBuffer for Blob constructor
             let arrayBuffer: ArrayBuffer;
@@ -302,12 +307,16 @@ export default function Home() {
               new Uint8Array(arrayBuffer).set(new Uint8Array(buffer));
             } else {
               // Handle other buffer types (Blob, etc.)
+              console.warn('⚠️ Unknown buffer type:', typeof buffer);
               arrayBuffer = new ArrayBuffer(0);
             }
             
+            console.log('🔄 Creating blob with arrayBuffer length:', arrayBuffer.byteLength);
             const blob = new Blob([arrayBuffer], { type: 'image/png' });
             const qrImage = document.createElement('img');
+            
             qrImage.onload = () => {
+              console.log('✅ QR image loaded successfully');
               // Draw QR code
               ctx.drawImage(qrImage, 0, 0, 320, 320);
 
@@ -329,20 +338,29 @@ export default function Home() {
               ctx.shadowOffsetY = 0;
 
               const dataUrl = finalCanvas.toDataURL('image/png', 0.95);
+              console.log('🎉 QR code data URL generated:', dataUrl.substring(0, 50) + '...');
               setQrCodeDataUrl(dataUrl);
               resolve(dataUrl);
             };
+            
+            qrImage.onerror = (error) => {
+              console.error('❌ QR image failed to load:', error);
+              resolve('');
+            };
+            
             qrImage.src = URL.createObjectURL(blob);
           } else {
+            console.warn('⚠️ No buffer received from QR code generation');
             resolve('');
           }
-        }).catch(() => {
+        }).catch((error) => {
+          console.error('❌ QR code generation failed:', error);
           resolve('');
         });
       });
 
     } catch (error) {
-      console.error('Modern QR Code generation failed:', error);
+      console.error('❌ Modern QR Code generation failed:', error);
       return '';
     }
   };
