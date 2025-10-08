@@ -284,31 +284,45 @@ export default function Home() {
       ctx.fillRect(0, 0, 320, 400);
 
       // Generate QR code and wait for it
-      return new Promise((resolve) => {
-        qrCode.getRawData("png").then((buffer) => {
+      return new Promise(async (resolve) => {
+        try {
+          const buffer = await qrCode.getRawData("png");
           console.log('📦 QR code buffer received:', buffer);
+          
           if (buffer) {
-            // Convert buffer to ArrayBuffer for Blob constructor
             let arrayBuffer: ArrayBuffer;
+            
             if (buffer instanceof ArrayBuffer) {
               arrayBuffer = buffer;
             } else if (buffer instanceof Buffer) {
+              // Handle Node.js Buffer - check underlying buffer type
               const underlyingBuffer = buffer.buffer;
               if (underlyingBuffer instanceof ArrayBuffer) {
                 arrayBuffer = underlyingBuffer.slice(buffer.byteOffset, buffer.byteOffset + buffer.byteLength);
               } else {
-                // Handle SharedArrayBuffer case
+                // Handle SharedArrayBuffer or other types
                 arrayBuffer = new ArrayBuffer(buffer.byteLength);
                 new Uint8Array(arrayBuffer).set(new Uint8Array(underlyingBuffer, buffer.byteOffset, buffer.byteLength));
               }
-            } else if (buffer instanceof SharedArrayBuffer) {
-              // Convert SharedArrayBuffer to ArrayBuffer
-              arrayBuffer = new ArrayBuffer(buffer.byteLength);
-              new Uint8Array(arrayBuffer).set(new Uint8Array(buffer));
+            } else if (buffer instanceof Blob) {
+              // Handle Blob by reading as ArrayBuffer
+              console.warn('⚠️ Buffer is a Blob, converting to ArrayBuffer');
+              arrayBuffer = await buffer.arrayBuffer();
+              console.log('🔄 Blob converted to ArrayBuffer, length:', arrayBuffer.byteLength);
             } else {
-              // Handle other buffer types (Blob, etc.)
-              console.warn('⚠️ Unknown buffer type:', typeof buffer);
-              arrayBuffer = new ArrayBuffer(0);
+              // Handle other buffer types - try direct conversion
+              console.warn('⚠️ Unknown buffer type:', typeof buffer, buffer);
+              try {
+                // Check if buffer has byteLength property
+                const bufferLength = (buffer as any).byteLength || (buffer as any).length || 0;
+                arrayBuffer = new ArrayBuffer(bufferLength);
+                if (bufferLength > 0) {
+                  new Uint8Array(arrayBuffer).set(new Uint8Array(buffer as any));
+                }
+              } catch (error) {
+                console.error('❌ Failed to convert buffer:', error);
+                arrayBuffer = new ArrayBuffer(0);
+              }
             }
             
             console.log('🔄 Creating blob with arrayBuffer length:', arrayBuffer.byteLength);
@@ -353,10 +367,10 @@ export default function Home() {
             console.warn('⚠️ No buffer received from QR code generation');
             resolve('');
           }
-        }).catch((error) => {
+        } catch (error) {
           console.error('❌ QR code generation failed:', error);
           resolve('');
-        });
+        }
       });
 
     } catch (error) {
