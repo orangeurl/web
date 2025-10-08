@@ -20,7 +20,8 @@ import {
   QrCode,
   Download,
   Brain,
-  Lock
+  Lock,
+  Copy
 } from 'lucide-react';
 import { useState, useCallback, useEffect, useRef } from 'react';
 import { useToast } from '@/hooks/use-toast';
@@ -262,16 +263,12 @@ export default function Home() {
   // Generate Modern QR Code function
   const generateQRCode = async (url: string) => {
     try {
-      console.log('🔍 Starting QR code generation for:', url);
       const qrCode = new QRCodeStyling(getQRCodeConfig(qrCodeStyle, url));
 
       // Create container for QR + label
       const finalCanvas = document.createElement('canvas');
       const ctx = finalCanvas.getContext('2d');
-      if (!ctx) {
-        console.error('❌ Could not get canvas context');
-        return '';
-      }
+      if (!ctx) return '';
 
       finalCanvas.width = 320;
       finalCanvas.height = 400;
@@ -283,98 +280,69 @@ export default function Home() {
       ctx.fillStyle = bgGradient;
       ctx.fillRect(0, 0, 320, 400);
 
-      // Generate QR code and wait for it
-      return new Promise(async (resolve) => {
-        try {
-          const buffer = await qrCode.getRawData("png");
-          console.log('📦 QR code buffer received:', buffer);
-          
-          if (buffer) {
-            let arrayBuffer: ArrayBuffer;
-            
-            if (buffer instanceof ArrayBuffer) {
-              arrayBuffer = buffer;
-            } else if (buffer instanceof Buffer) {
-              // Handle Node.js Buffer - check underlying buffer type
-              const underlyingBuffer = buffer.buffer;
-              if (underlyingBuffer instanceof ArrayBuffer) {
-                arrayBuffer = underlyingBuffer.slice(buffer.byteOffset, buffer.byteOffset + buffer.byteLength);
-              } else {
-                // Handle SharedArrayBuffer or other types
-                arrayBuffer = new ArrayBuffer(buffer.byteLength);
-                new Uint8Array(arrayBuffer).set(new Uint8Array(underlyingBuffer, buffer.byteOffset, buffer.byteLength));
-              }
-            } else if (buffer instanceof Blob) {
-              // Handle Blob by reading as ArrayBuffer
-              console.warn('⚠️ Buffer is a Blob, converting to ArrayBuffer');
-              arrayBuffer = await buffer.arrayBuffer();
-              console.log('🔄 Blob converted to ArrayBuffer, length:', arrayBuffer.byteLength);
-            } else {
-              // Handle other buffer types - try direct conversion
-              console.warn('⚠️ Unknown buffer type:', typeof buffer, buffer);
-              try {
-                // Check if buffer has byteLength property
-                const bufferLength = (buffer as any).byteLength || (buffer as any).length || 0;
-                arrayBuffer = new ArrayBuffer(bufferLength);
-                if (bufferLength > 0) {
-                  new Uint8Array(arrayBuffer).set(new Uint8Array(buffer as any));
-                }
-              } catch (error) {
-                console.error('❌ Failed to convert buffer:', error);
-                arrayBuffer = new ArrayBuffer(0);
-              }
-            }
-            
-            console.log('🔄 Creating blob with arrayBuffer length:', arrayBuffer.byteLength);
-            const blob = new Blob([arrayBuffer], { type: 'image/png' });
-            const qrImage = document.createElement('img');
-            
-            qrImage.onload = () => {
-              console.log('✅ QR image loaded successfully');
-              // Draw QR code
-              ctx.drawImage(qrImage, 0, 0, 320, 320);
+      // Generate QR code
+      const buffer = await qrCode.getRawData("png");
+      if (!buffer) return '';
 
-              // Add "ORANGEURL" label
-              ctx.fillStyle = '#ea580c';
-              ctx.font = 'bold 24px Inter, -apple-system, BlinkMacSystemFont, sans-serif';
-              ctx.textAlign = 'center';
-              
-              // Add text shadow
-              ctx.shadowColor = 'rgba(234, 88, 12, 0.2)';
-              ctx.shadowBlur = 4;
-              ctx.shadowOffsetY = 2;
-              
-              ctx.fillText('ORANGEURL', 160, 370);
-
-              // Reset shadow
-              ctx.shadowColor = 'transparent';
-              ctx.shadowBlur = 0;
-              ctx.shadowOffsetY = 0;
-
-              const dataUrl = finalCanvas.toDataURL('image/png', 0.95);
-              console.log('🎉 QR code data URL generated:', dataUrl.substring(0, 50) + '...');
-              setQrCodeDataUrl(dataUrl);
-              resolve(dataUrl);
-            };
-            
-            qrImage.onerror = (error) => {
-              console.error('❌ QR image failed to load:', error);
-              resolve('');
-            };
-            
-            qrImage.src = URL.createObjectURL(blob);
-          } else {
-            console.warn('⚠️ No buffer received from QR code generation');
-            resolve('');
-          }
-        } catch (error) {
-          console.error('❌ QR code generation failed:', error);
-          resolve('');
+      // Convert buffer to ArrayBuffer
+      let arrayBuffer: ArrayBuffer;
+      if (buffer instanceof ArrayBuffer) {
+        arrayBuffer = buffer;
+      } else if (buffer instanceof Buffer) {
+        const underlyingBuffer = buffer.buffer;
+        if (underlyingBuffer instanceof ArrayBuffer) {
+          arrayBuffer = underlyingBuffer.slice(buffer.byteOffset, buffer.byteOffset + buffer.byteLength);
+        } else {
+          arrayBuffer = new ArrayBuffer(buffer.byteLength);
+          new Uint8Array(arrayBuffer).set(new Uint8Array(underlyingBuffer, buffer.byteOffset, buffer.byteLength));
         }
+      } else if (buffer instanceof Blob) {
+        arrayBuffer = await buffer.arrayBuffer();
+      } else {
+        const bufferLength = (buffer as any).byteLength || (buffer as any).length || 0;
+        arrayBuffer = new ArrayBuffer(bufferLength);
+        if (bufferLength > 0) {
+          new Uint8Array(arrayBuffer).set(new Uint8Array(buffer as any));
+        }
+      }
+
+      // Create image from buffer
+      const blob = new Blob([arrayBuffer], { type: 'image/png' });
+      const qrImage = document.createElement('img');
+      
+      return new Promise((resolve) => {
+        qrImage.onload = () => {
+          // Draw QR code
+          ctx.drawImage(qrImage, 0, 0, 320, 320);
+
+          // Add "ORANGEURL" label
+          ctx.fillStyle = '#ea580c';
+          ctx.font = 'bold 24px Inter, -apple-system, BlinkMacSystemFont, sans-serif';
+          ctx.textAlign = 'center';
+          
+          // Add text shadow
+          ctx.shadowColor = 'rgba(234, 88, 12, 0.2)';
+          ctx.shadowBlur = 4;
+          ctx.shadowOffsetY = 2;
+          
+          ctx.fillText('ORANGEURL', 160, 370);
+
+          // Reset shadow
+          ctx.shadowColor = 'transparent';
+          ctx.shadowBlur = 0;
+          ctx.shadowOffsetY = 0;
+
+          const dataUrl = finalCanvas.toDataURL('image/png', 0.95);
+          setQrCodeDataUrl(dataUrl);
+          resolve(dataUrl);
+        };
+        
+        qrImage.onerror = () => resolve('');
+        qrImage.src = URL.createObjectURL(blob);
       });
 
     } catch (error) {
-      console.error('❌ Modern QR Code generation failed:', error);
+      console.error('QR Code generation failed:', error);
       return '';
     }
   };
@@ -537,6 +505,35 @@ export default function Home() {
       }
     }
   }, [shortUrl, copied, toast]);
+
+  const handleCopyQRCode = useCallback(async () => {
+    if (qrCodeDataUrl) {
+      try {
+        // Convert data URL to blob
+        const response = await fetch(qrCodeDataUrl);
+        const blob = await response.blob();
+        
+        // Copy to clipboard
+        await navigator.clipboard.write([
+          new ClipboardItem({
+            'image/png': blob
+          })
+        ]);
+        
+        toast({
+          title: "QR Code copied!",
+          description: "QR code image copied to clipboard",
+          className: "bg-gradient-to-r from-orange-100 to-red-100 dark:from-orange-900/30 dark:to-red-900/30 border-orange-200 text-orange-900 dark:text-orange-100",
+        });
+      } catch (err) {
+        toast({
+          title: "Copy failed",
+          description: "Failed to copy QR code to clipboard",
+          className: "bg-gradient-to-r from-orange-100 to-red-100 dark:from-orange-900/30 dark:to-red-900/30 border-orange-200 text-orange-900 dark:text-orange-100",
+        });
+      }
+    }
+  }, [qrCodeDataUrl, toast]);
 
   // Add Enter key support for better UX
   const handleKeyPress = (e: React.KeyboardEvent) => {
@@ -837,19 +834,29 @@ export default function Home() {
                       />
                     </div>
 
-                    <Button 
-                      onClick={() => {
-                        const link = document.createElement('a');
-                        link.download = `orangeurl-qr-${Date.now()}.png`;
-                        link.href = qrCodeDataUrl;
-                        link.click();
-                      }}
-                      variant="outline"
-                      className="flex items-center gap-2"
-                    >
-                      <Download className="w-4 h-4" />
-                      Download QR Code
-                    </Button>
+                    <div className="flex gap-3">
+                      <Button 
+                        onClick={handleCopyQRCode}
+                        variant="outline"
+                        className="flex items-center gap-2"
+                      >
+                        <Copy className="w-4 h-4" />
+                        Copy QR Code
+                      </Button>
+                      <Button 
+                        onClick={() => {
+                          const link = document.createElement('a');
+                          link.download = `orangeurl-qr-${Date.now()}.png`;
+                          link.href = qrCodeDataUrl;
+                          link.click();
+                        }}
+                        variant="outline"
+                        className="flex items-center gap-2"
+                      >
+                        <Download className="w-4 h-4" />
+                        Download QR Code
+                      </Button>
+                    </div>
                   </motion.div>
                 )}
               </div>
