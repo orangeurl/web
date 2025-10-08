@@ -18,19 +18,24 @@ export async function POST(request: NextRequest) {
     const checkUrl = `${BACKEND_URL.replace('/api/v1', '')}/${customShort}`;
     
     try {
+      console.log('Checking availability for URL:', checkUrl);
       const response = await fetch(checkUrl, {
         method: 'HEAD', // Use HEAD to avoid downloading content
         redirect: 'manual' // Don't follow redirects
       });
       
+      console.log('Response status:', response.status);
+      
       if (response.status === 302 || response.status === 301) {
         // URL exists and redirects
+        console.log('URL is taken - redirect detected');
         return NextResponse.json({ 
           available: false, 
           message: 'This short URL is already taken' 
         });
       } else {
         // URL doesn't exist or error occurred
+        console.log('URL is available - no redirect');
         return NextResponse.json({ 
           available: true, 
           message: 'This short URL is available' 

@@ -85,6 +85,7 @@ export default function Home() {
       return;
     }
 
+    console.log('Frontend: Checking availability for:', customShortValue.trim());
     setIsCheckingAvailability(true);
     try {
       const response = await fetch('/api/check-availability', {
@@ -96,6 +97,7 @@ export default function Home() {
       });
 
       const data = await response.json();
+      console.log('Frontend: Availability result:', data);
       setAvailability({
         available: data.available,
         message: data.message
@@ -463,7 +465,7 @@ export default function Home() {
           await generateQRCode(shortUrl);
         }
         
-        // Clear custom short after successful creation
+        // Clear custom short and availability state after successful creation
         setCustomShort('');
         setAvailability(null);
         toast({
