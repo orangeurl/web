@@ -283,8 +283,30 @@ export default function Home() {
       return new Promise((resolve) => {
         qrCode.getRawData("png").then((buffer) => {
           if (buffer) {
-            const blob = new Blob([], { type: 'image/png' });
-                         const qrImage = document.createElement('img');
+            // Convert buffer to ArrayBuffer for Blob constructor
+            let arrayBuffer: ArrayBuffer;
+            if (buffer instanceof ArrayBuffer) {
+              arrayBuffer = buffer;
+            } else if (buffer instanceof Buffer) {
+              const underlyingBuffer = buffer.buffer;
+              if (underlyingBuffer instanceof ArrayBuffer) {
+                arrayBuffer = underlyingBuffer.slice(buffer.byteOffset, buffer.byteOffset + buffer.byteLength);
+              } else {
+                // Handle SharedArrayBuffer case
+                arrayBuffer = new ArrayBuffer(buffer.byteLength);
+                new Uint8Array(arrayBuffer).set(new Uint8Array(underlyingBuffer, buffer.byteOffset, buffer.byteLength));
+              }
+            } else if (buffer instanceof SharedArrayBuffer) {
+              // Convert SharedArrayBuffer to ArrayBuffer
+              arrayBuffer = new ArrayBuffer(buffer.byteLength);
+              new Uint8Array(arrayBuffer).set(new Uint8Array(buffer));
+            } else {
+              // Handle other buffer types (Blob, etc.)
+              arrayBuffer = new ArrayBuffer(0);
+            }
+            
+            const blob = new Blob([arrayBuffer], { type: 'image/png' });
+            const qrImage = document.createElement('img');
             qrImage.onload = () => {
               // Draw QR code
               ctx.drawImage(qrImage, 0, 0, 320, 320);
