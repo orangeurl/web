@@ -283,8 +283,8 @@ export default function PricingPage() {
               answer: "Yes, we offer refunds until you haven't used any of the extra features that are supported with your plan after purchasing."
             },
             {
-              question: "How do QR codes work with my links?",
-              answer: "Every shortened link automatically gets a QR code. Pro and Premium plans allow custom QR code generation with your branding and colors. By default, we have 1 year expiry date for free plan users, while all other plans have a 5 year range for link expiry. Only Premium users can modify and customize their link expiry dates."
+              question: "What is the expiry date for my link?",
+              answer: "By default, we have 1 year expiry date for free plan users, while all other plans have a 5 year range for link expiry. Only Premium users can modify and customize their link expiry dates."
             }
           ].map((faq, index) => (
             <motion.div
