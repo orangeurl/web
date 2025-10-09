@@ -18,52 +18,102 @@
 
 @layer base {
   :root {
+    /* Base colors */
     --background: 0 0% 100%;
-    --foreground: 0 0% 3.9%;
+    --foreground: 20 14% 12%;
+    
+    /* Card colors */
     --card: 0 0% 100%;
-    --card-foreground: 0 0% 3.9%;
+    --card-foreground: 20 14% 12%;
+    
+    /* Popover colors */
     --popover: 0 0% 100%;
-    --popover-foreground: 0 0% 3.9%;
-    --primary: 24 94% 55%;
-    --primary-foreground: 0 0% 98%;
-    --secondary: 0 0% 96.1%;
-    --secondary-foreground: 0 0% 9%;
-    --muted: 0 0% 96.1%;
-    --muted-foreground: 0 0% 45.1%;
-    --accent: 0 0% 96.1%;
-    --accent-foreground: 0 0% 9%;
+    --popover-foreground: 20 14% 12%;
+    
+    /* Primary - Orange theme */
+    --primary: 24 94% 55%; /* #ea580c */
+    --primary-foreground: 0 0% 100%;
+    --primary-light: 24 100% 65%; /* Lighter orange */
+    --primary-dark: 24 94% 45%; /* Darker orange */
+    
+    /* Secondary - Warm accent */
+    --secondary: 33 100% 96%; /* Warm peach/cream */
+    --secondary-foreground: 24 94% 30%;
+    
+    /* Muted colors */
+    --muted: 24 20% 96%;
+    --muted-foreground: 24 10% 45%;
+    
+    /* Accent colors */
+    --accent: 24 100% 96%;
+    --accent-foreground: 24 94% 30%;
+    
+    /* Destructive */
     --destructive: 0 84.2% 60.2%;
     --destructive-foreground: 0 0% 98%;
-    --border: 0 0% 89.8%;
-    --input: 0 0% 89.8%;
+    
+    /* Borders and inputs */
+    --border: 24 20% 90%;
+    --input: 24 20% 90%;
     --ring: 24 94% 55%;
-    --chart-1: 24 94% 55%;
-    --chart-2: 33 100% 50%;
-    --chart-3: 45 100% 50%;
-    --chart-4: 16 85% 58%;
-    --chart-5: 30 100% 50%;
+    
+    /* Chart colors - warm palette */
+    --chart-1: 24 94% 55%; /* Orange */
+    --chart-2: 33 100% 50%; /* Amber */
+    --chart-3: 45 100% 50%; /* Yellow */
+    --chart-4: 16 85% 58%; /* Red-orange */
+    --chart-5: 30 100% 50%; /* Dark orange */
+    
+    /* Radius */
     --radius: 0.75rem;
+    
+    /* Spacing system - consistent gaps */
+    --section-gap: 6rem; /* 96px - between major sections */
+    --component-gap: 2rem; /* 32px - between components */
+    --element-gap: 1rem; /* 16px - between elements */
   }
+  
   .dark {
-    --background: 20 14% 4%;
-    --foreground: 60 9% 98%;
-    --card: 20 14% 4%;
-    --card-foreground: 60 9% 98%;
-    --popover: 20 14% 4%;
-    --popover-foreground: 60 9% 98%;
+    /* Base colors - warm dark theme */
+    --background: 20 14% 6%;
+    --foreground: 24 10% 97%;
+    
+    /* Card colors */
+    --card: 20 14% 8%;
+    --card-foreground: 24 10% 97%;
+    
+    /* Popover colors */
+    --popover: 20 14% 8%;
+    --popover-foreground: 24 10% 97%;
+    
+    /* Primary - Orange theme (same) */
     --primary: 24 94% 55%;
-    --primary-foreground: 60 9% 98%;
-    --secondary: 12 6% 15%;
-    --secondary-foreground: 60 9% 98%;
-    --muted: 12 6% 15%;
-    --muted-foreground: 24 5% 64%;
-    --accent: 12 6% 15%;
-    --accent-foreground: 60 9% 98%;
-    --destructive: 0 63% 31%;
-    --destructive-foreground: 60 9% 98%;
-    --border: 12 6% 15%;
-    --input: 12 6% 15%;
+    --primary-foreground: 20 14% 6%;
+    --primary-light: 24 100% 65%;
+    --primary-dark: 24 94% 45%;
+    
+    /* Secondary - Warm dark accent */
+    --secondary: 24 20% 14%;
+    --secondary-foreground: 24 10% 97%;
+    
+    /* Muted colors */
+    --muted: 24 15% 12%;
+    --muted-foreground: 24 8% 60%;
+    
+    /* Accent colors */
+    --accent: 24 20% 14%;
+    --accent-foreground: 24 10% 97%;
+    
+    /* Destructive */
+    --destructive: 0 72% 51%;
+    --destructive-foreground: 0 0% 98%;
+    
+    /* Borders and inputs */
+    --border: 24 20% 18%;
+    --input: 24 20% 18%;
     --ring: 24 94% 55%;
+    
+    /* Chart colors - same warm palette */
     --chart-1: 24 94% 55%;
     --chart-2: 33 100% 50%;
     --chart-3: 45 100% 50%;
@@ -293,6 +343,33 @@ button:disabled {
     transform: scale(0.96);
     opacity: 0.8;
   }
+}
+
+/* Consistent spacing utilities */
+.section-spacing {
+  padding-top: var(--section-gap);
+  padding-bottom: var(--section-gap);
+}
+
+.section-gap {
+  gap: var(--section-gap);
+}
+
+.component-gap {
+  gap: var(--component-gap);
+}
+
+.element-gap {
+  gap: var(--element-gap);
+}
+
+/* Section backgrounds with warm tones */
+.section-bg-primary {
+  background: linear-gradient(135deg, hsl(var(--secondary)) 0%, hsl(var(--accent)) 100%);
+}
+
+.section-bg-secondary {
+  background: linear-gradient(180deg, transparent 0%, hsl(var(--muted) / 0.3) 50%, transparent 100%);
 }
 
 /* Status indicators */

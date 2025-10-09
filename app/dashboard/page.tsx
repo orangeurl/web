@@ -62,27 +62,27 @@ export default function DashboardPage() {
           viewport={{ once: true }}
           className="max-w-2xl mx-auto"
         >
-          <Card className="card-hover border-2 border-primary/20 bg-orange-100/30 dark:bg-orange-800/15 backdrop-blur-sm">
+          <Card className="card-hover border-2 border-primary/20 bg-gradient-to-br from-orange-50/50 via-card to-secondary/10 dark:from-orange-950/20 dark:via-card dark:to-secondary/5 backdrop-blur-sm shadow-xl">
             <CardContent className="p-12 text-center space-y-6">
-              <div className="w-20 h-20 bg-gradient-to-r from-primary to-orange-600 rounded-full flex items-center justify-center text-white mx-auto mb-6">
+              <div className="w-20 h-20 bg-gradient-to-r from-primary to-orange-600 rounded-2xl flex items-center justify-center text-white mx-auto mb-6 shadow-lg">
                 <Lock className="w-10 h-10" />
               </div>
               
-              <h2 className="text-2xl font-bold">Login Required</h2>
-              <p className="text-muted-foreground">
-                Please login to access your dashboard and manage your short links
+              <h2 className="text-2xl font-bold gradient-text-primary">Login Required</h2>
+              <p className="text-muted-foreground leading-relaxed">
+                Please login to access your dashboard and manage your short links with advanced analytics
               </p>
               
               <div className="space-y-4">
                 <SignInButton mode="modal">
-                  <Button className="btn-primary px-8 py-3">
+                  <Button className="btn-primary px-8 py-3 text-lg">
                     Login to Dashboard
                   </Button>
                 </SignInButton>
                 <p className="text-sm text-muted-foreground">
                   Don't have an account? 
                   <SignUpButton mode="modal">
-                    <span className="text-primary font-medium cursor-pointer hover:underline ml-1">
+                    <span className="text-primary font-medium cursor-pointer hover:underline ml-1 transition-colors">
                       Sign up here
                     </span>
                   </SignUpButton>
@@ -121,13 +121,13 @@ export default function DashboardPage() {
             }
           ].map((feature, index) => (
             <motion.div key={index} variants={fadeInUp}>
-              <Card className="card-hover border-2 hover:border-primary/20 bg-orange-100/30 dark:bg-orange-800/15 backdrop-blur-sm">
+              <Card className="card-hover border-2 border-border/50 hover:border-primary/30 bg-gradient-to-br from-card to-secondary/5 backdrop-blur-sm shadow-lg hover:shadow-xl transition-all">
                 <CardContent className="p-6 text-center">
-                  <div className={`w-12 h-12 bg-gradient-to-r ${feature.color} rounded-lg flex items-center justify-center text-white mx-auto mb-4`}>
+                  <div className={`w-12 h-12 bg-gradient-to-r ${feature.color} rounded-xl flex items-center justify-center text-white mx-auto mb-4 shadow-lg`}>
                     {feature.icon}
                   </div>
-                  <h3 className="font-bold text-lg mb-2">{feature.title}</h3>
-                  <p className="text-sm text-muted-foreground">{feature.description}</p>
+                  <h3 className="font-bold text-lg mb-2 gradient-text-primary">{feature.title}</h3>
+                  <p className="text-sm text-muted-foreground leading-relaxed">{feature.description}</p>
                 </CardContent>
               </Card>
             </motion.div>
@@ -206,17 +206,17 @@ export default function DashboardPage() {
           }
         ].map((stat, index) => (
           <motion.div key={index} variants={fadeInUp}>
-            <Card className="card-hover">
+            <Card className="card-hover border-2 border-border/50 hover:border-primary/30 bg-gradient-to-br from-card to-secondary/5 shadow-lg hover:shadow-xl transition-all">
               <CardContent className="p-6">
                 <div className="flex items-center justify-between mb-4">
-                  <div className={`w-10 h-10 bg-gradient-to-r ${stat.color} rounded-lg flex items-center justify-center text-white`}>
+                  <div className={`w-10 h-10 bg-gradient-to-r ${stat.color} rounded-xl flex items-center justify-center text-white shadow-lg`}>
                     {stat.icon}
                   </div>
                 </div>
                 <div className="space-y-1">
-                  <p className="text-sm text-muted-foreground">{stat.title}</p>
-                  <p className="text-2xl font-bold">{stat.value}</p>
-                  <p className="text-xs text-green-600">{stat.change}</p>
+                  <p className="text-sm text-muted-foreground font-medium">{stat.title}</p>
+                  <p className="text-2xl font-bold gradient-text-primary">{stat.value}</p>
+                  <p className="text-xs text-green-600 font-medium">{stat.change}</p>
                 </div>
               </CardContent>
             </Card>
@@ -233,10 +233,10 @@ export default function DashboardPage() {
         variants={staggerContainer}
       >
         <motion.div variants={fadeInUp}>
-          <Card>
+          <Card className="border-2 border-border/50 bg-gradient-to-br from-card to-secondary/5 shadow-lg">
             <CardHeader>
               <div className="flex items-center justify-between">
-                <h2 className="text-xl font-bold">Recent Links</h2>
+                <h2 className="text-xl font-bold gradient-text-primary">Recent Links</h2>
                 <Button className="btn-primary">
                   <Plus className="w-4 h-4 mr-2" />
                   Create New
@@ -297,9 +297,9 @@ export default function DashboardPage() {
         </motion.div>
 
         <motion.div variants={fadeInUp}>
-          <Card>
+          <Card className="border-2 border-border/50 bg-gradient-to-br from-card to-secondary/5 shadow-lg">
             <CardHeader>
-              <h2 className="text-xl font-bold">Analytics Overview</h2>
+              <h2 className="text-xl font-bold gradient-text-primary">Analytics Overview</h2>
             </CardHeader>
             <CardContent>
               <div className="space-y-6">

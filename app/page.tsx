@@ -21,7 +21,8 @@ import {
   Download,
   Brain,
   Lock,
-  Copy
+  Copy,
+  Crown
 } from 'lucide-react';
 import { useState, useCallback, useEffect, useRef } from 'react';
 import { useToast } from '@/hooks/use-toast';
@@ -387,7 +388,7 @@ export default function Home() {
         toast({
           title: "Error",
           description: "Please enter a URL",
-          className: "bg-gradient-to-r from-orange-100 to-red-100 dark:from-orange-900/30 dark:to-red-900/30 border-orange-200 text-orange-900 dark:text-orange-100",
+          className: "border-2 border-primary/20 bg-card text-card-foreground shadow-lg",
         });
       return;
     }
@@ -397,7 +398,7 @@ export default function Home() {
         toast({
           title: "Error",
           description: "Please enter a valid URL",
-          className: "bg-gradient-to-r from-orange-100 to-red-100 dark:from-orange-900/30 dark:to-red-900/30 border-orange-200 text-orange-900 dark:text-orange-100",
+          className: "border-2 border-primary/20 bg-card text-card-foreground shadow-lg",
         });
       return;
     }
@@ -412,7 +413,7 @@ export default function Home() {
         toast({
           title: "Error",
           description: "Custom short is already taken",
-          className: "bg-gradient-to-r from-orange-100 to-red-100 dark:from-orange-900/30 dark:to-red-900/30 border-orange-200 text-orange-900 dark:text-orange-100",
+          className: "border-2 border-primary/20 bg-card text-card-foreground shadow-lg",
         });
       return;
     }
@@ -443,7 +444,7 @@ export default function Home() {
         toast({
           title: "Error",
           description: errorMessage,
-          className: "bg-gradient-to-r from-orange-100 to-red-100 dark:from-orange-900/30 dark:to-red-900/30 border-orange-200 text-orange-900 dark:text-orange-100",
+          className: "border-2 border-primary/20 bg-card text-card-foreground shadow-lg",
         });
         return;
       }
@@ -453,7 +454,7 @@ export default function Home() {
         toast({
           title: "Error", 
           description: data.error,
-          className: "bg-gradient-to-r from-orange-100 to-red-100 dark:from-orange-900/30 dark:to-red-900/30 border-orange-200 text-orange-900 dark:text-orange-100",
+          className: "border-2 border-primary/20 bg-card text-card-foreground shadow-lg",
         });
       } else {
         const shortUrl = data.shortUrl || data.CustomShort || data.short;
@@ -471,7 +472,7 @@ export default function Home() {
         toast({
           title: "Success!",
           description: customShort ? `Custom short created: ${customShort}` : "URL shortened successfully",
-          className: "bg-orange-50 border-orange-200 text-orange-600 dark:bg-orange-900/20 dark:border-orange-800 dark:text-orange-300",
+          className: "border-2 border-primary/30 bg-primary/10 text-primary shadow-lg",
         });
       }
     } catch (err) {
@@ -480,7 +481,7 @@ export default function Home() {
         toast({
           title: "Network Error",
           description: errorMessage,
-          className: "bg-gradient-to-r from-orange-100 to-red-100 dark:from-orange-900/30 dark:to-red-900/30 border-orange-200 text-orange-900 dark:text-orange-100",
+          className: "border-2 border-primary/20 bg-card text-card-foreground shadow-lg",
         });
     } finally {
       setIsLoading(false);
@@ -495,14 +496,14 @@ export default function Home() {
         toast({
           title: "Link copied!",
           description: "Short URL copied to clipboard",
-          className: "bg-gradient-to-r from-orange-100 to-red-100 dark:from-orange-900/30 dark:to-red-900/30 border-orange-200 text-orange-900 dark:text-orange-100",
+          className: "border-2 border-primary/20 bg-card text-card-foreground shadow-lg",
         });
         setTimeout(() => setCopied(false), 2000);
       } catch (err) {
         toast({
           title: "Copy failed",
           description: "Failed to copy to clipboard",
-          className: "bg-gradient-to-r from-orange-100 to-red-100 dark:from-orange-900/30 dark:to-red-900/30 border-orange-200 text-orange-900 dark:text-orange-100",
+          className: "border-2 border-primary/20 bg-card text-card-foreground shadow-lg",
         });
       }
     }
@@ -525,13 +526,13 @@ export default function Home() {
         toast({
           title: "QR Code copied!",
           description: "QR code image copied to clipboard",
-          className: "bg-gradient-to-r from-orange-100 to-red-100 dark:from-orange-900/30 dark:to-red-900/30 border-orange-200 text-orange-900 dark:text-orange-100",
+          className: "border-2 border-primary/20 bg-card text-card-foreground shadow-lg",
         });
       } catch (err) {
         toast({
           title: "Copy failed",
           description: "Failed to copy QR code to clipboard",
-          className: "bg-gradient-to-r from-orange-100 to-red-100 dark:from-orange-900/30 dark:to-red-900/30 border-orange-200 text-orange-900 dark:text-orange-100",
+          className: "border-2 border-primary/20 bg-card text-card-foreground shadow-lg",
         });
       }
     }
@@ -667,7 +668,7 @@ export default function Home() {
                           toast({
                             title: "Unlock AI Features",
                             description: "Upgrade to Pro to use AI-powered short URL generation",
-                            className: "bg-gradient-to-r from-orange-50 to-amber-50 border-orange-200 text-orange-900 shadow-lg backdrop-blur-sm",
+                            className: "border-2 border-primary/20 bg-card text-card-foreground shadow-lg",
                           });
                         } : undefined}
                       >
@@ -919,19 +920,25 @@ export default function Home() {
         viewport={{ once: true }}
         variants={staggerContainer}
       >
-        <motion.div variants={fadeInUp} className="text-center space-y-4">
-          <h2 className="text-4xl md:text-5xl font-bold">Track Your Social Media Performance</h2>
-          <p className="text-xl text-muted-foreground max-w-3xl mx-auto">
+        <motion.div variants={fadeInUp} className="text-center space-y-5 md:space-y-6">
+          <div className="inline-flex items-center px-4 py-2 bg-gradient-to-r from-blue-100 to-cyan-100 dark:from-blue-900/30 dark:to-cyan-900/30 border border-blue-200/50 dark:border-blue-800/50 rounded-full text-sm font-semibold shadow-sm">
+            <Users className="w-4 h-4 mr-2 text-blue-600 dark:text-blue-400" />
+            Real Success Stories
+          </div>
+          <h2 className="text-3xl md:text-4xl lg:text-5xl font-bold px-4">
+            Track Your <span className="gradient-text-primary">Social Media Performance</span>
+          </h2>
+          <p className="text-lg md:text-xl text-muted-foreground max-w-3xl mx-auto leading-relaxed">
             See how influencers and creators use OrangeURL to track their bio links and grow their audience
           </p>
         </motion.div>
 
         <motion.div 
           variants={fadeInUp}
-          className="max-w-2xl mx-auto"
+          className="max-w-3xl mx-auto"
         >
-          <Card className="card-hover border border-border/20 bg-orange-100/30 dark:bg-orange-800/15 backdrop-blur-sm">
-            <CardContent className="p-8">
+          <Card className="card-hover border-2 border-border/30 bg-gradient-to-br from-orange-50/50 via-card to-secondary/10 dark:from-orange-950/20 dark:via-card dark:to-secondary/5 backdrop-blur-sm shadow-xl">
+            <CardContent className="p-6 md:p-8 lg:p-10">
               {/* Twitter Profile Header */}
               <div className="flex items-start space-x-4 mb-6">
                 <div className="w-16 h-16 rounded-full overflow-hidden border-2 border-blue-300 shadow-lg">

@@ -134,33 +134,35 @@ export default function PricingPage() {
             className="relative"
           >
             {plan.popular && (
-              <div className="absolute -top-4 left-1/2 transform -translate-x-1/2">
-                <div className="bg-gradient-to-r from-primary to-orange-600 text-white px-4 py-2 rounded-full text-sm font-medium flex items-center">
-                  <Crown className="w-4 h-4 mr-1" />
+              <div className="absolute -top-5 left-1/2 transform -translate-x-1/2 z-20">
+                <div className="bg-gradient-to-r from-primary to-orange-600 text-white px-5 py-2.5 rounded-full text-sm font-bold flex items-center shadow-lg">
+                  <Crown className="w-4 h-4 mr-1.5" />
                   Most Popular
                 </div>
               </div>
             )}
             
             <Card className={`h-full card-hover relative overflow-hidden ${
-              plan.popular ? 'border-2 border-primary shadow-xl scale-105' : 'border-2 hover:border-primary/20'
+              plan.popular 
+                ? 'border-2 border-primary shadow-2xl shadow-primary/20 scale-105 bg-gradient-to-br from-card via-card to-primary/5' 
+                : 'border-2 border-border/50 hover:border-primary/30 bg-gradient-to-br from-card to-secondary/5'
             }`}>
               {plan.popular && (
-                <div className="absolute inset-0 bg-gradient-to-br from-primary/5 to-orange-500/5" />
+                <div className="absolute inset-0 bg-gradient-to-br from-primary/5 via-transparent to-orange-500/5" />
               )}
               
-              <CardHeader className="text-center pb-8 relative z-10">
-                <h3 className="text-2xl font-bold">{plan.name}</h3>
-                <div className="space-y-2">
+              <CardHeader className="text-center pb-6 md:pb-8 pt-8 md:pt-10 relative z-10">
+                <h3 className="text-2xl md:text-3xl font-bold mb-4">{plan.name}</h3>
+                <div className="space-y-3">
                   <div className="flex items-baseline justify-center">
-                    <span className="text-4xl font-bold">{plan.price}</span>
-                    <span className="text-muted-foreground ml-2">/{plan.period}</span>
+                    <span className="text-4xl md:text-5xl font-bold gradient-text-primary">{plan.price}</span>
+                    <span className="text-muted-foreground ml-2 text-base">/{plan.period}</span>
                   </div>
-                  <p className="text-muted-foreground">{plan.description}</p>
+                  <p className="text-muted-foreground text-sm md:text-base">{plan.description}</p>
                 </div>
               </CardHeader>
 
-              <CardContent className="space-y-6 relative z-10">
+              <CardContent className="space-y-6 md:space-y-8 px-6 pb-8 relative z-10">
                 <ul className="space-y-4">
                   {plan.features.map((feature, idx) => (
                     <li key={idx} className="flex items-center">
@@ -198,15 +200,21 @@ export default function PricingPage() {
         viewport={{ once: true }}
         variants={staggerContainer}
       >
-        <motion.div variants={fadeInUp} className="text-center space-y-4">
-          <h2 className="text-3xl md:text-4xl font-bold">Why Choose OrangeURL?</h2>
-          <p className="text-xl text-muted-foreground max-w-3xl mx-auto">
+        <motion.div variants={fadeInUp} className="text-center space-y-5 md:space-y-6">
+          <div className="inline-flex items-center px-4 py-2 bg-gradient-to-r from-blue-100 to-indigo-100 dark:from-blue-900/30 dark:to-indigo-900/30 border border-blue-200/50 dark:border-blue-800/50 rounded-full text-sm font-semibold shadow-sm">
+            <Shield className="w-4 h-4 mr-2 text-blue-600 dark:text-blue-400" />
+            Why OrangeURL
+          </div>
+          <h2 className="text-3xl md:text-4xl lg:text-5xl font-bold px-4">
+            Why Choose <span className="gradient-text-primary">OrangeURL?</span>
+          </h2>
+          <p className="text-lg md:text-xl text-muted-foreground max-w-3xl mx-auto leading-relaxed">
             Built for performance, designed for growth, trusted by professionals worldwide
           </p>
         </motion.div>
 
         <motion.div 
-          className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8"
+          className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 md:gap-8"
           variants={staggerContainer}
         >
           {[
@@ -234,13 +242,14 @@ export default function PricingPage() {
             <motion.div
               key={index}
               variants={fadeInUp}
-              className="text-center space-y-4"
+              className="text-center space-y-4 p-6 rounded-2xl bg-gradient-to-br from-secondary/20 to-accent/10 border border-border/30 hover:border-primary/30 transition-all"
+              whileHover={{ y: -4, scale: 1.02 }}
             >
               <div className="w-16 h-16 bg-gradient-to-r from-primary to-orange-600 rounded-xl flex items-center justify-center text-white mx-auto shadow-lg">
                 {feature.icon}
               </div>
-              <h3 className="text-xl font-semibold">{feature.title}</h3>
-              <p className="text-muted-foreground">{feature.description}</p>
+              <h3 className="text-lg md:text-xl font-bold">{feature.title}</h3>
+              <p className="text-sm md:text-base text-muted-foreground leading-relaxed">{feature.description}</p>
             </motion.div>
           ))}
         </motion.div>
@@ -254,12 +263,18 @@ export default function PricingPage() {
         viewport={{ once: true }}
         variants={staggerContainer}
       >
-        <motion.div variants={fadeInUp} className="text-center space-y-4">
-          <h2 className="text-3xl md:text-4xl font-bold">Frequently Asked Questions</h2>
+        <motion.div variants={fadeInUp} className="text-center space-y-5 md:space-y-6">
+          <div className="inline-flex items-center px-4 py-2 bg-gradient-to-r from-amber-100 to-yellow-100 dark:from-amber-900/30 dark:to-yellow-900/30 border border-amber-200/50 dark:border-amber-800/50 rounded-full text-sm font-semibold shadow-sm">
+            <Sparkles className="w-4 h-4 mr-2 text-amber-600 dark:text-amber-400" />
+            Common Questions
+          </div>
+          <h2 className="text-3xl md:text-4xl lg:text-5xl font-bold px-4">
+            Frequently Asked <span className="gradient-text-primary">Questions</span>
+          </h2>
         </motion.div>
 
         <motion.div 
-          className="grid grid-cols-1 md:grid-cols-2 gap-8 max-w-4xl mx-auto"
+          className="grid grid-cols-1 md:grid-cols-2 gap-6 md:gap-8 max-w-5xl mx-auto"
           variants={staggerContainer}
         >
           {[
@@ -283,10 +298,10 @@ export default function PricingPage() {
             <motion.div
               key={index}
               variants={fadeInUp}
-              className="space-y-3"
+              className="space-y-3 p-6 rounded-2xl bg-gradient-to-br from-secondary/20 to-accent/10 border border-border/30 hover:border-primary/20 transition-all"
             >
-              <h3 className="text-lg font-semibold">{faq.question}</h3>
-              <p className="text-muted-foreground">{faq.answer}</p>
+              <h3 className="text-base md:text-lg font-bold text-foreground">{faq.question}</h3>
+              <p className="text-sm md:text-base text-muted-foreground leading-relaxed">{faq.answer}</p>
             </motion.div>
           ))}
         </motion.div>
