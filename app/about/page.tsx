@@ -139,22 +139,17 @@ export default function AboutPage() {
         </motion.div>
       </motion.section>
 
-
       {/* CTA */}
       <motion.section 
-        className="text-center py-16 relative overflow-hidden"
+        className="text-center py-16 relative overflow-hidden card-hover"
         initial="initial"
         whileInView="animate"
         viewport={{ once: true, amount: 0.1 }}
         variants={fadeInUp}
       >
-        <div className="absolute inset-0 bg-gradient-to-r from-primary/5 via-orange-500/10 to-primary/5 rounded-3xl border-2 border-primary/10" />
+        <div className="absolute inset-0 bg-gradient-to-r from-primary/10 via-orange-500/20 to-primary/10 rounded-3xl border-2 border-primary/20 shadow-2xl shadow-primary/10" />
         
         <div className="relative z-10 space-y-6 md:space-y-8 max-w-4xl mx-auto">
-          <div className="inline-flex items-center px-4 py-2 bg-gradient-to-r from-green-100 to-emerald-100 dark:from-green-900/30 dark:to-emerald-900/30 border border-green-200/50 dark:border-green-800/50 rounded-full text-sm font-semibold shadow-sm">
-            <ArrowRight className="w-4 h-4 mr-2 text-green-600 dark:text-green-400" />
-            Join the Revolution
-          </div>
           <h2 className="text-3xl md:text-4xl lg:text-5xl font-bold px-4">
             Ready to <span className="gradient-text-primary">Join Us?</span>
           </h2>

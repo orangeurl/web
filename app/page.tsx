@@ -869,7 +869,7 @@ export default function Home() {
           <div className="text-center mt-4 space-y-2">
             <div className="inline-flex items-center px-3 py-1 bg-gradient-to-r from-orange-100 to-red-100 dark:from-orange-900/30 dark:to-red-900/30 rounded-full text-xs font-medium border border-orange-200 dark:border-orange-800">
               <Sparkles className="w-3 h-3 mr-1" />
-              <span>Trial phase, Links expire in 24 hours - </span>
+              <span>Trial phase login to get pro for free, Links expire in 24 hours - </span>
               <button 
                 onClick={() => {
                   const event = new CustomEvent('openWaitlist', { detail: { plan: 'Free' } });

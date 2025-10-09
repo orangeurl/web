@@ -133,14 +133,6 @@ export default function PricingPage() {
             variants={fadeInUp}
             className="relative"
           >
-            {plan.popular && (
-              <div className="absolute -top-5 left-1/2 transform -translate-x-1/2 z-20">
-                <div className="bg-gradient-to-r from-primary to-orange-600 text-white px-5 py-2.5 rounded-full text-sm font-bold flex items-center shadow-lg">
-                  <Crown className="w-4 h-4 mr-1.5" />
-                  Most Popular
-                </div>
-              </div>
-            )}
             
             <Card className={`h-full card-hover relative overflow-hidden ${
               plan.popular 
@@ -292,7 +284,7 @@ export default function PricingPage() {
             },
             {
               question: "How do QR codes work with my links?",
-              answer: "Every shortened link automatically gets a QR code. Pro and Premium plans allow custom QR code generation with your branding and colors."
+              answer: "Every shortened link automatically gets a QR code. Pro and Premium plans allow custom QR code generation with your branding and colors. By default, we have 1 year expiry date for free plan users, while all other plans have a 5 year range for link expiry. Only Premium users can modify and customize their link expiry dates."
             }
           ].map((faq, index) => (
             <motion.div
@@ -306,6 +298,7 @@ export default function PricingPage() {
           ))}
         </motion.div>
       </motion.section>
+
 
       <WaitlistDialog 
         isOpen={waitlistOpen}
