@@ -9,12 +9,13 @@ import { Button } from './ui/button';
 import { cn } from '@/lib/utils';
 import { Menu, X, Link as LinkIcon, User } from 'lucide-react';
 
-const navItems = [
-  { href: '/', label: 'Home' },
-  { href: '/dashboard', label: 'Dashboard' },
-  { href: '/pricing', label: 'Pricing' },
-  { href: '/about', label: 'About' },
-];
+  const navItems = [
+    { href: '/', label: 'Home' },
+    { href: '/bio', label: 'Bio' },
+    { href: '/dashboard', label: 'Dashboard' },
+    { href: '/pricing', label: 'Pricing' },
+    { href: '/about', label: 'About' },
+  ];
 
 export function Navbar() {
   const [isScrolled, setIsScrolled] = useState(false);

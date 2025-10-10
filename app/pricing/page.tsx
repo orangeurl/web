@@ -39,11 +39,13 @@ const pricingPlans = [
     features: [
       { name: "5 links per month", included: true },
       { name: "Advanced analytics", included: true },
-      { name: "Custom domains", included: false },
+      { name: "Custom Links", included: false },
       { name: "Custom QR Codes", included: false },
+      { name: "Bio/Product links", included: false },
       { name: "Priority support", included: false },
       { name: "AI shortener feature", included: false },
-      { name: "Custom link expiry", included: false }
+      { name: "Custom link expiry", included: false },
+      { name: "Lock Links", included: false }
     ],
     buttonText: "Get Started",
     buttonVariant: "outline" as const,
@@ -59,9 +61,11 @@ const pricingPlans = [
       { name: "Advanced analytics", included: true },
       { name: "5 Custom links per month", included: true },
       { name: "5 Custom QR Codes per month", included: true },
+      { name: "1 Bio/Product links", included: true },
       { name: "Priority support", included: true },
       { name: "AI shortener feature", included: true },
-      { name: "Custom link expiry", included: false }
+      { name: "Custom link expiry", included: false },
+      { name: "Lock Links", included: false }
     ],
     buttonText: "Get Pro",
     buttonVariant: "default" as const,
@@ -77,9 +81,11 @@ const pricingPlans = [
       { name: "Advanced analytics", included: true },
       { name: "15 Custom links per month", included: true },
       { name: "15 Custom QR Codes per month", included: true },
+      { name: "3 Bio/Product links", included: true },
       { name: "Priority support", included: true },
       { name: "AI shortener feature", included: true },
-      { name: "Custom link expiry", included: true }
+      { name: "Custom link expiry", included: true },
+      { name: "Lock Links", included: true }
     ],
     buttonText: "Get Premium",
     buttonVariant: "outline" as const,
@@ -283,8 +289,8 @@ export default function PricingPage() {
               answer: "Yes, we offer refunds until you haven't used any of the extra features that are supported with your plan after purchasing."
             },
             {
-              question: "What is the expiry date for my link?",
-              answer: "By default, we have 1 year expiry date for free plan users, while all other plans have a 5 year range for link expiry. Only Premium users can modify and customize their link expiry dates."
+              question: "How do QR codes work with my links?",
+              answer: "Every shortened link automatically gets a QR code. Pro and Premium plans allow custom QR code generation with your branding and colors."
             }
           ].map((faq, index) => (
             <motion.div
@@ -298,7 +304,6 @@ export default function PricingPage() {
           ))}
         </motion.div>
       </motion.section>
-
 
       <WaitlistDialog 
         isOpen={waitlistOpen}

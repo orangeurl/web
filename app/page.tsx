@@ -1131,9 +1131,9 @@ export default function Home() {
         <div className="absolute inset-0 bg-gradient-to-r from-primary/10 via-orange-500/10 to-primary/10 rounded-3xl" />
         
         <div className="relative z-10 space-y-6">
-          <h2 className="text-3xl md:text-4xl font-bold">Want a Custom Domain?</h2>
+          <h2 className="text-3xl md:text-4xl font-bold">Ready to Supercharge Your Links?</h2>
           <p className="text-xl text-muted-foreground max-w-2xl mx-auto">
-            Upgrade to Pro and get your own branded short links with advanced analytics and priority support.
+            Upgrade to Pro and unlock powerful features like custom short URLs, advanced analytics, QR codes, and priority support.
           </p>
           <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
             <Button size="lg" className="btn-primary text-lg px-10 py-6" asChild>
