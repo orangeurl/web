@@ -40,6 +40,30 @@ export function Footer() {
                   </span>
                 </Link>
               </li>
+              <li>
+                <Link 
+                  href="/" 
+                  className="text-muted-foreground hover:text-primary transition-colors"
+                >
+                  URL Shortener
+                </Link>
+              </li>
+              <li>
+                <Link 
+                  href="/" 
+                  className="text-muted-foreground hover:text-primary transition-colors"
+                >
+                  QR Code Generator
+                </Link>
+              </li>
+              <li>
+                <Link 
+                  href="/" 
+                  className="text-muted-foreground hover:text-primary transition-colors"
+                >
+                  Link Analytics
+                </Link>
+              </li>
             </ul>
           </div>
 
@@ -52,23 +76,7 @@ export function Footer() {
                   href="/about" 
                   className="text-muted-foreground hover:text-primary transition-colors"
                 >
-                  About
-                </Link>
-              </li>
-              <li>
-                <Link 
-                  href="/support" 
-                  className="text-muted-foreground hover:text-primary transition-colors"
-                >
-                  Support
-                </Link>
-              </li>
-              <li>
-                <Link 
-                  href="/faq" 
-                  className="text-muted-foreground hover:text-primary transition-colors"
-                >
-                  FAQ
+                  About Us
                 </Link>
               </li>
               <li>
@@ -77,6 +85,22 @@ export function Footer() {
                   className="text-muted-foreground hover:text-primary transition-colors"
                 >
                   Pricing
+                </Link>
+              </li>
+              <li>
+                <Link 
+                  href="/blog" 
+                  className="text-muted-foreground hover:text-primary transition-colors"
+                >
+                  Blog & Resources
+                </Link>
+              </li>
+              <li>
+                <Link 
+                  href="/support" 
+                  className="text-muted-foreground hover:text-primary transition-colors"
+                >
+                  Support
                 </Link>
               </li>
             </ul>
@@ -148,7 +172,7 @@ export function Footer() {
             © 2025 OrangeURL. All rights reserved.
           </div>
           <div className="text-sm text-muted-foreground">
-            Made with <span className="text-primary">❤</span> for the web
+            Made with <span className="text-primary">❤</span> for businesses worldwide
           </div>
         </div>
       </div>

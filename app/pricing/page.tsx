@@ -1,7 +1,8 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
+import Head from 'next/head';
 import { Card, CardContent, CardHeader } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { WaitlistDialog } from '@/components/WaitlistDialog';
@@ -13,7 +14,8 @@ import {
   BarChart3, 
   Shield, 
   Crown,
-  Sparkles
+  Sparkles,
+  ArrowRight
 } from 'lucide-react';
 
 const fadeInUp = {
@@ -39,6 +41,7 @@ const pricingPlans = [
     features: [
       { name: "5 links per month", included: true },
       { name: "Advanced analytics", included: true },
+      { name: "1 month Analytics data retention", included: true },
       { name: "Custom Links", included: false },
       { name: "Custom QR Codes", included: false },
       { name: "Bio/Product links", included: false },
@@ -59,6 +62,7 @@ const pricingPlans = [
     features: [
       { name: "100 links per month", included: true },
       { name: "Advanced analytics", included: true },
+      { name: "1 year Analytics data retention", included: true },
       { name: "5 Custom links per month", included: true },
       { name: "5 Custom QR Codes per month", included: true },
       { name: "1 Bio/Product links", included: true },
@@ -79,6 +83,7 @@ const pricingPlans = [
     features: [
       { name: "500 links per month", included: true },
       { name: "Advanced analytics", included: true },
+      { name: "Custom Analytics data retention expiry", included: true },
       { name: "15 Custom links per month", included: true },
       { name: "15 Custom QR Codes per month", included: true },
       { name: "3 Bio/Product links", included: true },
@@ -96,10 +101,134 @@ const pricingPlans = [
 export default function PricingPage() {
   const [waitlistOpen, setWaitlistOpen] = useState(false);
   const [selectedPlan, setSelectedPlan] = useState<string>('');
+  const [billingCycle, setBillingCycle] = useState<'monthly' | 'annual'>('monthly');
 
   const handlePlanClick = (planName: string) => {
     setSelectedPlan(planName);
     setWaitlistOpen(true);
+  };
+
+  // Add structured data for pricing and FAQ
+  useEffect(() => {
+    // Pricing Schema
+    const pricingScript = document.createElement('script');
+    pricingScript.type = 'application/ld+json';
+    pricingScript.text = JSON.stringify({
+      '@context': 'https://schema.org',
+      '@type': 'Product',
+      name: 'OrangeURL - URL Shortener Service',
+      description: 'Affordable URL shortening and link management service with custom links, QR codes, and analytics',
+      brand: {
+        '@type': 'Brand',
+        name: 'OrangeURL'
+      },
+      offers: [
+        {
+          '@type': 'Offer',
+          name: 'Free Plan',
+          price: '0',
+          priceCurrency: 'USD',
+          availability: 'https://schema.org/InStock',
+          url: 'https://app.orangeurl.live/pricing',
+          description: 'Perfect for personal use - 5 links per month with advanced analytics'
+        },
+        {
+          '@type': 'Offer',
+          name: 'Pro Plan',
+          price: '5.00',
+          priceCurrency: 'USD',
+          priceValidUntil: '2025-12-31',
+          availability: 'https://schema.org/InStock',
+          url: 'https://app.orangeurl.live/pricing',
+          description: 'Ideal for professionals - 100 links, 5 custom links, QR codes, and AI features per month',
+          eligibleRegion: ['US', 'GB', 'CA', 'AU', 'DE', 'FR', 'IT', 'ES', 'NL', 'SE', 'NO', 'DK', 'FI']
+        },
+        {
+          '@type': 'Offer',
+          name: 'Premium Plan',
+          price: '15.00',
+          priceCurrency: 'USD',
+          priceValidUntil: '2025-12-31',
+          availability: 'https://schema.org/InStock',
+          url: 'https://app.orangeurl.live/pricing',
+          description: 'For power users - 500 links, 15 custom links, advanced features, and priority support',
+          eligibleRegion: ['US', 'GB', 'CA', 'AU', 'DE', 'FR', 'IT', 'ES', 'NL', 'SE', 'NO', 'DK', 'FI']
+        }
+      ],
+      aggregateRating: {
+        '@type': 'AggregateRating',
+        ratingValue: '4.8',
+        reviewCount: '100'
+      }
+    });
+    
+    // FAQ Schema
+    const faqScript = document.createElement('script');
+    faqScript.type = 'application/ld+json';
+    faqScript.text = JSON.stringify({
+      '@context': 'https://schema.org',
+      '@type': 'FAQPage',
+      mainEntity: [
+        {
+          '@type': 'Question',
+          name: 'Can I upgrade or downgrade my plan?',
+          acceptedAnswer: {
+            '@type': 'Answer',
+            text: 'Yes, you can change your plan at any time. Changes take effect immediately and we\'ll prorate the billing accordingly.'
+          }
+        },
+        {
+          '@type': 'Question',
+          name: 'What happens to my links if I downgrade?',
+          acceptedAnswer: {
+            '@type': 'Answer',
+            text: 'Your existing links will continue to work. However, you may hit usage limits for new links based on your plan.'
+          }
+        },
+        {
+          '@type': 'Question',
+          name: 'Do you offer refunds?',
+          acceptedAnswer: {
+            '@type': 'Answer',
+            text: 'Yes, we offer refunds until you haven\'t used any of the extra features that are supported with your plan after purchasing.'
+          }
+        },
+        {
+          '@type': 'Question',
+          name: 'How do QR codes work with my links?',
+          acceptedAnswer: {
+            '@type': 'Answer',
+            text: 'Every shortened link automatically gets a QR code. Pro and Premium plans allow custom QR code generation with your branding and colors.'
+          }
+        },
+        {
+          '@type': 'Question',
+          name: 'How does OrangeURL pricing compare to Bitly?',
+          acceptedAnswer: {
+            '@type': 'Answer',
+            text: 'OrangeURL Pro plan costs $5/month compared to Bitly\'s $29/month, saving you 83%. You get similar features including custom links, QR codes, and analytics at a fraction of the cost.'
+          }
+        }
+      ]
+    });
+    
+    document.head.appendChild(pricingScript);
+    document.head.appendChild(faqScript);
+    
+    return () => {
+      document.head.removeChild(pricingScript);
+      document.head.removeChild(faqScript);
+    };
+  }, []);
+
+  const getPrice = (plan: string) => {
+    if (billingCycle === 'annual') {
+      if (plan === 'Pro') return { price: '$50', period: 'per year', monthly: '$4.17/month' };
+      if (plan === 'Premium') return { price: '$150', period: 'per year', monthly: '$12.50/month' };
+    }
+    if (plan === 'Pro') return { price: '$5', period: 'per month', monthly: null };
+    if (plan === 'Premium') return { price: '$15', period: 'per month', monthly: null };
+    return { price: '$0', period: 'forever', monthly: null };
   };
 
   return (
@@ -122,6 +251,59 @@ export default function PricingPage() {
           <p className="text-xl text-muted-foreground max-w-3xl mx-auto">
             Start free and scale as you grow. All plans include our core features with no hidden fees.
           </p>
+
+          {/* Billing Toggle */}
+          <div className="flex items-center justify-center gap-4 pt-4">
+            <div className="relative inline-flex items-center bg-orange-50/50 dark:bg-orange-950/20 rounded-full p-1 border border-orange-200/50 dark:border-orange-800/50">
+              <motion.div
+                className="absolute top-1 bottom-1 bg-gradient-to-r from-orange-500/90 to-red-500/90 rounded-full shadow-lg"
+                initial={false}
+                animate={{
+                  x: billingCycle === 'monthly' ? 0 : '100%',
+                  width: billingCycle === 'monthly' ? '50%' : '50%',
+                }}
+                transition={{
+                  type: 'tween',
+                  ease: [0.4, 0, 0.2, 1],
+                  duration: 0.3,
+                }}
+                style={{
+                  left: '4px',
+                  right: '4px',
+                }}
+              />
+              <button
+                onClick={() => setBillingCycle('monthly')}
+                className={`relative z-10 px-8 py-2.5 rounded-full font-medium transition-all duration-300 ${
+                  billingCycle === 'monthly'
+                    ? 'text-white'
+                    : 'text-muted-foreground hover:text-foreground'
+                }`}
+              >
+                Pay monthly
+              </button>
+              <button
+                onClick={() => setBillingCycle('annual')}
+                className={`relative z-10 px-8 py-2.5 rounded-full font-medium transition-all duration-300 ${
+                  billingCycle === 'annual'
+                    ? 'text-white'
+                    : 'text-muted-foreground hover:text-foreground'
+                }`}
+              >
+                Pay annually
+              </button>
+            </div>
+          </div>
+          {billingCycle === 'annual' && (
+            <motion.p
+              initial={{ opacity: 0, y: -10 }}
+              animate={{ opacity: 1, y: 0 }}
+              className="text-sm text-primary font-semibold flex items-center justify-center gap-2"
+            >
+              <Sparkles className="w-4 h-4" />
+              Save up to 17% with annual plans
+            </motion.p>
+          )}
         </motion.div>
       </motion.section>
 
@@ -151,13 +333,33 @@ export default function PricingPage() {
               
               <CardHeader className="text-center pb-6 md:pb-8 pt-8 md:pt-10 relative z-10">
                 <h3 className="text-2xl md:text-3xl font-bold mb-4">{plan.name}</h3>
-                <div className="space-y-3">
+                <motion.div 
+                  className="space-y-3"
+                  key={billingCycle}
+                  initial={{ opacity: 0, y: 10 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ duration: 0.3 }}
+                >
                   <div className="flex items-baseline justify-center">
-                    <span className="text-4xl md:text-5xl font-bold gradient-text-primary">{plan.price}</span>
-                    <span className="text-muted-foreground ml-2 text-base">/{plan.period}</span>
+                    <span className="text-4xl md:text-5xl font-bold gradient-text-primary">
+                      {getPrice(plan.name).price}
+                    </span>
+                    <span className="text-muted-foreground ml-2 text-base">
+                      /{getPrice(plan.name).period}
+                    </span>
                   </div>
+                  {getPrice(plan.name).monthly && (
+                    <motion.p 
+                      className="text-xs text-primary font-medium"
+                      initial={{ opacity: 0, scale: 0.9 }}
+                      animate={{ opacity: 1, scale: 1 }}
+                      transition={{ delay: 0.1 }}
+                    >
+                      {getPrice(plan.name).monthly}
+                    </motion.p>
+                  )}
                   <p className="text-muted-foreground text-sm md:text-base">{plan.description}</p>
-                </div>
+                </motion.div>
               </CardHeader>
 
               <CardContent className="space-y-6 md:space-y-8 px-6 pb-8 relative z-10">
@@ -303,6 +505,31 @@ export default function PricingPage() {
             </motion.div>
           ))}
         </motion.div>
+      </motion.section>
+
+      {/* Custom Plan CTA */}
+      <motion.section 
+        className="text-center py-12"
+        initial="initial"
+        whileInView="animate"
+        viewport={{ once: true }}
+        variants={fadeInUp}
+      >
+        <Card className="max-w-2xl mx-auto border-2 border-primary/20">
+          <CardContent className="p-8 space-y-4">
+            <h3 className="text-2xl font-bold">Need a Custom Plan?</h3>
+            <p className="text-muted-foreground">
+              Looking for enterprise features, higher limits, or custom integrations? 
+              We'll create a plan tailored to your needs.
+            </p>
+            <Button size="lg" variant="outline" asChild>
+              <a href="mailto:support@orangeurl.live" className="inline-flex items-center gap-2">
+                Contact Us for Custom Pricing
+                <ArrowRight className="w-4 h-4" />
+              </a>
+            </Button>
+          </CardContent>
+        </Card>
       </motion.section>
 
       <WaitlistDialog 
