@@ -3,7 +3,7 @@ import { useState, useEffect } from 'react';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { motion, AnimatePresence } from 'framer-motion';
-import { SignInButton, SignedIn, SignedOut, UserButton } from '@clerk/nextjs';
+import { SignedIn, SignedOut, UserButton } from '@clerk/nextjs';
 import { DarkModeToggle } from './DarkModeToggle';
 import { Button } from './ui/button';
 import { cn } from '@/lib/utils';
@@ -119,12 +119,12 @@ export function Navbar() {
               transition={{ duration: 0.6, delay: 0.4 }}
             >
               <SignedOut>
-                <SignInButton mode="modal">
-                  <Button variant="outline" className="flex items-center space-x-2">
+                <Button variant="outline" className="flex items-center space-x-2" asChild>
+                  <Link href="/sign-in">
                     <User className="w-4 h-4" />
                     <span>Login</span>
-                  </Button>
-                </SignInButton>
+                  </Link>
+                </Button>
               </SignedOut>
               <SignedIn>
                 <UserButton 
@@ -234,16 +234,17 @@ export function Navbar() {
                 className="pt-3 border-t border-border"
               >
                 <SignedOut>
-                  <SignInButton mode="modal">
-                    <Button 
-                      variant="outline" 
-                      className="w-full flex items-center justify-center space-x-2"
-                      onClick={() => setIsMobileMenuOpen(false)}
-                    >
+                  <Button 
+                    variant="outline" 
+                    className="w-full flex items-center justify-center space-x-2"
+                    onClick={() => setIsMobileMenuOpen(false)}
+                    asChild
+                  >
+                    <Link href="/sign-in">
                       <User className="w-4 h-4" />
                       <span>Login</span>
-                    </Button>
-                  </SignInButton>
+                    </Link>
+                  </Button>
                 </SignedOut>
               </motion.div>
             </div>

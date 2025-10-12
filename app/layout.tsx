@@ -309,16 +309,7 @@ export default function RootLayout({
             enableSystem
             disableTransitionOnChange
           >
-            <div className="min-h-screen relative flex flex-col">
-              <ParticleBackground />
-              <div className="relative z-10 flex flex-col flex-1">
-                <Navbar />
-                <main className="container mx-auto px-4 py-8 flex-1">
-                  {children}
-                </main>
-                <Footer />
-              </div>
-            </div>
+            {children}
             <AuthStatusHandler />
             <Toaster />
             <Analytics />
