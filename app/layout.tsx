@@ -148,7 +148,6 @@ export const metadata: Metadata = {
     // Add your verification codes when available
     google: 'your-google-verification-code',
     yandex: 'your-yandex-verification-code',
-    bing: 'your-bing-verification-code',
   },
   other: {
     'price:currency': 'USD',
