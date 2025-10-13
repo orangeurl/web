@@ -127,6 +127,9 @@ export async function generateStaticParams() {
   return competitors.map((competitor) => ({ competitor }));
 }
 
+// Disable static generation to avoid prerendering issues
+export const dynamic = 'force-dynamic';
+
 export default async function AlternativePage({ params }: PageProps) {
   const resolvedParams = await params;
   const data = competitorData[resolvedParams.competitor];

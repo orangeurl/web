@@ -219,6 +219,9 @@ export async function generateStaticParams() {
   return useCases.map((slug) => ({ slug }));
 }
 
+// Disable static generation to avoid prerendering issues
+export const dynamic = 'force-dynamic';
+
 export default async function UseCasePage({ params }: PageProps) {
   const resolvedParams = await params;
   const data = useCaseData[resolvedParams.slug];

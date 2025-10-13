@@ -29,6 +29,9 @@ import { InternalLinks, Breadcrumbs } from '@/components/seo/InternalLinks';
 import { getBreadcrumbs } from '@/lib/seo/internalLinks';
 import { BreadcrumbSchema, ArticleSchema } from '@/components/seo/SchemaMarkup';
 
+// Disable static generation to avoid prerendering issues with client components
+export const dynamic = 'force-dynamic';
+
 interface PageProps {
   params: Promise<{ slug: string[] }>;
 }
@@ -58,16 +61,8 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
 
 // Generate static paths for top priority pages
 // Note: We're only pre-rendering a subset due to build time constraints
-export async function generateStaticParams() {
-  // Only pre-render the first 1000 pages at build time
-  // The rest will be generated on-demand (ISR)
-  const allSlugs = getAllProgrammaticSlugs();
-  const topSlugs = allSlugs.slice(0, 1000);
-
-  return topSlugs.map((slug) => ({
-    slug: slug.split('/'),
-  }));
-}
+// Removed generateStaticParams to avoid prerendering issues
+// Pages will be generated on-demand
 
 // Enable ISR - revalidate every 7 days
 export const revalidate = 604800;
