@@ -15,7 +15,7 @@ interface PageMetadataOptions {
   keywords?: string[];
   path?: string;
   image?: string;
-  type?: 'website' | 'article' | 'product';
+  type?: 'website' | 'article';
   publishedTime?: string;
   modifiedTime?: string;
   author?: string;
