@@ -304,6 +304,6 @@ export function generateKeywords(
     allKeywords.push(...keywordSets[setName]);
   }
   
-  return [...new Set(allKeywords)]; // Remove duplicates
+  return Array.from(new Set(allKeywords)); // Remove duplicates
 }
 
