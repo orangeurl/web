@@ -30,7 +30,7 @@ export function generateMetadata(options: PageMetadataOptions): Metadata {
     keywords = [],
     path = '',
     image = DEFAULT_IMAGE,
-    type = 'website',
+    type = 'website' as const,
     publishedTime,
     modifiedTime,
     author,
