@@ -10,18 +10,20 @@ import {
   getProgrammaticItem 
 } from '@/lib/seo/programmaticData';
 
-type RouteParams = {
-  params: Promise<{
-    index: string;
-  }>;
-};
+// Generate static params for build time
+export async function generateStaticParams() {
+  const numSitemaps = Math.ceil(PROGRAMMATIC_TOTAL / SITEMAP_CHUNK_SIZE);
+  return Array.from({ length: numSitemaps }, (_, i) => ({
+    index: i.toString(),
+  }));
+}
 
 export async function GET(
   request: NextRequest,
-  { params }: RouteParams
+  props: { params: Promise<{ index: string }> }
 ) {
-  const resolvedParams = await params;
-  const index = parseInt(resolvedParams.index);
+  const params = await props.params;
+  const index = parseInt(params.index);
   const baseUrl = 'https://app.orangeurl.live';
   
   // Calculate range for this sitemap
