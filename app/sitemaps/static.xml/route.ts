@@ -4,9 +4,9 @@
  * Contains all non-programmatic, high-priority pages
  */
 
-import { NextResponse } from 'next/server';
+import { NextRequest, NextResponse } from 'next/server';
 
-export async function GET() {
+export async function GET(request: NextRequest) {
   const baseUrl = 'https://app.orangeurl.live';
   const currentDate = new Date().toISOString();
   

@@ -3,10 +3,10 @@
  * Points to all individual sitemaps
  */
 
-import { NextResponse } from 'next/server';
+import { NextRequest, NextResponse } from 'next/server';
 import { PROGRAMMATIC_TOTAL, SITEMAP_CHUNK_SIZE } from '@/lib/seo/programmaticData';
 
-export async function GET() {
+export async function GET(request: NextRequest) {
   const baseUrl = 'https://app.orangeurl.live';
   
   // Calculate number of sitemaps needed
