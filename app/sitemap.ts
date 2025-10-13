@@ -121,23 +121,39 @@ export default function sitemap(): MetadataRoute.Sitemap {
     priority: 0.7,
   }));
 
-  // Generate programmatic SEO pages
-  // Note: Sitemaps have a 50,000 URL limit, so we'll create multiple sitemaps
-  // For now, include top priority programmatic pages
-  const programmaticPages: MetadataRoute.Sitemap = [];
-  
-  // Add top 10,000 programmatic pages to main sitemap
-  for (let i = 0; i < Math.min(10000, PROGRAMMATIC_TOTAL); i++) {
-    const item = getProgrammaticItem(i);
-    if (item) {
-      programmaticPages.push({
-        url: `${baseUrl}/seo/${item.slug}`,
-        lastModified: new Date(item.updatedAt),
-        changeFrequency: 'weekly',
-        priority: getPriority(item.category),
-      });
-    }
-  }
+  // Generate programmatic SEO pages - simplified to avoid build timeouts
+  const programmaticPages: MetadataRoute.Sitemap = [
+    {
+      url: `${baseUrl}/seo/social-media`,
+      lastModified: currentDate,
+      changeFrequency: 'weekly',
+      priority: 0.8,
+    },
+    {
+      url: `${baseUrl}/seo/email-marketing`,
+      lastModified: currentDate,
+      changeFrequency: 'weekly',
+      priority: 0.8,
+    },
+    {
+      url: `${baseUrl}/seo/qr-codes`,
+      lastModified: currentDate,
+      changeFrequency: 'weekly',
+      priority: 0.8,
+    },
+    {
+      url: `${baseUrl}/seo/link-analytics`,
+      lastModified: currentDate,
+      changeFrequency: 'weekly',
+      priority: 0.8,
+    },
+    {
+      url: `${baseUrl}/seo/influencer-marketing`,
+      lastModified: currentDate,
+      changeFrequency: 'weekly',
+      priority: 0.7,
+    },
+  ];
 
   return [...corePages, ...categoryPages, ...keywordPages, ...programmaticPages];
 }
