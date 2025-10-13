@@ -10,12 +10,18 @@ import {
   getProgrammaticItem 
 } from '@/lib/seo/programmaticData';
 
+type RouteParams = {
+  params: Promise<{
+    index: string;
+  }>;
+};
+
 export async function GET(
   request: NextRequest,
-  context: { params: Promise<{ index: string }> }
+  { params }: RouteParams
 ) {
-  const params = await context.params;
-  const index = parseInt(params.index);
+  const resolvedParams = await params;
+  const index = parseInt(resolvedParams.index);
   const baseUrl = 'https://app.orangeurl.live';
   
   // Calculate range for this sitemap
