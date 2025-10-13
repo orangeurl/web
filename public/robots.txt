@@ -12,6 +12,9 @@ Allow: /bio
 Allow: /privacy
 Allow: /terms
 Allow: /support
+Allow: /g/
+Allow: /g/category/
+Allow: /g/keyword/
 
 # Disallow authentication pages
 Disallow: /sign-in
@@ -38,7 +41,9 @@ Allow: /
 User-agent: YandexBot
 Allow: /
 
-# Sitemap location
+# Sitemap locations
+Sitemap: https://app.orangeurl.live/sitemap-index.xml
 Sitemap: https://app.orangeurl.live/sitemap.xml
+Sitemap: https://app.orangeurl.live/sitemaps/static.xml
 
 

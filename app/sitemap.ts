@@ -1,12 +1,16 @@
 import { MetadataRoute } from 'next';
+import { 
+  getAllProgrammaticSlugs, 
+  PROGRAMMATIC_TOTAL,
+  getProgrammaticItem 
+} from '@/lib/seo/programmaticData';
 
 export default function sitemap(): MetadataRoute.Sitemap {
   const baseUrl = 'https://app.orangeurl.live';
-  
-  // Current date for lastModified
   const currentDate = new Date();
   
-  return [
+  // Core pages
+  const corePages: MetadataRoute.Sitemap = [
     {
       url: baseUrl,
       lastModified: currentDate,
@@ -44,24 +48,6 @@ export default function sitemap(): MetadataRoute.Sitemap {
       priority: 0.8,
     },
     {
-      url: `${baseUrl}/privacy`,
-      lastModified: currentDate,
-      changeFrequency: 'monthly',
-      priority: 0.5,
-    },
-    {
-      url: `${baseUrl}/terms`,
-      lastModified: currentDate,
-      changeFrequency: 'monthly',
-      priority: 0.5,
-    },
-    {
-      url: `${baseUrl}/support`,
-      lastModified: currentDate,
-      changeFrequency: 'weekly',
-      priority: 0.6,
-    },
-    {
       url: `${baseUrl}/bitly-alternative`,
       lastModified: currentDate,
       changeFrequency: 'weekly',
@@ -79,6 +65,99 @@ export default function sitemap(): MetadataRoute.Sitemap {
       changeFrequency: 'monthly',
       priority: 0.7,
     },
+    {
+      url: `${baseUrl}/support`,
+      lastModified: currentDate,
+      changeFrequency: 'weekly',
+      priority: 0.6,
+    },
+    {
+      url: `${baseUrl}/privacy`,
+      lastModified: currentDate,
+      changeFrequency: 'monthly',
+      priority: 0.5,
+    },
+    {
+      url: `${baseUrl}/terms`,
+      lastModified: currentDate,
+      changeFrequency: 'monthly',
+      priority: 0.5,
+    },
+    // SEO Hub pages
+    {
+      url: `${baseUrl}/g`,
+      lastModified: currentDate,
+      changeFrequency: 'daily',
+      priority: 0.9,
+    },
   ];
+
+  // Add SEO Hub category pages
+  const categories = [
+    'linktree-alternative', // High priority - our bio feature
+    'social-media-marketing', 'email-marketing', 'qr-codes', 'link-analytics',
+    'influencer-marketing', 'affiliate-marketing', 'e-commerce', 'seo-optimization',
+    'business-tools', 'mobile-marketing', 'content-marketing', 'brand-management'
+  ];
+  
+  const categoryPages: MetadataRoute.Sitemap = categories.map((cat) => ({
+    url: `${baseUrl}/g/category/${cat}`,
+    lastModified: currentDate,
+    changeFrequency: 'weekly',
+    priority: 0.8,
+  }));
+
+  // Add SEO Hub keyword pages
+  const keywords = [
+    'bitly-alternative', 'free-url-shortener', 'custom-short-links', 'qr-code-generator',
+    'link-tracking', 'branded-links', 'bio-link', 'url-analytics',
+    'short-link-seo', 'link-management', 'utm-tracking', 'campaign-links'
+  ];
+  
+  const keywordPages: MetadataRoute.Sitemap = keywords.map((kw) => ({
+    url: `${baseUrl}/g/keyword/${kw}`,
+    lastModified: currentDate,
+    changeFrequency: 'weekly',
+    priority: 0.7,
+  }));
+
+  // Generate programmatic SEO pages
+  // Note: Sitemaps have a 50,000 URL limit, so we'll create multiple sitemaps
+  // For now, include top priority programmatic pages
+  const programmaticPages: MetadataRoute.Sitemap = [];
+  
+  // Add top 10,000 programmatic pages to main sitemap
+  for (let i = 0; i < Math.min(10000, PROGRAMMATIC_TOTAL); i++) {
+    const item = getProgrammaticItem(i);
+    if (item) {
+      programmaticPages.push({
+        url: `${baseUrl}/seo/${item.slug}`,
+        lastModified: new Date(item.updatedAt),
+        changeFrequency: 'weekly',
+        priority: getPriority(item.category),
+      });
+    }
+  }
+
+  return [...corePages, ...categoryPages, ...keywordPages, ...programmaticPages];
 }
 
+// Determine priority based on category
+function getPriority(category: string): number {
+  const priorityMap: Record<string, number> = {
+    'alternatives': 0.9,
+    'use-cases': 0.8,
+    'integrations': 0.8,
+    'industries': 0.7,
+    'solutions': 0.7,
+    'guides': 0.6,
+    'tools': 0.6,
+    'resources': 0.5,
+    'compare': 0.7,
+    'local': 0.6,
+    'hub': 0.5,
+    'discover': 0.4,
+  };
+  
+  return priorityMap[category] || 0.5;
+}

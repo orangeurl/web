@@ -2,6 +2,7 @@
 const nextConfig = {
   // Performance optimizations
   compress: true,
+  swcMinify: true,
   
   // Image optimization
   images: {
@@ -12,6 +13,12 @@ const nextConfig = {
     dangerouslyAllowSVG: true,
     contentDispositionType: 'attachment',
     contentSecurityPolicy: "default-src 'self'; script-src 'none'; sandbox;",
+  },
+
+  // Experimental features for better performance
+  experimental: {
+    optimizeCss: true,
+    optimizePackageImports: ['lucide-react', 'framer-motion', '@radix-ui/react-icons'],
   },
 
   // Headers for SEO and security

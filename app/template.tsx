@@ -1,5 +1,6 @@
 'use client';
 
+import { motion, AnimatePresence } from 'framer-motion';
 import { usePathname } from 'next/navigation';
 import { Navbar } from '@/components/Navbar';
 import { Footer } from '@/components/Footer';
@@ -8,25 +9,32 @@ import { ParticleBackground } from '@/components/ParticleBackground';
 export default function Template({ children }: { children: React.ReactNode }) {
   const pathname = usePathname();
   
-  // Pages without navbar/footer
+  // Don't show navbar/footer on auth pages
   const isAuthPage = pathname?.startsWith('/sign-in') || pathname?.startsWith('/sign-up');
 
-  if (isAuthPage) {
-    return <>{children}</>;
-  }
-
   return (
-    <div className="min-h-screen relative flex flex-col">
-      <ParticleBackground />
-      <div className="relative z-10 flex flex-col flex-1">
-        <Navbar />
-        <main className="container mx-auto px-4 py-8 flex-1">
+    <>
+      {!isAuthPage && (
+        <>
+          <ParticleBackground />
+          <Navbar />
+        </>
+      )}
+      
+      <AnimatePresence mode="wait">
+        <motion.main
+          key={pathname}
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          exit={{ opacity: 0, y: -20 }}
+          transition={{ duration: 0.3, ease: 'easeInOut' }}
+          className={!isAuthPage ? 'container mx-auto px-4 py-8 min-h-screen' : ''}
+        >
           {children}
-        </main>
-        <Footer />
-      </div>
-    </div>
+        </motion.main>
+      </AnimatePresence>
+      
+      {!isAuthPage && <Footer />}
+    </>
   );
 }
-
-
