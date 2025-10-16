@@ -10,9 +10,8 @@ export type ProgrammaticItem = {
   updatedAt: string;
 };
 
-// Actual count based on generator combinations: ~74,255 items
-// Using 75,000 as round number for sitemap chunking
-export const PROGRAMMATIC_TOTAL = 75_000;
+// Actual count based on generator combinations
+export const PROGRAMMATIC_TOTAL = 74_255;
 export const SITEMAP_CHUNK_SIZE = 25_000; // Keep well under 50k size limits
 
 export const categories = [
