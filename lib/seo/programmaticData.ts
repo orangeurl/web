@@ -416,20 +416,38 @@ export function* generateProgrammaticItems(): Generator<ProgrammaticItem> {
 }
 
 /**
+ * Get a range of programmatic items efficiently
+ */
+export function getProgrammaticItemsRange(start: number, end: number): ProgrammaticItem[] {
+  if (start < 0 || end > PROGRAMMATIC_TOTAL || start >= end) return [];
+  
+  const items: ProgrammaticItem[] = [];
+  const gen = generateProgrammaticItems();
+  
+  // Skip to start position
+  for (let i = 0; i < start; i++) {
+    gen.next();
+  }
+  
+  // Collect items in range
+  for (let i = start; i < end; i++) {
+    const result = gen.next();
+    if (result.done) break;
+    items.push(result.value);
+  }
+  
+  return items;
+}
+
+/**
  * Get a specific page by index (0-indexed)
+ * Note: For batch operations, use getProgrammaticItemsRange instead
  */
 export function getProgrammaticItem(index: number): ProgrammaticItem | null {
   if (index < 0 || index >= PROGRAMMATIC_TOTAL) return null;
   
-  let currentIndex = 0;
-  for (const item of generateProgrammaticItems()) {
-    if (currentIndex === index) {
-      return item;
-    }
-    currentIndex++;
-  }
-  
-  return null;
+  const items = getProgrammaticItemsRange(index, index + 1);
+  return items.length > 0 ? items[0] : null;
 }
 
 /**

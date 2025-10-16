@@ -1,9 +1,4 @@
 import { MetadataRoute } from 'next';
-import { 
-  getAllProgrammaticSlugs, 
-  PROGRAMMATIC_TOTAL,
-  getProgrammaticItem 
-} from '@/lib/seo/programmaticData';
 
 export default function sitemap(): MetadataRoute.Sitemap {
   const baseUrl = 'https://app.orangeurl.live';
@@ -121,43 +116,9 @@ export default function sitemap(): MetadataRoute.Sitemap {
     priority: 0.7,
   }));
 
-  // Generate programmatic SEO pages
-  // Note: Sitemaps have a 50,000 URL limit, so we'll create multiple sitemaps
-  // For now, include top priority programmatic pages
-  const programmaticPages: MetadataRoute.Sitemap = [];
-  
-  // Add top 10,000 programmatic pages to main sitemap
-  for (let i = 0; i < Math.min(10000, PROGRAMMATIC_TOTAL); i++) {
-    const item = getProgrammaticItem(i);
-    if (item) {
-      programmaticPages.push({
-        url: `${baseUrl}/seo/${item.slug}`,
-        lastModified: new Date(item.updatedAt),
-        changeFrequency: 'weekly',
-        priority: getPriority(item.category),
-      });
-    }
-  }
+  // Note: Programmatic SEO pages (100,000+ URLs) are served via separate sitemap chunks
+  // See sitemap-0.xml, sitemap-1.xml, etc. and sitemap-index.xml for the full list
+  // This main sitemap only includes core pages to prevent timeouts
 
-  return [...corePages, ...categoryPages, ...keywordPages, ...programmaticPages];
-}
-
-// Determine priority based on category
-function getPriority(category: string): number {
-  const priorityMap: Record<string, number> = {
-    'alternatives': 0.9,
-    'use-cases': 0.8,
-    'integrations': 0.8,
-    'industries': 0.7,
-    'solutions': 0.7,
-    'guides': 0.6,
-    'tools': 0.6,
-    'resources': 0.5,
-    'compare': 0.7,
-    'local': 0.6,
-    'hub': 0.5,
-    'discover': 0.4,
-  };
-  
-  return priorityMap[category] || 0.5;
+  return [...corePages, ...categoryPages, ...keywordPages];
 }
