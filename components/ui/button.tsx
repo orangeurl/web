@@ -73,6 +73,17 @@ const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
       }
     }, [props.disabled]);
 
+    // When asChild is true, don't pass event handlers (for Server Components compatibility)
+    if (asChild) {
+      return (
+        <Comp
+          className={cn(buttonVariants({ variant, size, className }))}
+          ref={ref}
+          {...props}
+        />
+      )
+    }
+
     return (
       <Comp
         className={cn(buttonVariants({ variant, size, className }))}
