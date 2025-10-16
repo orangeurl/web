@@ -22,7 +22,10 @@ import {
   Brain,
   Lock,
   Copy,
-  Crown
+  Crown,
+  Instagram,
+  Twitter,
+  ShoppingBag
 } from 'lucide-react';
 import { useState, useCallback, useEffect, useRef } from 'react';
 import { useToast } from '@/hooks/use-toast';
@@ -591,7 +594,7 @@ export default function Home() {
           >
             <div className="mb-6 px-6 py-2 text-sm font-medium bg-gradient-to-r from-orange-100 to-red-100 dark:from-orange-900/30 dark:to-red-900/30 border-0 rounded-full inline-flex items-center">
               <Sparkles className="w-4 h-4 mr-2" />
-              Lightning Fast URL Shortening
+              URL Shortener + Bio Pages
             </div>
           </motion.div>
           
@@ -603,7 +606,7 @@ export default function Home() {
               Shorten Links,
             </span>
             <span className="block mt-2">
-              Amplify Results
+              Build Your Bio
             </span>
           </motion.h1>
           
@@ -611,7 +614,7 @@ export default function Home() {
             className="text-xl md:text-2xl text-muted-foreground max-w-4xl mx-auto leading-relaxed"
             variants={fadeInUp}
           >
-            Transform long URLs into short, memorable links instantly. Simple, fast, and reliable URL shortening service.
+            Create short, memorable links and beautiful bio pages. Perfect for creators, brands, and businesses. All-in-one link management solution.
           </motion.p>
         </motion.div>
 
@@ -912,7 +915,7 @@ export default function Home() {
         </motion.div>
       </motion.section>
 
-      {/* Twitter Profile Demo */}
+      {/* Bio Page Templates Showcase */}
       <motion.section 
         className="space-y-16 py-8"
         initial="initial"
@@ -921,116 +924,181 @@ export default function Home() {
         variants={staggerContainer}
       >
         <motion.div variants={fadeInUp} className="text-center space-y-5 md:space-y-6">
-          <div className="inline-flex items-center px-4 py-2 bg-gradient-to-r from-blue-100 to-cyan-100 dark:from-blue-900/30 dark:to-cyan-900/30 border border-blue-200/50 dark:border-blue-800/50 rounded-full text-sm font-semibold shadow-sm">
-            <Users className="w-4 h-4 mr-2 text-blue-600 dark:text-blue-400" />
-            Real Success Stories
+          <div className="inline-flex items-center px-4 py-2 bg-gradient-to-r from-purple-100 to-pink-100 dark:from-purple-900/30 dark:to-pink-900/30 border border-purple-200/50 dark:border-purple-800/50 rounded-full text-sm font-semibold shadow-sm">
+            <Sparkles className="w-4 h-4 mr-2 text-purple-600 dark:text-purple-400" />
+            Beautiful Bio Pages
           </div>
           <h2 className="text-3xl md:text-4xl lg:text-5xl font-bold px-4">
-            Track Your <span className="gradient-text-primary">Social Media Performance</span>
+            Create Your <span className="gradient-text-primary">Perfect Bio Page</span>
           </h2>
           <p className="text-lg md:text-xl text-muted-foreground max-w-3xl mx-auto leading-relaxed">
-            See how influencers and creators use OrangeURL to track their bio links and grow their audience
+            Choose from stunning templates designed for creators, influencers, and brands. Showcase your products or build your link hub.
           </p>
         </motion.div>
 
+        {/* Two Template Cards Side by Side */}
         <motion.div 
-          variants={fadeInUp}
-          className="max-w-3xl mx-auto"
+          className="grid grid-cols-1 md:grid-cols-2 gap-8 max-w-5xl mx-auto px-4"
+          variants={staggerContainer}
         >
-          <Card className="card-hover border-2 border-border/30 bg-gradient-to-br from-orange-50/50 via-card to-secondary/10 dark:from-orange-950/20 dark:via-card dark:to-secondary/5 backdrop-blur-sm shadow-xl">
-            <CardContent className="p-6 md:p-8 lg:p-10">
-              {/* Twitter Profile Header */}
-              <div className="flex items-start space-x-4 mb-6">
-                <div className="w-16 h-16 rounded-full overflow-hidden border-2 border-blue-300 shadow-lg">
-                  <Image
-                    src="/images/snowiee-avatar.jpg"
-                    alt="Snowiee Profile Picture"
-                    width={64}
-                    height={64}
-                    className="w-full h-full object-cover"
-                  />
-                </div>
-                <div className="flex-1">
-                  <div className="flex items-center space-x-2">
-                    <h3 className="text-xl font-bold">Snowiee</h3>
-                    <div className="w-5 h-5 bg-blue-500 rounded-full flex items-center justify-center">
-                      <CheckCircle className="w-3 h-3 text-white" />
+          {/* Template 1: Link Hub */}
+          <motion.div variants={fadeInUp} className="h-full">
+            <div className="overflow-hidden rounded-[2rem] shadow-2xl relative bg-gradient-to-b from-orange-200 via-amber-100 to-orange-50 dark:from-orange-900 dark:via-amber-900 dark:to-orange-800 h-[500px] flex flex-col">
+              <div className="absolute top-0 left-0 right-0 h-32 bg-gradient-to-b from-orange-400 to-transparent opacity-40 rounded-t-[2rem]" />
+              
+              <div className="p-6 space-y-4 relative z-10 flex-1 flex flex-col">
+                <div className="text-center space-y-3 pt-2">
+                  <motion.div
+                    whileHover={{ scale: 1.05, rotate: 2 }}
+                    transition={{ type: "spring", stiffness: 300 }}
+                    className="relative inline-block"
+                  >
+                    <div className="w-24 h-24 mx-auto rounded-full overflow-hidden border-4 border-white shadow-xl relative z-10">
+                      <Image
+                        src="/images/user_logo.png"
+                        alt="Profile"
+                        width={96}
+                        height={96}
+                        className="w-full h-full object-cover"
+                      />
                     </div>
-                  </div>
-                  <p className="text-muted-foreground">@phpmeow</p>
-                  <p className="text-sm text-muted-foreground mt-2">
-                    GSoC'24 @AnkiDroid, Electronics Major
-                  </p>
-                </div>
-                <Button 
-                  variant="outline" 
-                  size="sm" 
-                  className="text-blue-500 border-blue-500"
-                  onClick={() => window.open('https://x.com/phpmeow', '_blank')}
-                >
-                  Follow
-                </Button>
-              </div>
+                  </motion.div>
 
-              {/* Bio Links */}
-              <div className="space-y-3 bg-orange-100/40 dark:bg-orange-800/20 backdrop-blur-sm rounded-lg p-4 border border-border/20">
-                <h4 className="font-semibold text-sm text-muted-foreground uppercase tracking-wide">My Links</h4>
-                <div className="space-y-2">
-                  <div className="flex items-center justify-between p-3 bg-orange-100/35 dark:bg-orange-800/18 backdrop-blur-sm rounded-lg border border-border/20">
-                    <div className="flex items-center space-x-3">
-                      <Globe className="w-4 h-4 text-primary" />
-                      <div>
-                        <p className="font-medium text-sm">My Website</p>
-                        <p className="text-xs text-primary font-mono">orangeurl.live/snowiee</p>
-                      </div>
+                  <div className="space-y-1">
+                    <h3 className="text-2xl font-black text-gray-900 dark:text-white">
+                      Yusii Xu
+                    </h3>
+                    <p className="text-xs font-medium text-gray-700 dark:text-gray-300 uppercase tracking-wider">
+                      Content Creator
+                    </p>
+                  </div>
+                </div>
+
+                <div className="space-y-2 flex-1 flex flex-col justify-center">
+                  <motion.div
+                    whileHover={{ scale: 1.03, y: -2 }}
+                    className="bg-white/95 backdrop-blur-sm border-2 border-gray-800 dark:border-white rounded-xl p-3 cursor-pointer shadow-md"
+                  >
+                    <div className="flex items-center justify-center gap-2">
+                      <Instagram className="w-4 h-4 text-gray-800 dark:text-gray-900" />
+                      <span className="font-bold text-sm text-gray-800 dark:text-gray-900 uppercase tracking-wide">
+                        Instagram
+                      </span>
                     </div>
-                    <div className="text-xs text-muted-foreground">824 clicks</div>
+                  </motion.div>
+
+                  <motion.div
+                    whileHover={{ scale: 1.03, y: -2 }}
+                    className="bg-white/95 backdrop-blur-sm border-2 border-gray-800 dark:border-white rounded-xl p-3 cursor-pointer shadow-md"
+                  >
+                    <div className="flex items-center justify-center gap-2">
+                      <Twitter className="w-4 h-4 text-gray-800 dark:text-gray-900" />
+                      <span className="font-bold text-sm text-gray-800 dark:text-gray-900 uppercase tracking-wide">
+                        X / Twitter
+                      </span>
+                    </div>
+                  </motion.div>
+
+                  <motion.div
+                    whileHover={{ scale: 1.03, y: -2 }}
+                    className="bg-white/95 backdrop-blur-sm border-2 border-gray-800 dark:border-white rounded-xl p-3 cursor-pointer shadow-md"
+                  >
+                    <div className="flex items-center justify-center gap-2">
+                      <Globe className="w-4 h-4 text-gray-800 dark:text-gray-900" />
+                      <span className="font-bold text-sm text-gray-800 dark:text-gray-900 uppercase tracking-wide">
+                        Portfolio
+                      </span>
+                    </div>
+                  </motion.div>
+                </div>
+
+                <p className="text-center text-xs font-semibold text-gray-700 dark:text-gray-300 pt-2">
+                  Link Hub Template
+                </p>
+              </div>
+            </div>
+          </motion.div>
+
+          {/* Template 2: Product Showcase */}
+          <motion.div variants={fadeInUp}>
+            <div className="overflow-hidden rounded-[2rem] shadow-2xl relative h-[500px]" style={{
+              background: 'linear-gradient(180deg, #6B9BD1 0%, #8BB5E0 50%, #A8C9E8 100%)',
+            }}>
+              <div className="p-6 space-y-3 relative z-10 h-full flex flex-col">
+                {/* Brand Badge */}
+                <div className="text-center pt-2">
+                  <div className="inline-block px-3 py-1 border-2 border-yellow-400 rounded-full bg-transparent">
+                    <p className="text-[9px] font-bold text-yellow-400 tracking-wide">Yusii Xu</p>
+                  </div>
+                </div>
+
+                {/* Title */}
+                <div className="text-center space-y-0">
+                  <h3 className="text-4xl font-black text-yellow-300 leading-none" style={{ 
+                    fontFamily: 'Impact, Arial Black, sans-serif',
+                    letterSpacing: '0.05em'
+                  }}>
+                    PRODUCT
+                  </h3>
+                  <h4 className="text-3xl font-black text-yellow-200 italic leading-none" style={{ 
+                    fontFamily: 'Georgia, Times, serif',
+                    letterSpacing: '0.02em'
+                  }}>
+                    Showcase
+                  </h4>
+                </div>
+
+                {/* Product Card */}
+                <div className="bg-white rounded-lg p-3 shadow-2xl flex-1">
+                  {/* Product Image */}
+                  <div className="aspect-square bg-white rounded-lg flex items-center justify-center relative overflow-hidden border border-gray-200 mb-2">
+                    <Image
+                      src="/images/shopping.png"
+                      alt="Product"
+                      width={150}
+                      height={150}
+                      className="w-full h-full object-contain p-3"
+                    />
                   </div>
                   
-                  <div className="flex items-center justify-between p-3 bg-orange-100/35 dark:bg-orange-800/18 backdrop-blur-sm rounded-lg border border-border/20">
-                    <div className="flex items-center space-x-3">
-                      <BarChart3 className="w-4 h-4 text-primary" />
-                      <div>
-                        <p className="font-medium text-sm">Resume</p>
-                        <p className="text-xs text-primary font-mono">orangeurl.live/snowresume</p>
-                      </div>
+                  {/* Product Info */}
+                  <div className="border-t-2 border-b-2 border-gray-900 py-1.5 mb-2">
+                    <h5 className="font-black text-center text-xs uppercase tracking-wider text-gray-900">
+                      Premium Sunglasses
+                    </h5>
+                    <div className="flex items-center justify-center gap-2 mt-0.5">
+                      <p className="text-base font-black text-green-600">$100</p>
                     </div>
-                    <div className="text-xs text-muted-foreground">1.5k clicks</div>
                   </div>
 
-                  <div className="flex items-center justify-between p-3 bg-orange-100/35 dark:bg-orange-800/18 backdrop-blur-sm rounded-lg border border-border/20">
-                    <div className="flex items-center space-x-3">
-                      <Sparkles className="w-4 h-4 text-primary" />
-                      <div>
-                        <p className="font-medium text-sm">Favourite YouTube Video</p>
-                        <p className="text-xs text-primary font-mono">orangeurl.live/favourite</p>
-                      </div>
-                    </div>
-                    <div className="text-xs text-muted-foreground">342 clicks</div>
+                  {/* Product Description */}
+                  <div className="px-1">
+                    <p className="text-[10px] text-center leading-tight text-gray-800">
+                      "Premium quality sunglasses. Perfect for any occasion."
+                    </p>
                   </div>
                 </div>
 
-                <div className="flex items-center justify-between pt-3 border-t">
-                  <p className="text-xs text-muted-foreground">Total clicks this month</p>
-                  <p className="text-sm font-semibold text-primary">2,666 clicks</p>
-                </div>
-              </div>
-
-              {/* Call to Action */}
-              <div className="mt-6 text-center">
-                <p className="text-sm text-muted-foreground mb-3">
-                  Track your social media performance like Snowiee
+                <p className="text-center text-xs font-semibold text-white/90 pt-1">
+                  Product Showcase Template
                 </p>
-                <Button 
-                  className="btn-primary"
-                  onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
-                >
-                  Create Your Bio Links
-                  <ArrowRight className="w-4 h-4 ml-2" />
-                </Button>
               </div>
-            </CardContent>
-          </Card>
+            </div>
+          </motion.div>
+        </motion.div>
+
+        {/* CTA Button */}
+        <motion.div variants={fadeInUp} className="text-center">
+          <p className="text-sm text-muted-foreground mb-4">
+            Build your perfect bio page in minutes
+          </p>
+          <Button 
+            className="btn-primary text-lg px-8 py-6"
+            onClick={() => window.location.href = '/bio'}
+          >
+            Explore Bio Pages
+            <ArrowRight className="w-5 h-5 ml-2" />
+          </Button>
         </motion.div>
       </motion.section>
 
