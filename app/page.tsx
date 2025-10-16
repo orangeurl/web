@@ -25,7 +25,9 @@ import {
   Crown,
   Instagram,
   Twitter,
-  ShoppingBag
+  ShoppingBag,
+  FileText,
+  Youtube
 } from 'lucide-react';
 import { useState, useCallback, useEffect, useRef } from 'react';
 import { useToast } from '@/hooks/use-toast';
@@ -553,7 +555,7 @@ export default function Home() {
     <div className="space-y-32 overflow-hidden">
       {/* Hero Section */}
       <motion.section 
-        className="text-center space-y-12 py-20 relative"
+        className="text-center space-y-12 py-8 relative"
         initial="initial"
         animate="animate"
         variants={staggerContainer}
@@ -648,7 +650,16 @@ export default function Home() {
                   {/* Custom Short Input with AI Toggle */}
                   <div className="space-y-2">
                     <div className="flex items-center gap-2">
-                      <div className="relative flex-1">
+                      <div 
+                        className="relative flex-1"
+                        onClick={isFreeTier ? () => {
+                          toast({
+                            title: "Unlock Custom Short Links",
+                            description: "Upgrade to Pro to create custom branded short URLs",
+                            className: "border-2 border-primary/20 bg-card text-card-foreground shadow-lg",
+                          });
+                        } : undefined}
+                      >
                         <Input
                           type="text"
                           placeholder="Custom short (optional) - e.g., 'my-link'"
@@ -658,7 +669,8 @@ export default function Home() {
                           disabled={isFreeTier}
                         />
                         {isFreeTier && (
-                          <div className="absolute inset-0 bg-gradient-to-r from-transparent via-gray-200/60 to-gray-300/80 dark:from-transparent dark:via-gray-700/60 dark:to-gray-800/80 rounded-md pointer-events-none flex items-center justify-end pr-3">
+                          <div className="absolute inset-0 bg-gradient-to-r from-transparent via-gray-200/60 to-gray-300/80 dark:from-transparent dark:via-gray-700/60 dark:to-gray-800/80 rounded-md cursor-pointer flex items-center justify-end pr-3 gap-2">
+                            <span className="text-xs text-gray-600 dark:text-gray-400 font-medium">Get Pro to unlock</span>
                             <Lock className="w-4 h-4 text-gray-600 dark:text-gray-400" />
                           </div>
                         )}
@@ -675,9 +687,12 @@ export default function Home() {
                           });
                         } : undefined}
                       >
-                        <Brain className="w-4 h-4 text-primary" />
-                        <span className="text-sm font-medium">AI</span>
-                        <label className="relative inline-flex items-center cursor-pointer">
+                        {isFreeTier && (
+                          <div className="absolute inset-0 bg-gradient-to-r from-transparent via-gray-200/60 to-gray-300/80 dark:from-transparent dark:via-gray-700/60 dark:to-gray-800/80 rounded-lg pointer-events-none" />
+                        )}
+                        <Brain className="w-4 h-4 text-primary relative z-10" />
+                        <span className="text-sm font-medium relative z-10">AI</span>
+                        <label className="relative inline-flex items-center cursor-pointer z-10">
                           <input
                             type="checkbox"
                             checked={aiGenerateShort}
@@ -727,23 +742,26 @@ export default function Home() {
                     )}
                   </div>
 
-                  {/* QR Code Toggle */}
-                  <div 
-                    className={`relative flex items-center gap-3 p-3 bg-muted/30 rounded-lg border border-border ${isFreeTier ? 'cursor-pointer' : ''}`}
-                    onClick={isFreeTier ? () => {
-                      toast({
-                        title: "Unlock QR Code Features",
-                        description: "Upgrade to Pro to generate custom QR codes with branding",
-                        className: "bg-gradient-to-r from-orange-50 to-amber-50 border-orange-200 text-orange-900 shadow-lg backdrop-blur-sm",
-                      });
-                    } : undefined}
-                  >
-                    <QrCode className="w-5 h-5 text-primary" />
-                    <div className="flex-1">
+                   {/* QR Code Toggle */}
+                   <div 
+                     className={`relative flex items-center gap-3 p-3 bg-muted/30 rounded-lg border border-border ${isFreeTier ? 'cursor-pointer' : ''}`}
+                     onClick={isFreeTier ? () => {
+                       toast({
+                         title: "Unlock QR Code Features",
+                         description: "Upgrade to Pro to generate custom QR codes with branding",
+                         className: "border-2 border-primary/20 bg-card text-card-foreground shadow-lg",
+                       });
+                     } : undefined}
+                   >
+                     {isFreeTier && (
+                       <div className="absolute inset-0 bg-gradient-to-r from-transparent via-gray-200/60 to-gray-300/80 dark:from-transparent dark:via-gray-700/60 dark:to-gray-800/80 rounded-lg pointer-events-none" />
+                     )}
+                     <QrCode className="w-5 h-5 text-primary relative z-10" />
+                     <div className="flex-1 relative z-10">
                       <div className="font-medium text-sm">Generate QR Code</div>
                       <div className="text-xs text-muted-foreground">Include a QR code with OrangeURL branding</div>
                     </div>
-                    <label className="relative inline-flex items-center cursor-pointer">
+                     <label className="relative inline-flex items-center cursor-pointer z-10">
                       <input
                         type="checkbox"
                         checked={includeQRCode}
@@ -892,7 +910,7 @@ export default function Home() {
         {/* Stats */}
         <motion.div 
           variants={fadeInUp}
-          className="grid grid-cols-1 md:grid-cols-3 gap-8 max-w-4xl mx-auto pt-16"
+          className="grid grid-cols-1 md:grid-cols-3 gap-8 max-w-4xl mx-auto pt-20"
         >
           {[
             { label: "Links Created", value: "100+", icon: <LinkIcon className="w-6 h-6" /> },
@@ -936,154 +954,228 @@ export default function Home() {
           </p>
         </motion.div>
 
-        {/* Two Template Cards Side by Side */}
+        {/* Template Showcase Grid */}
         <motion.div 
-          className="grid grid-cols-1 md:grid-cols-2 gap-8 max-w-5xl mx-auto px-4"
+          className="grid grid-cols-1 md:grid-cols-2 gap-8 max-w-4xl mx-auto px-4"
           variants={staggerContainer}
         >
           {/* Template 1: Link Hub */}
           <motion.div variants={fadeInUp} className="h-full">
-            <div className="overflow-hidden rounded-[2rem] shadow-2xl relative bg-gradient-to-b from-orange-200 via-amber-100 to-orange-50 dark:from-orange-900 dark:via-amber-900 dark:to-orange-800 h-[500px] flex flex-col">
-              <div className="absolute top-0 left-0 right-0 h-32 bg-gradient-to-b from-orange-400 to-transparent opacity-40 rounded-t-[2rem]" />
+            <div className="overflow-hidden rounded-[2.5rem] shadow-2xl relative bg-gradient-to-b from-orange-200 via-amber-100 to-orange-50 dark:from-orange-900 dark:via-amber-900 dark:to-orange-800 h-full flex flex-col">
+              <div className="absolute top-0 left-0 right-0 h-32 bg-gradient-to-b from-orange-400 to-transparent opacity-40 rounded-t-[2.5rem]" />
               
-              <div className="p-6 space-y-4 relative z-10 flex-1 flex flex-col">
-                <div className="text-center space-y-3 pt-2">
+              <div className="p-8 space-y-6 relative z-10 flex-1 flex flex-col">
+                <div className="text-center space-y-4 pt-4">
                   <motion.div
                     whileHover={{ scale: 1.05, rotate: 2 }}
                     transition={{ type: "spring", stiffness: 300 }}
                     className="relative inline-block"
                   >
-                    <div className="w-24 h-24 mx-auto rounded-full overflow-hidden border-4 border-white shadow-xl relative z-10">
-                      <Image
+                    <div className="absolute -top-3 -right-3 w-8 h-8 bg-orange-400 rounded-full opacity-60" />
+                    <div className="absolute -bottom-2 -left-2 w-6 h-6 bg-amber-400 rounded-full opacity-60" />
+                    
+                    <div className="w-32 h-32 mx-auto rounded-full overflow-hidden border-4 border-white shadow-xl relative z-10">
+                  <Image
                         src="/images/user_logo.png"
                         alt="Profile"
-                        width={96}
-                        height={96}
-                        className="w-full h-full object-cover"
-                      />
-                    </div>
+                        width={128}
+                        height={128}
+                    className="w-full h-full object-cover"
+                  />
+                </div>
+                    
+                    <div className="absolute -top-1 -left-1 text-2xl">⚡</div>
+                    <div className="absolute -bottom-2 -right-2 text-2xl">😊</div>
                   </motion.div>
 
-                  <div className="space-y-1">
-                    <h3 className="text-2xl font-black text-gray-900 dark:text-white">
+                  <div className="space-y-2">
+                    <h2 className="text-3xl font-black text-gray-900 dark:text-white" style={{ fontFamily: 'Georgia, serif' }}>
                       Yusii Xu
-                    </h3>
-                    <p className="text-xs font-medium text-gray-700 dark:text-gray-300 uppercase tracking-wider">
+                    </h2>
+                    <p className="text-sm font-medium text-gray-700 dark:text-gray-300 uppercase tracking-wider">
                       Content Creator
                     </p>
+                    </div>
                   </div>
-                </div>
 
-                <div className="space-y-2 flex-1 flex flex-col justify-center">
+                <div className="space-y-3 pt-2 flex-1 flex flex-col justify-center">
                   <motion.div
                     whileHover={{ scale: 1.03, y: -2 }}
-                    className="bg-white/95 backdrop-blur-sm border-2 border-gray-800 dark:border-white rounded-xl p-3 cursor-pointer shadow-md"
+                    className="bg-white/95 backdrop-blur-sm border-2 border-gray-800 dark:border-white rounded-xl p-4 cursor-pointer shadow-md hover:shadow-lg transition-all"
                   >
                     <div className="flex items-center justify-center gap-2">
-                      <Instagram className="w-4 h-4 text-gray-800 dark:text-gray-900" />
-                      <span className="font-bold text-sm text-gray-800 dark:text-gray-900 uppercase tracking-wide">
+                      <Instagram className="w-5 h-5 text-gray-800 dark:text-gray-900" />
+                      <span className="font-bold text-base text-gray-800 dark:text-gray-900 uppercase tracking-wide">
                         Instagram
                       </span>
-                    </div>
-                  </motion.div>
-
-                  <motion.div
-                    whileHover={{ scale: 1.03, y: -2 }}
-                    className="bg-white/95 backdrop-blur-sm border-2 border-gray-800 dark:border-white rounded-xl p-3 cursor-pointer shadow-md"
-                  >
-                    <div className="flex items-center justify-center gap-2">
-                      <Twitter className="w-4 h-4 text-gray-800 dark:text-gray-900" />
-                      <span className="font-bold text-sm text-gray-800 dark:text-gray-900 uppercase tracking-wide">
-                        X / Twitter
-                      </span>
-                    </div>
-                  </motion.div>
-
-                  <motion.div
-                    whileHover={{ scale: 1.03, y: -2 }}
-                    className="bg-white/95 backdrop-blur-sm border-2 border-gray-800 dark:border-white rounded-xl p-3 cursor-pointer shadow-md"
-                  >
-                    <div className="flex items-center justify-center gap-2">
-                      <Globe className="w-4 h-4 text-gray-800 dark:text-gray-900" />
-                      <span className="font-bold text-sm text-gray-800 dark:text-gray-900 uppercase tracking-wide">
-                        Portfolio
-                      </span>
-                    </div>
-                  </motion.div>
                 </div>
+                  </motion.div>
 
-                <p className="text-center text-xs font-semibold text-gray-700 dark:text-gray-300 pt-2">
-                  Link Hub Template
-                </p>
+                  <motion.div
+                    whileHover={{ scale: 1.03, y: -2 }}
+                    className="bg-white/95 backdrop-blur-sm border-2 border-gray-800 dark:border-white rounded-xl p-4 cursor-pointer shadow-md hover:shadow-lg transition-all"
+                  >
+                    <div className="flex items-center justify-center gap-2">
+                      <Twitter className="w-5 h-5 text-gray-800 dark:text-gray-900" />
+                      <span className="font-bold text-base text-gray-800 dark:text-gray-900 uppercase tracking-wide">
+                        X
+                      </span>
               </div>
-            </div>
+                  </motion.div>
+
+                  <motion.div
+                    whileHover={{ scale: 1.03, y: -2 }}
+                    className="bg-white/95 backdrop-blur-sm border-2 border-gray-800 dark:border-white rounded-xl p-4 cursor-pointer shadow-md hover:shadow-lg transition-all"
+                  >
+                    <div className="flex items-center justify-center gap-2">
+                      <FileText className="w-5 h-5 text-gray-800 dark:text-gray-900" />
+                      <span className="font-bold text-base text-gray-800 dark:text-gray-900 uppercase tracking-wide">
+                        Medium
+                      </span>
+                      </div>
+                  </motion.div>
+
+                  <motion.div
+                    whileHover={{ scale: 1.03, y: -2 }}
+                    className="bg-white/95 backdrop-blur-sm border-2 border-gray-800 dark:border-white rounded-xl p-4 cursor-pointer shadow-md hover:shadow-lg transition-all"
+                  >
+                    <div className="flex items-center justify-center gap-2">
+                      <Youtube className="w-5 h-5 text-gray-800 dark:text-gray-900" />
+                      <span className="font-bold text-base text-gray-800 dark:text-gray-900 uppercase tracking-wide">
+                        YouTube
+                      </span>
+                    </div>
+                  </motion.div>
+                  </div>
+                  
+                <div className="text-center pt-4">
+                  <p className="text-xs text-gray-600 dark:text-gray-400 uppercase tracking-wider">
+                    @yusiixu
+                  </p>
+                      </div>
+                    </div>
+                  </div>
+            <p className="text-center text-sm font-semibold text-muted-foreground mt-4">
+              Link Hub Template
+            </p>
           </motion.div>
 
           {/* Template 2: Product Showcase */}
           <motion.div variants={fadeInUp}>
-            <div className="overflow-hidden rounded-[2rem] shadow-2xl relative h-[500px]" style={{
+            <div className="overflow-hidden rounded-[2.5rem] shadow-2xl relative h-full" style={{
               background: 'linear-gradient(180deg, #6B9BD1 0%, #8BB5E0 50%, #A8C9E8 100%)',
+              backgroundImage: 'url("data:image/svg+xml,%3Csvg xmlns=\'http://www.w3.org/2000/svg\' width=\'400\' height=\'400\'%3E%3Cfilter id=\'noiseFilter\'%3E%3CfeTurbulence type=\'fractalNoise\' baseFrequency=\'0.9\' numOctaves=\'4\' /%3E%3C/filter%3E%3Crect width=\'100%25\' height=\'100%25\' filter=\'url(%23noiseFilter)\' opacity=\'0.05\'/%3E%3C/svg%3E"), linear-gradient(180deg, #6B9BD1 0%, #8BB5E0 50%, #A8C9E8 100%)',
             }}>
-              <div className="p-6 space-y-3 relative z-10 h-full flex flex-col">
+              <div className="p-8 space-y-4 relative z-10 h-full flex flex-col">
                 {/* Brand Badge */}
-                <div className="text-center pt-2">
-                  <div className="inline-block px-3 py-1 border-2 border-yellow-400 rounded-full bg-transparent">
-                    <p className="text-[9px] font-bold text-yellow-400 tracking-wide">Yusii Xu</p>
-                  </div>
-                </div>
+                <div className="text-center pt-4">
+                  <div className="inline-block px-4 py-1.5 border-2 border-yellow-400 rounded-full bg-transparent">
+                    <p className="text-[10px] font-bold text-yellow-400 tracking-wide">Yusii Xu</p>
+                      </div>
+                    </div>
 
                 {/* Title */}
                 <div className="text-center space-y-0">
-                  <h3 className="text-4xl font-black text-yellow-300 leading-none" style={{ 
+                  <h2 className="text-5xl font-black text-yellow-300 leading-none" style={{ 
                     fontFamily: 'Impact, Arial Black, sans-serif',
                     letterSpacing: '0.05em'
                   }}>
                     PRODUCT
-                  </h3>
-                  <h4 className="text-3xl font-black text-yellow-200 italic leading-none" style={{ 
+                  </h2>
+                  <h3 className="text-4xl font-black text-yellow-200 italic leading-none" style={{ 
                     fontFamily: 'Georgia, Times, serif',
                     letterSpacing: '0.02em'
                   }}>
                     Showcase
-                  </h4>
+                  </h3>
                 </div>
 
-                {/* Product Card */}
-                <div className="bg-white rounded-lg p-3 shadow-2xl flex-1">
-                  {/* Product Image */}
-                  <div className="aspect-square bg-white rounded-lg flex items-center justify-center relative overflow-hidden border border-gray-200 mb-2">
-                    <Image
-                      src="/images/shopping.png"
-                      alt="Product"
-                      width={150}
-                      height={150}
-                      className="w-full h-full object-contain p-3"
-                    />
+                {/* Product Receipt Card */}
+                <div className="bg-gradient-to-b from-gray-300 to-gray-400 rounded-t-2xl p-3 shadow-2xl flex-1">
+                  {/* Paper top edge effect */}
+                  <div className="relative">
+                    <div className="absolute -top-3 left-0 right-0 h-3 flex justify-around">
+                      {[...Array(20)].map((_, i) => (
+                        <div key={i} className="w-3 h-3 bg-gray-300 rounded-b-full" />
+                      ))}
                   </div>
-                  
-                  {/* Product Info */}
-                  <div className="border-t-2 border-b-2 border-gray-900 py-1.5 mb-2">
-                    <h5 className="font-black text-center text-xs uppercase tracking-wider text-gray-900">
-                      Premium Sunglasses
-                    </h5>
-                    <div className="flex items-center justify-center gap-2 mt-0.5">
-                      <p className="text-base font-black text-green-600">$100</p>
+                </div>
+
+                  <div className="bg-white rounded-lg p-4 space-y-3">
+                    {/* Product Image */}
+                    <div className="aspect-square bg-white rounded-lg flex items-center justify-center relative overflow-hidden border border-gray-200">
+                      <Image
+                        src="/images/shopping.png"
+                        alt="Product"
+                        width={200}
+                        height={200}
+                        className="w-full h-full object-contain p-4"
+                      />
+                    </div>
+                    
+                    {/* Divider */}
+                    <div className="border-t-2 border-b-2 border-gray-900 py-2">
+                      <h4 className="font-black text-center text-xs uppercase tracking-wider text-gray-900">
+                        Premium Sunglasses
+                      </h4>
+                      <div className="flex items-center justify-center gap-2 mt-1">
+                        <p className="text-lg font-black text-green-600">$100</p>
+                </div>
+              </div>
+
+                    {/* Product Description */}
+                    <div className="px-2">
+                      <p className="text-[11px] text-center leading-tight text-gray-800">
+                        "Premium quality sunglasses with modern design. Perfect for any occasion, stylish and durable."
+                      </p>
+                    </div>
+
+                    {/* Barcode */}
+                    <div className="pt-1">
+                      <div className="h-10 bg-white rounded flex items-end justify-center pb-1">
+                        <svg width="180" height="32" viewBox="0 0 180 32">
+                          {[...Array(40)].map((_, i) => (
+                            <rect 
+                              key={i} 
+                              x={i * 4.5} 
+                              y="0" 
+                              width={Math.random() > 0.5 ? "2" : "1"} 
+                              height="32" 
+                              fill="black"
+                            />
+                          ))}
+                        </svg>
+                      </div>
                     </div>
                   </div>
 
-                  {/* Product Description */}
-                  <div className="px-1">
-                    <p className="text-[10px] text-center leading-tight text-gray-800">
-                      "Premium quality sunglasses. Perfect for any occasion."
-                    </p>
+                  {/* Bottom zigzag edge */}
+                  <div className="relative h-3 overflow-hidden">
+                    <div className="absolute -bottom-1.5 left-0 right-0 flex justify-around">
+                      {[...Array(20)].map((_, i) => (
+                        <div key={i} className="w-3 h-3 bg-white rounded-t-full" />
+                      ))}
+                    </div>
                   </div>
                 </div>
 
-                <p className="text-center text-xs font-semibold text-white/90 pt-1">
-                  Product Showcase Template
-                </p>
+                {/* CTA Button */}
+                <div className="bg-gray-700 rounded-full py-2.5 px-4 flex items-center gap-3 shadow-lg">
+                  <div className="w-10 h-10 bg-gray-800 rounded-full flex items-center justify-center flex-shrink-0">
+                    <ShoppingBag className="w-5 h-5 text-white" />
+                  </div>
+                  <div className="flex-1 text-left">
+                    <p className="text-[11px] leading-tight">
+                      <span className="text-yellow-300 font-normal">Check the product at </span>
+                      <span className="text-yellow-300 font-bold">orangeurl.live/yusiixu</span>
+                    </p>
+                  </div>
+                </div>
               </div>
             </div>
+            <p className="text-center text-sm font-semibold text-muted-foreground mt-4">
+              Product Showcase Template
+            </p>
           </motion.div>
         </motion.div>
 
@@ -1091,14 +1183,14 @@ export default function Home() {
         <motion.div variants={fadeInUp} className="text-center">
           <p className="text-sm text-muted-foreground mb-4">
             Build your perfect bio page in minutes
-          </p>
-          <Button 
+                </p>
+                <Button 
             className="btn-primary text-lg px-8 py-6"
             onClick={() => window.location.href = '/bio'}
-          >
+                >
             Explore Bio Pages
             <ArrowRight className="w-5 h-5 ml-2" />
-          </Button>
+                </Button>
         </motion.div>
       </motion.section>
 
